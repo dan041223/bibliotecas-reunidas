@@ -1,6 +1,7 @@
-package controlador;
+package vista;
 
 import javax.swing.JPanel;
+import javax.swing.JComboBox;
 
 public class Usuario extends JPanel {
 
@@ -10,7 +11,11 @@ public class Usuario extends JPanel {
 	 * Create the panel.
 	 */
 	public Usuario() {
+		setLayout(null);
+		
+		JComboBox comboBox = new JComboBox();
+		comboBox.setBounds(191, 115, 30, 22);
+		add(comboBox);
 
 	}
-
 }
