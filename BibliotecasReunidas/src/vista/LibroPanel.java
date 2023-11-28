@@ -2,14 +2,14 @@ package vista;
 
 import javax.swing.JPanel;
 
-public class Prestamo extends JPanel {
+public class LibroPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Create the panel.
 	 */
-	public Prestamo() {
+	public LibroPanel() {
 
 	}
 

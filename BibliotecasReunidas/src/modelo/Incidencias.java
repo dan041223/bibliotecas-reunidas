@@ -10,7 +10,6 @@ public class Incidencias {
 	private String texto_incidencias;
 	
 	
-	
 	public Incidencias() {
 		 id = 0;
 		 id_socio = 0;
