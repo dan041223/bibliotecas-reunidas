@@ -1,15 +1,15 @@
-package controlador;
+package vista;
 
 import javax.swing.JPanel;
 
-public class Incidencias extends JPanel {
+public class Libro extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Create the panel.
 	 */
-	public Incidencias() {
+	public Libro() {
 
 	}
 
