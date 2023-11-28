@@ -4,32 +4,32 @@ package modelo;
 
 public class Prestamo  {
 	private int id;
-	private int idSocio;
-	private int idLibro;
-	private int idUsuario;
-	private String fechaPrestamo;
-	private String fechaPrevista;
-	private String fechaEntrega;
+	private int id_socio;
+	private int id_libro;
+	private int id_usuario;
+	private String fecha_prestamo;
+	private String fecha_prevista;
+	private String fecha_entrega;
 	
 	public Prestamo() {
 		this.id = 0;
-		this.idSocio = 0;
-		this.idLibro = 0;
-		this.idUsuario = 0;
-		this.fechaPrestamo = "";
-		this.fechaPrevista = "";
-		this.fechaEntrega = "";
+		this.id_socio = 0;
+		this.id_libro = 0;
+		this.id_usuario = 0;
+		this.fecha_prestamo = "";
+		this.fecha_prevista = "";
+		this.fecha_entrega = "";
 	}
-	
-	public Prestamo(int id, int idSocio, int idLibro, int idUsuario, String fechaPrestamo, String fechaPrevista,
-			String fechaEntrega) {
+
+	public Prestamo(int id, int id_socio, int id_libro, int id_usuario, String fecha_prestamo, String fecha_prevista,
+			String fecha_entrega) {
 		this.id = id;
-		this.idSocio = idSocio;
-		this.idLibro = idLibro;
-		this.idUsuario = idUsuario;
-		this.fechaPrestamo = fechaPrestamo;
-		this.fechaPrevista = fechaPrevista;
-		this.fechaEntrega = fechaEntrega;
+		this.id_socio = id_socio;
+		this.id_libro = id_libro;
+		this.id_usuario = id_usuario;
+		this.fecha_prestamo = fecha_prestamo;
+		this.fecha_prevista = fecha_prevista;
+		this.fecha_entrega = fecha_entrega;
 	}
 
 	public int getId() {
@@ -40,51 +40,51 @@ public class Prestamo  {
 		this.id = id;
 	}
 
-	public int getIdSocio() {
-		return idSocio;
+	public int getId_socio() {
+		return id_socio;
 	}
 
-	public void setIdSocio(int idSocio) {
-		this.idSocio = idSocio;
+	public void setId_socio(int id_socio) {
+		this.id_socio = id_socio;
 	}
 
-	public int getIdLibro() {
-		return idLibro;
+	public int getId_libro() {
+		return id_libro;
 	}
 
-	public void setIdLibro(int idLibro) {
-		this.idLibro = idLibro;
+	public void setId_libro(int id_libro) {
+		this.id_libro = id_libro;
 	}
 
-	public int getIdUsuario() {
-		return idUsuario;
+	public int getId_usuario() {
+		return id_usuario;
 	}
 
-	public void setIdUsuario(int idUsuario) {
-		this.idUsuario = idUsuario;
+	public void setId_usuario(int id_usuario) {
+		this.id_usuario = id_usuario;
 	}
 
-	public String getFechaPrestamo() {
-		return fechaPrestamo;
+	public String getFecha_prestamo() {
+		return fecha_prestamo;
 	}
 
-	public void setFechaPrestamo(String fechaPrestamo) {
-		this.fechaPrestamo = fechaPrestamo;
+	public void setFecha_prestamo(String fecha_prestamo) {
+		this.fecha_prestamo = fecha_prestamo;
 	}
 
-	public String getFechaPrevista() {
-		return fechaPrevista;
+	public String getFecha_prevista() {
+		return fecha_prevista;
 	}
 
-	public void setFechaPrevista(String fechaPrevista) {
-		this.fechaPrevista = fechaPrevista;
+	public void setFecha_prevista(String fecha_prevista) {
+		this.fecha_prevista = fecha_prevista;
 	}
 
-	public String getFechaEntrega() {
-		return fechaEntrega;
+	public String getFecha_entrega() {
+		return fecha_entrega;
 	}
 
-	public void setFechaEntrega(String fechaEntrega) {
-		this.fechaEntrega = fechaEntrega;
+	public void setFecha_entrega(String fecha_entrega) {
+		this.fecha_entrega = fecha_entrega;
 	}
 }

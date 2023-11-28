@@ -18,9 +18,9 @@ public class Libro {
 	}
 	private CategoriaLibro categoria;
 	private String idioma;
-	private String fechaPublicacion;
-	private int idEditorial;
-	private int idUbicacion;
+	private String fecha_publicacion;
+	private int id_editorial;
+	private int id_ubicacion;
 	private int isbn;
 	
 	public Libro() {
@@ -28,21 +28,21 @@ public class Libro {
 		this.titulo = "";
 		this.categoria = CategoriaLibro.OTRO;;
 		this.idioma = "";
-		this.fechaPublicacion ="";
-		this.idEditorial = 0;
-		this.idUbicacion = 0;
+		this.fecha_publicacion ="";
+		this.id_editorial = 0;
+		this.id_ubicacion = 0;
 		this.isbn = 0;
 	}
-	
-	public Libro(int id, String titulo, CategoriaLibro categoria, String idioma, String fechaPublicacion, int idEditorial,
-			int idUbicacion, int isbn) {
+
+	public Libro(int id, String titulo, CategoriaLibro categoria, String idioma, String fecha_publicacion,
+			int id_editorial, int id_ubicacion, int isbn) {
 		this.id = id;
 		this.titulo = titulo;
 		this.categoria = categoria;
 		this.idioma = idioma;
-		this.fechaPublicacion = fechaPublicacion;
-		this.idEditorial = idEditorial;
-		this.idUbicacion = idUbicacion;
+		this.fecha_publicacion = fecha_publicacion;
+		this.id_editorial = id_editorial;
+		this.id_ubicacion = id_ubicacion;
 		this.isbn = isbn;
 	}
 
@@ -78,28 +78,28 @@ public class Libro {
 		this.idioma = idioma;
 	}
 
-	public String getFechaPublicacion() {
-		return fechaPublicacion;
+	public String getFecha_publicacion() {
+		return fecha_publicacion;
 	}
 
-	public void setFechaPublicacion(String fechaPublicacion) {
-		this.fechaPublicacion = fechaPublicacion;
+	public void setFecha_publicacion(String fecha_publicacion) {
+		this.fecha_publicacion = fecha_publicacion;
 	}
 
-	public int getIdEditorial() {
-		return idEditorial;
+	public int getId_editorial() {
+		return id_editorial;
 	}
 
-	public void setIdEditorial(int idEditorial) {
-		this.idEditorial = idEditorial;
+	public void setId_editorial(int id_editorial) {
+		this.id_editorial = id_editorial;
 	}
 
-	public int getIdUbicacion() {
-		return idUbicacion;
+	public int getId_ubicacion() {
+		return id_ubicacion;
 	}
 
-	public void setIdUbicacion(int idUbicacion) {
-		this.idUbicacion = idUbicacion;
+	public void setId_ubicacion(int id_ubicacion) {
+		this.id_ubicacion = id_ubicacion;
 	}
 
 	public int getIsbn() {
