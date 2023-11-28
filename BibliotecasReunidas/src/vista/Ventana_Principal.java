@@ -13,11 +13,18 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class Ventana_Principal extends JFrame {
-
+	
+	
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 
+	
+	
 	public Ventana_Principal() {
+		//Para conectarnos a la bbdd ni bien se inicia la app
+		ConectorBBDD con = new ConectorBBDD();
+		con.connect();
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
