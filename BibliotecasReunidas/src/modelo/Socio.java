@@ -10,18 +10,13 @@ public class Socio  {
 	private String calle;
 	private int codigo_postal;
 	private String email;
-	public enum TIPO_PAGO{
-		EFECTIVO,
-		TARJETA
-	}
-	private TIPO_PAGO tipo_pago;
-	
+		
 	public Socio() {
 		super();
 	}
 	
 	public Socio(int id, String nombre, String fecha_creacion, String dni, int telefono, String calle,
-			int codigo_postal, String email, TIPO_PAGO tipo_pago) {
+			int codigo_postal, String email) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
@@ -31,7 +26,6 @@ public class Socio  {
 		this.calle = calle;
 		this.codigo_postal = codigo_postal;
 		this.email = email;
-		this.tipo_pago = tipo_pago;
 	}
 	
 	public int getId() {
@@ -81,11 +75,5 @@ public class Socio  {
 	}
 	public void setEmail(String email) {
 		this.email = email;
-	}
-	public TIPO_PAGO getTipo_pago() {
-		return tipo_pago;
-	}
-	public void setTipo_pago(TIPO_PAGO tipo_pago) {
-		this.tipo_pago = tipo_pago;
 	}
 }
