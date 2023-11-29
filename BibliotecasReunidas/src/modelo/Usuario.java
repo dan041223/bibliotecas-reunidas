@@ -9,6 +9,8 @@ public class Usuario {
 	private String calle;
 	private int codigo_postal;
 	private String dni;
+	private String password;
+	
 	public enum TIPO_PERFIL{
 		ADMINISTRADOR,
 		ADMINISTRATIVO
@@ -20,7 +22,7 @@ public class Usuario {
 	}
 	
 	public Usuario(int id, String nombre, int telefono, String email, String calle, int codigo_postal, String dni,
-			TIPO_PERFIL tipo_perfil) {
+			String password, TIPO_PERFIL tipo_perfil) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
@@ -32,6 +34,14 @@ public class Usuario {
 		this.tipo_perfil = tipo_perfil;
 	}
 	
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
 	public int getId() {
 		return id;
 	}
