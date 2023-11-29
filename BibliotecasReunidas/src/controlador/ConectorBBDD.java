@@ -27,4 +27,8 @@ public class ConectorBBDD {
 			}   	
 	        return conn;
     }
+	 
+	 public void agregarAdministrativo() {
+		 
+	 }
 }

@@ -29,29 +29,18 @@ public class Ventana_Principal extends JFrame {
 		ConectorBBDD con = new ConectorBBDD();
 		con.connect();
 		
+		
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
-		
-		JMenuBar menuBar = new JMenuBar();
-		setJMenuBar(menuBar);
-		
-		JMenu mnNewMenu = new JMenu("Prueba");
-		menuBar.add(mnNewMenu);
-		
-		JMenuItem mntmNewMenuItem = new JMenuItem("Cambiar panel");
-		mntmNewMenuItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Login login = new Login();
-				cambiarPanel(login);
-				
-			}
-		});
-		mnNewMenu.add(mntmNewMenuItem);
+		setBounds(100, 100, 769, 562);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(new CardLayout(0, 0));
+		
+		Login login = new Login();
+		cambiarPanel(login);
 	}
 	
 	/*
