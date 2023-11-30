@@ -9,8 +9,18 @@ import modelo.Usuario;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.awt.event.ActionEvent;
+import java.awt.Cursor;
 import java.awt.Font;
+import java.awt.Image;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class Login extends JPanel {
 
@@ -68,7 +78,7 @@ public class Login extends JPanel {
 				}
 				
 				if(iniciadoSesion == true) {					
-					Ventana_Principal.getInstance().cambiarPanel(new UsuarioPanel());
+					Ventana_Principal.getInstance().cambiarPanel(new SocioPanel());
 				}
 			}
 		});
