@@ -5,12 +5,14 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import modelo.Socio;
 import modelo.Usuario;
 import modelo.Usuario.TIPO_PERFIL;
 
@@ -75,6 +77,96 @@ public class ConectorBBDD {
 		}
 		return usuario;
 	 }
+	 
+	 public ArrayList<Socio> consultarSocios() {
+		ArrayList<Socio> socios = new ArrayList<Socio>();
+		Socio socio;
+		Connection con = connect();
+
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT id, nombre, fecha_creacion, dni, telefono, calle, codigo_postal, email FROM socios;");
+			while(rs.next()) {
+				System.out.println("metido en bucle conexion");
+				socio = new Socio();
+				socio.setId(rs.getInt("id"));
+				socio.setNombre(rs.getString("nombre"));
+				socio.setFecha_creacion(rs.getString("fecha_creacion"));
+				socio.setDni(rs.getString("dni"));
+				socio.setTelefono(rs.getInt("telefono"));
+				socio.setCalle(rs.getString("calle"));
+				socio.setCodigo_postal(rs.getInt("codigo_postal"));
+				socio.setEmail(rs.getString("email"));
+				
+				socios.add(socio);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		
+		return socios;
+		 
+	 }
+	 
+	 public ArrayList<Socio> consultarSociosPorId(int id) {
+			ArrayList<Socio> socios = new ArrayList<Socio>();
+			Socio socio;
+			Connection con = connect();
+			
+			try {
+				Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery("SELECT id, nombre, fecha_creacion, dni, telefono, calle, codigo_postal, email FROM socios WHERE id = " + id + " ;");
+				while(rs.next()) {
+					socio = new Socio();
+					socio.setId(rs.getInt("id"));
+					socio.setNombre(rs.getString("nombre"));
+					socio.setFecha_creacion(rs.getString("fecha_creacion"));
+					socio.setDni(rs.getString("dni"));
+					socio.setTelefono(rs.getInt("telefono"));
+					socio.setCalle(rs.getString("calle"));
+					socio.setCodigo_postal(rs.getInt("codigo_postal"));
+					socio.setEmail(rs.getString("email"));
+					
+					socios.add(socio);
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}			
+			return socios;
+		 }
+	 
+	 public ArrayList<Socio> consultarSociosPorEmail(String email) {
+			ArrayList<Socio> socios = new ArrayList<Socio>();
+			Socio socio;
+			Connection con = connect();
+			
+			
+			try {
+				Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery("SELECT id, nombre, fecha_creacion, dni, telefono, calle, codigo_postal, email FROM socios WHERE email = '" + email + "' ;");
+				while(rs.next()) {
+					socio = new Socio();
+					socio.setId(rs.getInt("id"));
+					socio.setNombre(rs.getString("nombre"));
+					socio.setFecha_creacion(rs.getString("fecha_creacion"));
+					socio.setDni(rs.getString("dni"));
+					socio.setTelefono(rs.getInt("telefono"));
+					socio.setCalle(rs.getString("calle"));
+					socio.setCodigo_postal(rs.getInt("codigo_postal"));
+					socio.setEmail(rs.getString("email"));
+					
+					socios.add(socio);
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+			
+			return socios;
+			 
+		 }
 	 
 	 public void agregarAdministrativo() {
 		 
