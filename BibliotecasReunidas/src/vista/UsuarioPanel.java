@@ -1,11 +1,16 @@
 package vista;
 
 import javax.swing.JPanel;
-import javax.swing.JComboBox;
+
+import modelo.Usuario;
+import modelo.Usuario.TIPO_PERFIL;
+
+import javax.swing.JButton;
 
 public class UsuarioPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
+	public Usuario usuario = Login.usuario;
 
 	/**
 	 * Create the panel.
@@ -13,9 +18,25 @@ public class UsuarioPanel extends JPanel {
 	public UsuarioPanel() {
 		setLayout(null);
 		
-		JComboBox comboBox = new JComboBox();
-		comboBox.setBounds(191, 115, 30, 22);
-		add(comboBox);
-
+		JButton btnAgregarAdministrativo = new JButton("AgregarAdministrativo");
+		btnAgregarAdministrativo.setBounds(45, 113, 139, 23);
+		add(btnAgregarAdministrativo);
+		
+		if(usuario.getTipo_perfil().equals(TIPO_PERFIL.ADMINISTRATIVO)) {
+			btnAgregarAdministrativo.setEnabled(false);
+		}else if(usuario.getTipo_perfil().equals(TIPO_PERFIL.ADMINISTRADOR)) {
+			btnAgregarAdministrativo.setEnabled(true);
+		}
+		
+		JButton btnAgregarLibro = new JButton("Agregar libro");
+		btnAgregarLibro.setBounds(268, 113, 139, 23);
+		add(btnAgregarLibro);
+		
+		if(usuario.getTipo_perfil().equals(TIPO_PERFIL.ADMINISTRATIVO)) {
+			btnAgregarLibro.setEnabled(true);
+		}else if(usuario.getTipo_perfil().equals(TIPO_PERFIL.ADMINISTRADOR)) {
+			btnAgregarLibro.setEnabled(true);
+		}
+		
 	}
 }

@@ -9,7 +9,7 @@ public class Principal {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Ventana_Principal frame = new Ventana_Principal();
+					Ventana_Principal frame = Ventana_Principal.getInstance();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
