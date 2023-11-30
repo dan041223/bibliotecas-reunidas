@@ -44,6 +44,9 @@ public class Ventana_Principal extends JFrame {
 		cambiarPanel(login);
 	}
 	
+	/*
+	 * Creamos una instancia de la ventana
+	 */
 	public static Ventana_Principal getInstance() {
 		if (instancia == null) {
             instancia = new Ventana_Principal();
@@ -53,7 +56,7 @@ public class Ventana_Principal extends JFrame {
 	
 	/*
 	 * Metodo que se encarga de reemplazar el panel actual con el que se le pasa por parametro.
-	 * Se le llama al, por ejemplo, pulsar un boton.
+	 * Se le llama, por ejemplo, al pulsar un boton.
 	 */
 	public void cambiarPanel(JPanel panelNuevo) {
 		contentPane.removeAll();

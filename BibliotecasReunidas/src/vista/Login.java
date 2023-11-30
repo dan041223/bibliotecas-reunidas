@@ -31,11 +31,9 @@ public class Login extends JPanel {
 	public Boolean iniciadoSesion = false;
 
 	/**
-	 * Create the panel.
+	 * Crea el panel
 	 */
 	public Login() {
-		
-		
 		setLayout(null);
 		
 		JLabel lblLoginTitle = new JLabel("INICIO DE SESION");
@@ -63,9 +61,14 @@ public class Login extends JPanel {
 		lblContrasena.setBounds(479, 301, 114, 25);
 		add(lblContrasena);
 		
-		JButton btnNewButton = new JButton("Acceder");
-		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		btnNewButton.addActionListener(new ActionListener() {
+		JButton btnAcceder = new JButton("Acceder");
+		btnAcceder.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		/*
+		 * Detecta cuando pulsas el boton, haciendo los siguientes casos:
+		 * En caso de que encuentre el usuario dice en una ventanita que se ha encontrado y pasa a la ventana principal (Socios por ahora para pruebas)
+		 * En caso contrario te dice que no se ha encontrado a un usuario con esos datos y no hace nada
+		 */
+		btnAcceder.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ConectorBBDD con = new ConectorBBDD();
 				
@@ -73,17 +76,24 @@ public class Login extends JPanel {
 				String password = tfPassword.getText();
 				usuario = con.consultarUsuario(correo, password);
 				
+				//Si el usuario esta vacio es que no se ha pasado ningun usuario por lo que ponemos el booleano iniciadoSesion en true
 				if(usuario != null) {
 					iniciadoSesion = true;
 				}
 				
+				/*
+				 * Si el usuario se ha encontrado en la base de datos el login se completa y, 
+				 * en la instancia de la ventana principal cambias el panel hasta el primer panel que quieras que aparezca
+				 * al logearte
+				 * Para hacer pruebas he puesto SocioPanel pero habra que poner, cuando esté hecho, la ventana principal
+				 */
 				if(iniciadoSesion == true) {					
 					Ventana_Principal.getInstance().cambiarPanel(new SocioPanel());
 				}
 			}
 		});
-		btnNewButton.setBounds(519, 409, 89, 23);
-		add(btnNewButton);
+		btnAcceder.setBounds(519, 409, 89, 23);
+		add(btnAcceder);
 		
 		JLabel lblNewLabel_1 = new JLabel("He olvidado mi contraseña");
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.ITALIC, 15));

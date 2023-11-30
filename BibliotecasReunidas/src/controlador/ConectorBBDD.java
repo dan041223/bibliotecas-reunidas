@@ -16,7 +16,9 @@ import modelo.Socio;
 import modelo.Usuario;
 import modelo.Usuario.TIPO_PERFIL;
 
-
+/*
+ * Clase que reune todas las conexiones a la Base de Datos
+ */
 public class ConectorBBDD {
 
 	final String url = "jdbc:postgresql://db.sbuicfeenrshatyqggbt.supabase.co:5432/postgres";
@@ -24,8 +26,8 @@ public class ConectorBBDD {
 	final String password = "Dalexiana1223";
 
 	/*
-	 * Este metodo se conecta a la BBDD y devuelve la conexion,
-	 * la cual utilizaremos para realizar todas las operaciones
+	 * Metodo que se encarga de conectarse a la base de datos y devolver la conexion
+	 * Con la conexion puedes realizar todas las operaciones que quieras
 	 */
 	
 	 public Connection connect() {
@@ -37,7 +39,11 @@ public class ConectorBBDD {
 			}   	
 	        return conn;
     }
-	 
+	 /*
+	  * Metodo que se encargar de consultar buscar en la base de datos el usuario especificado
+	  * Devuelve un usuario
+	  * Es usado en el Login para saber quien es el que ha iniciado sesion
+	  */
 	 public Usuario consultarUsuario(String correo, String password) {
 		 Connection con = connect();
 		 Usuario usuario = null;
@@ -78,6 +84,11 @@ public class ConectorBBDD {
 		return usuario;
 	 }
 	 
+	 /*
+	  * Metodo para consultar todos los socios en la base de datos
+	  * Devuelve un ArrayList de Socios
+	  * Usado para rellenar una tabla al iniciar esta ventana por primera vez
+	  */
 	 public ArrayList<Socio> consultarSocios() {
 		ArrayList<Socio> socios = new ArrayList<Socio>();
 		Socio socio;
@@ -109,6 +120,10 @@ public class ConectorBBDD {
 		 
 	 }
 	 
+	 /*
+	  * Metodo para consultar en la base de datos los socios que coinciden con el id introducido por el usuario
+	  * Devuelve un arrayList relleno solo con los usuario que tengan la misma id que ha dicho el usuario
+	  */
 	 public ArrayList<Socio> consultarSociosPorId(int id) {
 			ArrayList<Socio> socios = new ArrayList<Socio>();
 			Socio socio;
@@ -137,6 +152,10 @@ public class ConectorBBDD {
 			return socios;
 		 }
 	 
+	 /*
+	  * Metodo para consultar en la base de datos los socios que coinciden con el email introducido por el usuario
+	  * Deveuelve un arrayList relleno solo con los socios que tengan el mismo email que ha dicho el usuario
+	  */
 	 public ArrayList<Socio> consultarSociosPorEmail(String email) {
 			ArrayList<Socio> socios = new ArrayList<Socio>();
 			Socio socio;
