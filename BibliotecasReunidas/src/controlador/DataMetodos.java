@@ -132,6 +132,7 @@ public class DataMetodos {
 															// base de datos
 			registro = statement.executeQuery(query);
 
+			
 			while (registro.next()) {
 
 				Autor autor = new Autor();
