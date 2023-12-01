@@ -38,6 +38,7 @@ public class Ventana_Principal extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
+
 		contentPane.setLayout(new CardLayout(0, 0));
 		
 		Login login = new Login();
@@ -64,4 +65,5 @@ public class Ventana_Principal extends JFrame {
 		contentPane.repaint();
 		contentPane.revalidate();
 	}
+
 }

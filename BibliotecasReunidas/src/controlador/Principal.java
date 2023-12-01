@@ -2,6 +2,10 @@ package controlador;
 
 import java.awt.EventQueue;
 
+import javax.swing.JPanel;
+
+import modelo.Autor;
+import vista.AutorPanel;
 import vista.Ventana_Principal;
 
 public class Principal {
@@ -15,6 +19,7 @@ public class Principal {
 					 */
 					Ventana_Principal frame = Ventana_Principal.getInstance();
 					frame.setVisible(true);
+
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
