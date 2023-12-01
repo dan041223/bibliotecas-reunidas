@@ -15,6 +15,8 @@ import javax.swing.JPanel;
 import modelo.Socio;
 import modelo.Usuario;
 import modelo.Usuario.TIPO_PERFIL;
+import vista.Login;
+import vista.Ventana_Principal;
 
 /*
  * Clase que reune todas las conexiones a la Base de Datos
@@ -44,6 +46,11 @@ public class ConectorBBDD {
 	  * Devuelve un usuario
 	  * Es usado en el Login para saber quien es el que ha iniciado sesion
 	  */
+	 
+	 public void agregarSocio(String nombre, String email, int telefono) {
+		 
+	 }
+	 
 	 public Usuario consultarUsuario(String correo, String password) {
 		 Connection con = connect();
 		 Usuario usuario = null;
@@ -64,16 +71,14 @@ public class ConectorBBDD {
 				if ("administrador".equals(rs.getString("tipo_perfil"))) {
 					
 				    usuario.setTipo_perfil(TIPO_PERFIL.ADMINISTRADOR);
-				    System.out.println(usuario.getTipo_perfil().toString());
 				    
 				} else if ("administrativo".equals(rs.getString("tipo_perfil"))) {
 					
 				    usuario.setTipo_perfil(TIPO_PERFIL.ADMINISTRATIVO);
-				    System.out.println(usuario.getTipo_perfil().toString());
 				    
 				}
-				
-				JOptionPane.showMessageDialog(null, "Se ha encontrado al usuario");
+				Ventana_Principal vp = Ventana_Principal.getInstance();
+				JOptionPane.showMessageDialog(vp ,"Se ha encontrado al usuario");
 			}else if(!rs.next()){
 				JOptionPane.showMessageDialog(null, "No se ha encontrador ningún usuario con esta información", "Error al buscar usuario", JOptionPane.ERROR_MESSAGE);
 			}
@@ -98,7 +103,6 @@ public class ConectorBBDD {
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT id, nombre, fecha_creacion, dni, telefono, calle, codigo_postal, email FROM socios;");
 			while(rs.next()) {
-				System.out.println("metido en bucle conexion");
 				socio = new Socio();
 				socio.setId(rs.getInt("id"));
 				socio.setNombre(rs.getString("nombre"));
