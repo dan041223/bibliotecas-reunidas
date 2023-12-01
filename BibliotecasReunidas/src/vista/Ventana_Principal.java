@@ -21,6 +21,7 @@ public class Ventana_Principal extends JFrame {
 	
 	
 	public Ventana_Principal() {
+		System.out.println("Ventana Principal");
 		//Para conectarnos a la bbdd ni bien se inicia la app
 		ConectorBBDD con = new ConectorBBDD();
 		con.connect();
@@ -36,12 +37,19 @@ public class Ventana_Principal extends JFrame {
 		JButton btnNewButton = new JButton("New button");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ConectorBBDD con = new ConectorBBDD();
-				con.connect();
+				AutorPanel panel = new AutorPanel();
+				nuevoPanel(panel);
 			}
 		});
 		btnNewButton.setBounds(161, 104, 89, 23);
 		contentPane.add(btnNewButton);
 	}
-
+	
+	public void nuevoPanel(JPanel panelActual) {
+		contentPane.removeAll();
+		contentPane.add(panelActual);
+		contentPane.repaint();
+		contentPane.revalidate();
+	}
+	
 }
