@@ -15,8 +15,10 @@ import javax.swing.JScrollPane;
 
 public class AutorPanel extends JPanel {
 	
-	private JTextField textField_Cod;
+
+	private static final long serialVersionUID = 1L;
 	private JTextField textField_nombre;
+	private JTextField textField_Cod;
 	private JTextField textField_Nacionalidad;
 	private JTextField textField_Fecha;
 	DefaultTableModel modeloAutor = new DefaultTableModel();

@@ -66,5 +66,4 @@ public class Autor {
 		this.fecha_nacimiento = fecha_nacimiento;
 	}
 	
-
 }
