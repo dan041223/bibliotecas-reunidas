@@ -13,9 +13,11 @@ public class Principal {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Ventana_Principal frame = new Ventana_Principal();
-					//panel.setVisible(true);
-					//frame.nuevoPanel(panel);
+					/*
+					 * Es una instancia porque queremos que lo que se cree es la ventana con su estado 
+					 * para poder volver a ella en caso de que se quiera volver a iniciar sesion
+					 */
+					Ventana_Principal frame = Ventana_Principal.getInstance();
 					frame.setVisible(true);
 
 				} catch (Exception e) {
