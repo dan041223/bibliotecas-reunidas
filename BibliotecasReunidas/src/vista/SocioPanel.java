@@ -104,7 +104,7 @@ public class SocioPanel extends JPanel {
 		}
 		
 		try {
-			BufferedImage img = ImageIO.read(new File("C:\\Development\\Projects\\bibliotecas-reunidas\\BibliotecasReunidas\\src\\images\\flechita_atras.png"));
+			BufferedImage img = ImageIO.read(new File("imagenes\\flechita_atras.png"));
 			
 			int labelWidth = 40;
 		    int labelHeight = 40;

@@ -88,7 +88,7 @@ public class Login extends JPanel {
 				 * Para hacer pruebas he puesto SocioPanel pero habra que poner, cuando esté hecho, la ventana principal
 				 */
 				if(iniciadoSesion == true) {					
-					Ventana_Principal.getInstance().cambiarPanel(new SocioPanel());
+					Ventana_Principal.getInstance().cambiarPanel(new MenuPanel());
 				}
 			}
 		});
