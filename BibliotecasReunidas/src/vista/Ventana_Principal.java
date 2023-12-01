@@ -47,6 +47,18 @@ public class Ventana_Principal extends JFrame {
 			}
 		});
 		mnNewMenu.add(mntmNewMenuItem);
+
+		JMenuItem mntmNewMenuItem2 = new JMenuItem("Cambiar panel Autores");
+		mntmNewMenuItem2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				AutorPanel autorPanel = new AutorPanel();
+				cambiarPanel(autorPanel);
+				
+			}
+		});
+		mnNewMenu.add(mntmNewMenuItem2);
+		
+		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
