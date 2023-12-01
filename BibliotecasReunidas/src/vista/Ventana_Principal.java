@@ -25,6 +25,7 @@ public class Ventana_Principal extends JFrame {
 	
 	
 	public Ventana_Principal() {
+		System.out.println("Ventana Principal");
 		//Para conectarnos a la bbdd ni bien se inicia la app
 		ConectorBBDD con = new ConectorBBDD();
 		con.connect();
@@ -47,10 +48,23 @@ public class Ventana_Principal extends JFrame {
 			}
 		});
 		mnNewMenu.add(mntmNewMenuItem);
+
+		JMenuItem mntmNewMenuItem2 = new JMenuItem("Cambiar panel Autores");
+		mntmNewMenuItem2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				AutorPanel autorPanel = new AutorPanel();
+				cambiarPanel(autorPanel);
+				
+			}
+		});
+		mnNewMenu.add(mntmNewMenuItem2);
+		
+		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
+
 		contentPane.setLayout(new CardLayout(0, 0));
 	}
 	
@@ -64,4 +78,5 @@ public class Ventana_Principal extends JFrame {
 		contentPane.repaint();
 		contentPane.revalidate();
 	}
+
 }
