@@ -34,6 +34,7 @@ import javax.swing.JScrollPane;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.plaf.synth.Region;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.MaskFormatter;
 
@@ -42,6 +43,7 @@ import controlador.ConectorBBDD;
 import javax.swing.event.ChangeEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.SpinnerModel;
 
 public class SocioPanel extends JPanel {
 
@@ -55,12 +57,22 @@ public class SocioPanel extends JPanel {
 	public ConectorBBDD con;
 	public int filaSeleccionada;
 	public int columnaSeleccionada;
-	static public int idSeleccionado;
+	public int filaSeleccionadaBorrar;
+	public int columnaSeleccionadaBorrar;
+	public int idSeleccionado;
+	public int idSeleccionadoBorrar;
 	/*
 	 * Le vas a decir al modelo de la tabla que las celdas no se pueden editar
 	 * Le pasas la fila y columna que estas seleccionando y siempre va a devolver false el isCellEditable
 	 */
 	DefaultTableModel modeloTablaSocios = new DefaultTableModel() {
+		@Override
+		public boolean isCellEditable(int row, int column) {
+			return false;
+		}
+	};
+	
+	DefaultTableModel modeloTablaSocios2 = new DefaultTableModel() {
 		@Override
 		public boolean isCellEditable(int row, int column) {
 			return false;
@@ -76,6 +88,13 @@ public class SocioPanel extends JPanel {
 	public MaskFormatter mask2;
 	public MaskFormatter mask3;
 	public String[] vacios = new String[6];
+	private JTextField tfEmailSocioBorrar;
+	private JTable tablaSociosBorrar;
+	public JRadioButton rdbtnBuscarSocioPorIdBorrar;
+	public JSpinner spinnerIdSocioBorrar;
+	public JRadioButton rdbtnBuscarSocioPorCorreoBorrar;
+	public JButton btnFiltrarSocioBorrados;
+	public JButton btnBorrarSocio;
 
 	/**
 	 * Create the panel.
@@ -155,6 +174,14 @@ public class SocioPanel extends JPanel {
 			tabbedPane.setBounds(10, 82, 1102, 591);
 			add(tabbedPane);
 			
+			/*
+			 * ==============================================================================================
+			 * ==============================================================================================
+			 * PANEL BUSCADOR DE SOCIOS
+			 * ==============================================================================================
+			 * ==============================================================================================
+			 */
+			
 			JPanel panelBuscaSocio = new JPanel();
 			tabbedPane.addTab("Buscar socios", null, panelBuscaSocio, null);
 			panelBuscaSocio.setLayout(null);
@@ -162,7 +189,7 @@ public class SocioPanel extends JPanel {
 			JButton btnFiltrar = new JButton("Filtrar");
 			btnFiltrar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					rellenarTablaPorFiltro();
+					rellenarTabla1PorFiltro();
 				}
 			});
 			btnFiltrar.setBounds(75, 409, 89, 23);
@@ -186,10 +213,12 @@ public class SocioPanel extends JPanel {
 					activarONoComponente();
 				}
 			});
-			
+
 			ButtonGroup grupoRadioButtons = new ButtonGroup();
+			
 			grupoRadioButtons.add(rdbtnBuscarPorCorreo);
 			grupoRadioButtons.add(rdbtnBuscarPorId);
+			
 			
 			SpinnerNumberModel modeloMinimoSpinner = new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1);
 			
@@ -197,6 +226,14 @@ public class SocioPanel extends JPanel {
 			spinnerIdSocio.setBounds(10, 78, 56, 32);
 			panelBuscaSocio.add(spinnerIdSocio);
 			
+			try {
+				mask = new MaskFormatter("#########");
+				mask2 = new MaskFormatter("########" + "A");
+				mask3 = new MaskFormatter("#####");
+			} catch (ParseException e1) {
+				
+				e1.printStackTrace();
+			}
 			
 			JLabel lblNewLabel = new JLabel("Buscar Socios");
 			lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 20));
@@ -232,13 +269,24 @@ public class SocioPanel extends JPanel {
 			btnConsultaIncidencias.setBounds(42, 310, 146, 23);
 			panelBuscaSocio.add(btnConsultaIncidencias);
 			
+			modeloTablaSocios.setColumnIdentifiers(new Object[]{"Id","Nombre","Email","Telefono","DNI","Calle","Codigo Postal","Fecha de Creación"});
+			
 			tablaSocios = new JTable();
 			scrollPane.setViewportView(tablaSocios);
-			
-			modeloTablaSocios.setColumnIdentifiers(new Object[]{"Id","Nombre","Email","Telefono","DNI","Calle","Codigo Postal","Fecha de Creación"});
 			tablaSocios.setModel(modeloTablaSocios);
 			
+			JButton btnVerTodosSociosBuscar = new JButton("Ver todos");
+			btnVerTodosSociosBuscar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					modeloTablaSocios.setRowCount(0);
+					rellenarTabla1AlPrincipio();
+				}
+			});
+			btnVerTodosSociosBuscar.setBounds(75, 471, 89, 23);
+			panelBuscaSocio.add(btnVerTodosSociosBuscar);
+			
 			ListSelectionModel modeloSeleccionTabla = tablaSocios.getSelectionModel();
+			
 			modeloSeleccionTabla.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			
 			modeloSeleccionTabla.addListSelectionListener(new ListSelectionListener() {
@@ -277,7 +325,15 @@ public class SocioPanel extends JPanel {
 			});
 			
 			modeloTablaSocios.setRowCount(0);
-			
+			/*
+			 * ==============================================================================================
+			 * ==============================================================================================
+			 * FIN DE PANEL BUSCADOR DE SOCIOS
+			 * ----------------------------------------------------------------------------------------------
+			 * PANEL AGREGAR SOCIOS
+			 * ==============================================================================================
+			 * ==============================================================================================
+			 */
 			JPanel panelAgregaSocio = new JPanel();
 			tabbedPane.addTab("Agregar socio", null, panelAgregaSocio, null);
 			panelAgregaSocio.setLayout(null);
@@ -327,17 +383,6 @@ public class SocioPanel extends JPanel {
 			tfEmail.setBounds(239, 234, 176, 20);
 			panelAgregaSocio.add(tfEmail);
 			
-			try {
-				mask = new MaskFormatter("#########");
-				mask2 = new MaskFormatter("########A");
-				mask3 = new MaskFormatter("#####");
-			} catch (ParseException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			
-			
-			
 			tfTelefono = new JFormattedTextField(mask);	
 			tfTelefono.setColumns(10);
 			tfTelefono.setBounds(244, 315, 176, 20);
@@ -369,7 +414,12 @@ public class SocioPanel extends JPanel {
 							|| tfEmail.getText().contains("@outlook") || tfEmail.getText().contains("@yahoo")) 
 							&& (tfEmail.getText().contains(".com") || tfEmail.getText().contains(".es")
 							|| tfEmail.getText().contains(".net"))) {
-							
+							ConectorBBDD con = new ConectorBBDD();
+							con.agregarSocio(tfNombre.getText(), tfEmail.getText(), Integer.parseInt(tfTelefono.getText()), tfDni.getText(), Integer.parseInt(tfCodigo_Postal.getText()), tfCalle.getText());
+							JOptionPane.showMessageDialog(panelAgregaSocio, "Los datos se han introducido correctamente");
+							modeloTablaSocios.setRowCount(0);
+							rellenarTabla1AlPrincipio();
+							rellenarTabla2AlPrincipio();
 						}else {
 							JOptionPane.showMessageDialog(panelAgregaSocio, "El email introducido no es correcto");
 						}
@@ -393,13 +443,162 @@ public class SocioPanel extends JPanel {
 			btnLimpiar.setBounds(789, 440, 89, 23);
 			panelAgregaSocio.add(btnLimpiar);
 			
+			
+			
+			/*
+			 * ==============================================================================================
+			 * ==============================================================================================
+			 * FIN PANEL AGREGAR SOCIOS
+			 * ----------------------------------------------------------------------------------------------
+			 * PANEL MODIFICA SOCIOS
+			 * ==============================================================================================
+			 * ==============================================================================================
+			 */
+			
 			JPanel panelModificaSocio = new JPanel();
 			tabbedPane.addTab("Modificar socio", null, panelModificaSocio, null);
 			panelModificaSocio.setLayout(null);
 			
+			/*
+			 * ==============================================================================================
+			 * ==============================================================================================
+			 * FIN PANEL MODIFICA SOCIOS
+			 * ----------------------------------------------------------------------------------------------
+			 * PANEL ELIMINA SOCIOS
+			 * ==============================================================================================
+			 * ==============================================================================================
+			 */
 			JPanel panelEliminaSocio = new JPanel();
 			tabbedPane.addTab("Eliminar socio", null, panelEliminaSocio, null);
 			panelEliminaSocio.setLayout(null);
+
+			SpinnerNumberModel modeloMinimoSpinnerBorrar = new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1);
+			
+			rdbtnBuscarSocioPorIdBorrar = new JRadioButton("Buscar por id");
+			rdbtnBuscarSocioPorIdBorrar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					activarONoComponenteBorrar();
+				}
+			});
+			rdbtnBuscarSocioPorIdBorrar.setSelected(true);
+			rdbtnBuscarSocioPorIdBorrar.setBounds(10, 56, 109, 23);
+			panelEliminaSocio.add(rdbtnBuscarSocioPorIdBorrar);
+			
+			rdbtnBuscarSocioPorCorreoBorrar = new JRadioButton("Buscar por correo electrónico");
+			rdbtnBuscarSocioPorCorreoBorrar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					activarONoComponenteBorrar();
+				}
+			});
+			rdbtnBuscarSocioPorCorreoBorrar.setBounds(10, 140, 168, 23);
+			panelEliminaSocio.add(rdbtnBuscarSocioPorCorreoBorrar);
+
+			ButtonGroup grupoRadioButtons2 = new ButtonGroup();
+			
+			grupoRadioButtons2.add(rdbtnBuscarSocioPorCorreoBorrar);
+			grupoRadioButtons2.add(rdbtnBuscarSocioPorIdBorrar);
+			
+			JLabel lblBorrarSocios = new JLabel("Borrar Socios");
+			lblBorrarSocios.setFont(new Font("Tahoma", Font.BOLD, 20));
+			lblBorrarSocios.setBounds(10, 11, 210, 30);
+			panelEliminaSocio.add(lblBorrarSocios);
+			
+			JScrollPane scrollPaneTablaBorrar = new JScrollPane();
+			scrollPaneTablaBorrar.setBounds(230, 11, 857, 541);
+			panelEliminaSocio.add(scrollPaneTablaBorrar);
+			
+			tablaSociosBorrar = new JTable();
+			scrollPaneTablaBorrar.setViewportView(tablaSociosBorrar);
+			modeloTablaSocios2.setColumnIdentifiers(new Object[]{"Id","Nombre","Email","Telefono","DNI","Calle","Codigo Postal","Fecha de Creación"});
+			tablaSociosBorrar.setModel(modeloTablaSocios2);	
+			
+			btnBorrarSocio = new JButton("Borrar Seleccionado");
+			btnBorrarSocio.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					ConectorBBDD con = new ConectorBBDD();
+					con.eliminarSocio(idSeleccionadoBorrar);
+					modeloTablaSocios2.setRowCount(0);
+					rellenarTabla1AlPrincipio();
+					rellenarTabla2AlPrincipio();
+				}
+			});
+			btnBorrarSocio.setBounds(51, 368, 127, 23);
+			panelEliminaSocio.add(btnBorrarSocio);
+			btnBorrarSocio.setEnabled(false);
+			
+			ListSelectionModel modeloSeleccionTabla2 = tablaSociosBorrar.getSelectionModel();
+			
+			modeloSeleccionTabla2.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+			
+			modeloSeleccionTabla2.addListSelectionListener(new ListSelectionListener() {
+				/*
+				 * Cuando el valor de la tabla cambia, es decir, se selecciona una fila,
+				 * se activan los botones para ver los prestamos e incidencias
+				 */
+				@Override
+				public void valueChanged(ListSelectionEvent e) {
+					filaSeleccionadaBorrar = tablaSociosBorrar.getSelectedRow();
+					columnaSeleccionadaBorrar = tablaSociosBorrar.getSelectedColumn();
+					
+					if(filaSeleccionadaBorrar != -1 && columnaSeleccionadaBorrar != -1) {
+						idSeleccionadoBorrar = (int) tablaSociosBorrar.getValueAt(filaSeleccionadaBorrar, 0); 
+						System.out.println(idSeleccionado);
+						btnBorrarSocio.setEnabled(true);
+						//Le pasas la celda seleccionada y la vuelves no editable
+						modeloTablaSocios2.isCellEditable(filaSeleccionadaBorrar, columnaSeleccionadaBorrar);
+					}
+					
+				}
+			});
+			
+			modeloSeleccionTabla2.addListSelectionListener(new ListSelectionListener() {
+				/*
+				 * Cuando ningun valor de la tabla está desactivado, los botones se desactivan
+				 */
+				@Override
+				public void valueChanged(ListSelectionEvent e) {
+					if(modeloSeleccionTabla2.isSelectionEmpty()) {
+						btnBorrarSocio.setEnabled(false);
+					}
+				}
+			});
+			
+			spinnerIdSocioBorrar = new JSpinner(modeloMinimoSpinnerBorrar);
+			spinnerIdSocioBorrar.setBounds(20, 86, 56, 32);
+			panelEliminaSocio.add(spinnerIdSocioBorrar);
+			
+			tfEmailSocioBorrar = new JTextField();
+			tfEmailSocioBorrar.setEnabled(false);
+			tfEmailSocioBorrar.setColumns(10);
+			tfEmailSocioBorrar.setBounds(20, 170, 210, 20);
+			panelEliminaSocio.add(tfEmailSocioBorrar);
+			
+			btnFiltrarSocioBorrados = new JButton("Filtrar");
+			btnFiltrarSocioBorrados.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					rellenarTabla2PorFiltro();
+				}
+			});
+			btnFiltrarSocioBorrados.setBounds(72, 231, 89, 23);
+			panelEliminaSocio.add(btnFiltrarSocioBorrados);
+			
+			JButton btnVerTodosSociosBorrar = new JButton("Ver todos");
+			btnVerTodosSociosBorrar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					modeloTablaSocios2.setRowCount(0);
+					rellenarTabla2AlPrincipio();
+				}
+			});
+			btnVerTodosSociosBorrar.setBounds(72, 453, 89, 23);
+			panelEliminaSocio.add(btnVerTodosSociosBorrar);
+			
+			/*
+			 * ==============================================================================================
+			 * ==============================================================================================
+			 * FIN PANEL ELIMINA SOCIOS
+			 * ==============================================================================================
+			 * ==============================================================================================
+			 */
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -409,10 +608,11 @@ public class SocioPanel extends JPanel {
     public void addNotify() {
         super.addNotify();
         // Este método se llama cuando el componente es añadido al contenedor
-        rellenarTablaAlPrincipio();
+        rellenarTabla1AlPrincipio();
+        rellenarTabla2AlPrincipio();
     }
 	
-	public void rellenarTablaAlPrincipio() {
+	public void rellenarTabla1AlPrincipio() {
 		con = new ConectorBBDD();
 		for(Socio s : con.consultarSocios()) {
 			modeloTablaSocios.addRow(new Object[] {
@@ -428,7 +628,23 @@ public class SocioPanel extends JPanel {
 		}
 	}
 	
-	public void rellenarTablaPorFiltro() {
+	public void rellenarTabla2AlPrincipio() {
+		con = new ConectorBBDD();
+		for(Socio s : con.consultarSocios()) {
+			modeloTablaSocios2.addRow(new Object[] {
+					s.getId(),
+					s.getNombre(),
+					s.getEmail(),
+					s.getTelefono(),
+					s.getDni(),
+					s.getCalle(),
+					s.getCodigo_postal(),
+					s.getFecha_creacion()
+			});
+		}
+	}
+	
+	public void rellenarTabla1PorFiltro() {
 		modeloTablaSocios.setRowCount(0);
 		con = new ConectorBBDD();
 		if(rdbtnBuscarPorCorreo.isSelected()) {
@@ -460,6 +676,38 @@ public class SocioPanel extends JPanel {
 		}
 	}
 	
+	public void rellenarTabla2PorFiltro() {
+		modeloTablaSocios2.setRowCount(0);
+		con = new ConectorBBDD();
+		if(rdbtnBuscarSocioPorCorreoBorrar.isSelected()) {
+			for(Socio s : con.consultarSociosPorEmail(tfEmailSocioBorrar.getText())) {
+				modeloTablaSocios2.addRow(new Object[] {
+						s.getId(),
+						s.getNombre(),
+						s.getEmail(),
+						s.getTelefono(),
+						s.getDni(),
+						s.getCalle(),
+						s.getCodigo_postal(),
+						s.getFecha_creacion()
+				});
+			}
+		}else if(rdbtnBuscarSocioPorIdBorrar.isSelected()) {
+			for(Socio s : con.consultarSociosPorId((int) spinnerIdSocioBorrar.getValue())) {
+				modeloTablaSocios2.addRow(new Object[] {
+						s.getId(),
+						s.getNombre(),
+						s.getEmail(),
+						s.getTelefono(),
+						s.getDni(),
+						s.getCalle(),
+						s.getCodigo_postal(),
+						s.getFecha_creacion()
+				});
+			}
+		}
+	}
+	
 	public void activarONoComponente() {
 		if(rdbtnBuscarPorCorreo.isSelected()) {
 			System.out.println("a");
@@ -469,6 +717,19 @@ public class SocioPanel extends JPanel {
 			System.out.println("e");
 			tfEmailSocio.setEnabled(false);
 			spinnerIdSocio.setEnabled(true);
+		}
+		
+	}
+	
+	public void activarONoComponenteBorrar() {
+		if(rdbtnBuscarSocioPorCorreoBorrar.isSelected()) {
+			System.out.println("a");
+			tfEmailSocioBorrar.setEnabled(true);
+			spinnerIdSocioBorrar.setEnabled(false);
+		}else if(rdbtnBuscarSocioPorIdBorrar.isSelected()) {
+			System.out.println("e");
+			tfEmailSocioBorrar.setEnabled(false);
+			spinnerIdSocioBorrar.setEnabled(true);
 		}
 		
 	}

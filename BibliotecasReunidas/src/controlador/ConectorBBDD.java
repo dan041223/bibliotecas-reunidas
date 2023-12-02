@@ -47,8 +47,29 @@ public class ConectorBBDD {
 	  * Es usado en el Login para saber quien es el que ha iniciado sesion
 	  */
 	 
-	 public void agregarSocio(String nombre, String email, int telefono) {
-		 
+	 public void eliminarSocio(int id) {
+		 Connection con = connect();
+		 Ventana_Principal vp = Ventana_Principal.getInstance();
+		 try {
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate("DELETE FROM socios WHERE ID = " + id + ";");
+			JOptionPane.showMessageDialog(vp ,"Usuario borrado con exito");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	 }
+	 
+	 public void agregarSocio(String nombre, String email, int telefono, String dni, int codigoPostal, String calle) {
+		 Connection con = connect();
+		 try {
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate("INSERT INTO socios (nombre, fecha_creacion, dni, email , calle, codigo_postal, telefono)"
+					+ " VALUES ('" + nombre + "', CURRENT_TIMESTAMP, '" + dni + "', '" + email + "', '" + calle + "', '" + codigoPostal + "', '" + telefono + "');");
+		 } catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	 }
 	 
 	 public Usuario consultarUsuario(String correo, String password) {
