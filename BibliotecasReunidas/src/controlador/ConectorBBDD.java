@@ -47,6 +47,19 @@ public class ConectorBBDD {
 	  * Es usado en el Login para saber quien es el que ha iniciado sesion
 	  */
 	 
+	 public void cambiarSocio(int id, String nombre, String dni, int telefono, String calle, int codigoPostal, String email) {
+			 Connection con = connect();
+			 Ventana_Principal vp = Ventana_Principal.getInstance();
+			 try {
+				Statement stmt = con.createStatement();
+				stmt.executeUpdate("UPDATE socios SET nombre = '" + nombre + "', dni = '" + dni + "', telefono = " + telefono + ", calle = '" + calle + "', codigo_postal = '" + codigoPostal + "', email = '" + email + "' WHERE id = " + id + ";");
+				JOptionPane.showMessageDialog(vp ,"Usuario modificado con éxito");
+			 } catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	 
 	 public void eliminarSocio(int id) {
 		 Connection con = connect();
 		 Ventana_Principal vp = Ventana_Principal.getInstance();
