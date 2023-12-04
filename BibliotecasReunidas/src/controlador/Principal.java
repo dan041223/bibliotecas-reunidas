@@ -18,6 +18,7 @@ public class Principal {
 					 * para poder volver a ella en caso de que se quiera volver a iniciar sesion
 					 */
 					Ventana_Principal frame = Ventana_Principal.getInstance();
+					
 					frame.setVisible(true);
 
 				} catch (Exception e) {
