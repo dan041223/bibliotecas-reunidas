@@ -513,12 +513,10 @@ public class DataMetodos {
 		}
 
 	}
-	
-	
-	
-	//Buscar por todos los campos
+
+	// Buscar por todos los campos
 	public static ArrayList<Libro> filtraPorCamposLibros(String id, String titulo, String categoria, String idioma,
-			String fecha_publicacion,String id_editorial, String id_ubicacion, String isbn ) {
+			String fecha_publicacion, String id_editorial, String id_ubicacion, String isbn) {
 
 		// trim sirve para quitar espacios a la derecha e izquierda
 		id = id.trim();
@@ -528,7 +526,7 @@ public class DataMetodos {
 		fecha_publicacion = fecha_publicacion.trim();
 		id_editorial = id_editorial.trim();
 		id_ubicacion = id_ubicacion.trim();
-		isbn =  isbn.trim();
+		isbn = isbn.trim();
 
 		ConectorBBDD conextor = new ConectorBBDD();
 
@@ -546,11 +544,10 @@ public class DataMetodos {
 		boolean id_editorialTieneValores = !id_editorial.equals("");
 		boolean id_ubicacionTieneValores = !id_ubicacion.equals("");
 		boolean isbnTieneValores = !isbn.equals("");
-		
-	
+
 		try {
 			conexion = conextor.connect();
-			
+
 			String query = "Select id, titulo, categoria, idioma, fecha_publicacion,id_editorial, id_ubicacion,\"ISBN\" from libros where 1=1";
 
 			if (idTieneValores) {
@@ -568,24 +565,24 @@ public class DataMetodos {
 			if (categoriaTieneValores) {
 				query = query + " and upper(categoria) like ?";
 			}
-			
-			if(idiomaTieneValor) {
+
+			if (idiomaTieneValor) {
 				query = query + " and upper(idioma) like ? ";
 			}
 
 			if (fechaTieneValores) {
 				query = query + " and fecha_publicacion=?";
 			}
-			if(id_editorialTieneValores) {
+			if (id_editorialTieneValores) {
 				query = query + " and id_editorial =?";
 			}
-			if(id_ubicacionTieneValores) {
+			if (id_ubicacionTieneValores) {
 				query = query + " and id_ubicacion = ? ";
 			}
-			if(isbnTieneValores) {
-				query = query + " and \"ISBN\" = ?";	
+			if (isbnTieneValores) {
+				query = query + " and \"ISBN\" = ?";
 			}
-			
+
 			preparedStatement = conexion.prepareStatement(query);
 
 			int indice = 1;
@@ -603,8 +600,8 @@ public class DataMetodos {
 				preparedStatement.setString(indice, "%" + categoria.toUpperCase() + "%");
 				indice++;
 			}
-			if(idiomaTieneValor) {
-				preparedStatement.setString(indice, "%"  + idioma.toUpperCase() + "%"  );
+			if (idiomaTieneValor) {
+				preparedStatement.setString(indice, "%" + idioma.toUpperCase() + "%");
 			}
 
 			if (fechaTieneValores) {
@@ -612,21 +609,21 @@ public class DataMetodos {
 				preparedStatement.setDate(indice, date);
 				indice++;
 			}
-			
-			if(id_editorialTieneValores) {
+
+			if (id_editorialTieneValores) {
 				preparedStatement.setInt(indice, Integer.parseInt(id_editorial));
 				indice++;
 			}
-			
-			if(id_ubicacionTieneValores) {
+
+			if (id_ubicacionTieneValores) {
 				preparedStatement.setInt(indice, Integer.parseInt(id_ubicacion));
 				indice++;
 			}
-			
-			if(isbnTieneValores) {
+
+			if (isbnTieneValores) {
 				preparedStatement.setLong(indice, Long.parseLong(isbn));
 			}
-			
+
 			// base de datos
 			registro = preparedStatement.executeQuery();
 
@@ -660,5 +657,107 @@ public class DataMetodos {
 		return libros;
 	}
 
+	public static boolean modificarTablaLibro(int id, String tituloNuevo, String categoriaNueva, String idiomaNuevo,
+			String fecha_publicacionNueva, String id_editorialNuevo, String id_ubicacionNuevo, String isbnNuevo ) {
+		
+		ConectorBBDD conextor = new ConectorBBDD();
 
+		boolean actualizado = false;
+		PreparedStatement preparedStatement = null;
+		ResultSet registro = null;
+		Connection conexion = null;
+
+		try {
+
+			conexion = conextor.connect();
+
+			String query = "update libros set titulo=?, categoria_libro=?, idioma=?, fecha_publicacion=?, id_editorial =?, id_ubicacion=?,\"ISBN\"=? where id=?";
+					
+			
+			preparedStatement = conexion.prepareStatement(query);
+
+			preparedStatement.setString(1, tituloNuevo);
+			preparedStatement.setString(2, categoriaNueva);
+			preparedStatement.setString(3, idiomaNuevo );
+
+			Date date = Date.valueOf(fecha_publicacionNueva);
+			preparedStatement.setDate(4, date);
+			
+			preparedStatement.setString(5,id_editorialNuevo);
+			preparedStatement.setString(6, id_ubicacionNuevo);
+			preparedStatement.setString(7,isbnNuevo);
+			
+			preparedStatement.setInt(8,id);
+
+			int contador = preparedStatement.executeUpdate();
+
+			if (contador > 0) {
+				JOptionPane.showMessageDialog(null, "La Fila se ha actualizado correctamente",
+						"Confirmación de los cambios", JOptionPane.INFORMATION_MESSAGE);
+				actualizado = true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("No se ha podido conectar con la BBDD.\n");
+		} finally {
+			try {
+				preparedStatement.close();
+				conexion.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				System.out.println("Error al cerrar.\n");
+			} catch (NullPointerException e) {
+
+			}
+		}
+		return actualizado;
+	}
+	
+	public static void eliminarLibro(int id) {
+
+		ConectorBBDD conextor = new ConectorBBDD();
+
+		boolean actualizado = false;
+		Statement statement = null;
+		ResultSet registro = null;
+		Connection conexion = null;
+
+		try {
+			int confirmacion = JOptionPane.showConfirmDialog(null, "Esta seguro que desea eliminar la fila ??",
+					"Confirmación de eliminacion ", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+			if (confirmacion == JOptionPane.YES_OPTION) {
+				conexion = conextor.connect();
+				statement = conexion.createStatement();
+				System.out.println(id);
+				String query = String.format("delete from libros where id = %d;", id);
+				int count = statement.executeUpdate(query);// esta funcion devuelve el numero de filas que han sido
+															// afectadas
+
+				if (count > 0) {
+					JOptionPane.showMessageDialog(null, "El proceso de eliminacion ha terminado correctamente",
+							"Confirmación de eliminacion", JOptionPane.INFORMATION_MESSAGE);
+					actualizado = true;
+				}
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("No se ha podido conectar con la BBDD.\n");
+		} finally {
+			try {
+				statement.close();
+				conexion.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				System.out.println("Error al cerrar.\n");
+			} catch (NullPointerException e) {
+
+			}
+
+		}
+	}
+
+	
+	
 }

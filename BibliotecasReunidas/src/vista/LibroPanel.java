@@ -4,6 +4,9 @@ import javax.swing.JPanel;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 import controlador.DataMetodos;
@@ -127,7 +130,7 @@ public class LibroPanel extends JPanel {
 						textField_Idioma.getText(), textField_Fecha.getText(),
 						Integer.parseInt(textField_Editorial.getText()),
 						Integer.parseInt(textField_Ubicacion.getText()), Integer.parseInt(textField_isbn.getText()));
-						
+				
 						limparTextFields();
 						recargarTablaAutor();
 
@@ -138,6 +141,15 @@ public class LibroPanel extends JPanel {
 		add(btnCrear);
 
 		JButton btnModificar = new JButton("Modificar");
+		btnModificar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				int id = Integer.parseInt(modeloLibro.getValueAt(tableLibros.getSelectedRow(), 0).toString());
+				DataMetodos.modificarTablaLibro(id,textField_Titulo.getText(), textField_Categoria.getText(), textField_Idioma.getText(), 
+												textField_Fecha.getText(), textField_Editorial.getText(), textField_Ubicacion.getText(), textField_isbn.getText());
+				limparTextFields();
+			}
+		});
 		btnModificar.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
 		btnModificar.setBounds(835, 593, 99, 30);
 		add(btnModificar);
@@ -158,6 +170,16 @@ public class LibroPanel extends JPanel {
 		add(btnBuscar);
 
 		JButton btnEliminar = new JButton("Eliminar");
+		btnEliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				int id = Integer.parseInt(modeloLibro.getValueAt(tableLibros.getSelectedRow(), 0).toString());
+				DataMetodos.eliminarLibro(id);
+				limparTextFields();
+				recargarTablaAutor();
+				
+			}
+		});
 		btnEliminar.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
 		btnEliminar.setBounds(1040, 593, 99, 30);
 		add(btnEliminar);
@@ -188,6 +210,30 @@ public class LibroPanel extends JPanel {
 				"Fecha de publicacion", "Id_Editorial", "Id_Ubicacion", "ISBN" });
 		tableLibros.setModel(modeloLibro);
 
+	
+		//Sirve para desabilitar la caja de texto
+		textFieldCod.setEnabled(false);
+		//Sirve para desabilitar el Boton
+		btnModificar.setEnabled(false);
+		btnEliminar.setEnabled(false);
+		
+		// Obtener el modelo de selección de la tabla
+        ListSelectionModel selectionModel = tableLibros.getSelectionModel();
+     // Agregar un ListSelectionListener al modelo de selección
+        selectionModel.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                // Verificar si la selección está cambiando y no está ajustando
+                if (!e.getValueIsAdjusting()) { 
+                	//Habilito estos botones
+                	btnModificar.setEnabled(true);
+            		btnEliminar.setEnabled(true);
+                	
+                }
+            }
+        });
+        
+		
 		recargarTablaAutor();
 	}
 

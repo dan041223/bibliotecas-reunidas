@@ -209,7 +209,7 @@ public class AutorPanel extends JPanel {
 		
 		
 		
-		//	//Sirve para desabilitar la caja de texto
+		//Sirve para desabilitar la caja de texto
 		textField_Cod.setEnabled(false);
 		//Sirve para desabilitar el Boton
 		btnModificar.setEnabled(false);
