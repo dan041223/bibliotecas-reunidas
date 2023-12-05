@@ -41,10 +41,10 @@ public class Ventana_Principal extends JFrame {
 		setContentPane(contentPane);
 
 		contentPane.setLayout(new CardLayout(0, 0));
-		/*
+		
 		Login login = new Login();
 		cambiarPanel(login);
-		*/
+		
 		
 		/*
 		AutorPanel autor = new AutorPanel();
@@ -53,6 +53,7 @@ public class Ventana_Principal extends JFrame {
 		
 		LibroPanel libro = new LibroPanel();
 		cambiarPanel(libro);
+		
 	}
 	
 	/*

@@ -23,6 +23,7 @@ import modelo.Autor;
 
 import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
@@ -154,7 +155,7 @@ public class AutorPanel extends JPanel {
 		JButton btnBuscar_1 = new JButton("Buscar");
 		btnBuscar_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				List<Autor> autores = DataMetodos.filtraPorCampos(textField_Cod.getText(), textField_nombre.getText(),
+				ArrayList<Autor> autores = DataMetodos.filtraPorCampos(textField_Cod.getText(), textField_nombre.getText(),
 						textField_Nacionalidad.getText(), textField_Fecha.getText());
 				//desminuirTamanyo();
 				limpiarTextFields();
@@ -237,14 +238,20 @@ public class AutorPanel extends JPanel {
 		 */
 	}
 
-	private void recargarTablaAutor(List<Autor> autores) {
+	
+	//Para buscar 
+	private void recargarTablaAutor(ArrayList<Autor> autores) {
 
 		modeloAutor.setRowCount(0); // SIRVE PARA RESETEAR LA TABLA
 
 		// cargo todas las filas correspondientes al array pasado por parametro
 		for (Autor autor : autores) {
-			modeloAutor.addRow(new Object[] { autor.getId(), autor.getNombre(), autor.getNacionalidad(),
-					autor.getFecha_nacimiento() });
+			modeloAutor.addRow(new Object[] { 
+					autor.getId(),
+					autor.getNombre(),
+					autor.getNacionalidad(),
+					autor.getFecha_nacimiento() 
+					});
 		}
 		/*
 		 * //Si hay filas en la tabla, que seleccione la primera
