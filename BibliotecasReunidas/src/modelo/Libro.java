@@ -4,17 +4,17 @@ public class Libro {
 	private int id;
 	private String titulo;
 	public enum CategoriaLibro {
-	    ROMANCE,
-	    DRAMA,
-	    TERROR,
-	    SUSPENSE,
-	    CIENCIA_FICCION,
-	    POESIA,
-	    LITERATURA_INFANTIL,
-	    AVENTURA,
-	    HISTORIA,
-	    GEOGRAFIA,
-	    OTRO
+	    romance,
+	    drama,
+	    terror,
+	    suspense,
+	    ciencia_ficcion,
+	    poesia,
+	    literatura_infantil,
+	    aventura,
+	    historia,
+	    geografia,
+	    otros
 	}
 	private CategoriaLibro categoria;
 	private String idioma;
@@ -26,7 +26,7 @@ public class Libro {
 	public Libro() {
 		this.id = 0;
 		this.titulo = "";
-		this.categoria = CategoriaLibro.OTRO;;
+		this.categoria = CategoriaLibro.otros;
 		this.idioma = "";
 		this.fecha_publicacion ="";
 		this.id_editorial = 0;

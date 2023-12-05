@@ -237,6 +237,8 @@ public class AutorPanel extends JPanel {
 		 */
 	}
 
+	
+	//Para buscar 
 	private void recargarTablaAutor(List<Autor> autores) {
 
 		modeloAutor.setRowCount(0); // SIRVE PARA RESETEAR LA TABLA

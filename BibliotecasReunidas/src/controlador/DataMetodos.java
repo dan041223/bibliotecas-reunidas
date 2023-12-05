@@ -388,51 +388,51 @@ public class DataMetodos {
 
 		switch (categoria.toUpperCase()) {
 		case "ROMANCE":
-			result = CategoriaLibro.ROMANCE;
+			result = CategoriaLibro.romance;
 			break;
 
 		case "DRAMA":
-			result = CategoriaLibro.DRAMA;
+			result = CategoriaLibro.drama;
 			break;
 
 		case "TERROR":
-			result = CategoriaLibro.TERROR;
+			result = CategoriaLibro.terror;
 			break;
 
 		case "SUSPENSE":
-			result = CategoriaLibro.SUSPENSE;
+			result = CategoriaLibro.suspense;
 			break;
 
 		case "CIENCIA_FICCION":
-			result = CategoriaLibro.CIENCIA_FICCION;
+			result = CategoriaLibro.ciencia_ficcion;
 			break;
 
 		case "POESIA":
-			result = CategoriaLibro.POESIA;
+			result = CategoriaLibro.poesia;
 			break;
 
 		case "LITERATURA_INFANTIL":
-			result = CategoriaLibro.LITERATURA_INFANTIL;
+			result = CategoriaLibro.literatura_infantil;
 			break;
 
 		case "AVENTURA":
-			result = CategoriaLibro.AVENTURA;
+			result = CategoriaLibro.aventura;
 			break;
 
 		case "HISTORIA":
-			result = CategoriaLibro.HISTORIA;
+			result = CategoriaLibro.historia;
 			break;
 
 		case "GEOGRAFIA":
-			result = CategoriaLibro.GEOGRAFIA;
+			result = CategoriaLibro.geografia;
 			break;
 
-		case "OTRO":
-			result = CategoriaLibro.OTRO;
+		case "OTROS":
+			result = CategoriaLibro.otros;
 			break;
 
 		default:
-			result = CategoriaLibro.OTRO;
+			result = CategoriaLibro.otros;
 		}
 		return result;
 
@@ -460,5 +460,60 @@ public class DataMetodos {
 
 		return arrlLibros;
 	}
+	
+	/// Crear libro nuevo
+		public static void insertarLibro(String titulo, String categoria, String idioma, String fecha_publicacion,int id_editorial, int id_ubicacion, int isbn) {
+
+			ConectorBBDD conextor = new ConectorBBDD();
+
+			ArrayList<Libro> arrlLibro = new ArrayList<>();
+
+			PreparedStatement preparedStatement = null;
+			ResultSet registro = null;
+			Connection conexion = null;
+
+			try {
+
+				conexion = conextor.connect();
+
+				String query = "insert into libros (titulo, categoria, idioma, fecha_publicacion,id_editorial, id_ubicacion,\"ISBN\")values(?,?,?,?,?,?,?);";
+
+				preparedStatement = conexion.prepareStatement(query);
+
+				preparedStatement.setString(1, titulo);
+				preparedStatement.setObject(2, obtenerCategoriaLibro(categoria),java.sql.Types.OTHER);// java.sql.Types.OTHER indica que queremos insertar un tipo de dato personalizado
+				preparedStatement.setString(3, idioma);
+			
+				Date date = Date.valueOf(fecha_publicacion);
+				preparedStatement.setDate(4, date);
+				
+				preparedStatement.setInt(5,id_editorial);
+				preparedStatement.setInt(6, id_ubicacion);
+				preparedStatement.setLong(7,isbn);
+
+				int contador = preparedStatement.executeUpdate();
+
+				if (contador > 0) {
+					JOptionPane.showMessageDialog(null, "La Fila se ha insertado correctamente",
+							"Confirmación de los inserción", JOptionPane.INFORMATION_MESSAGE);
+				}
+
+				System.out.println("Inserción exitosa.");
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					preparedStatement.close();
+					conexion.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+					System.out.println("Error al cerrar.\n");
+				} catch (NullPointerException e) {
+
+				}
+			}
+
+		}
 
 }
