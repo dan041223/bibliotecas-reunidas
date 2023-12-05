@@ -40,7 +40,6 @@ public class Ventana_Principal extends JFrame {
 		con.connect();
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
 		setLocationRelativeTo(null);
 		
 		setBounds(100, 100, 1119, 676);
