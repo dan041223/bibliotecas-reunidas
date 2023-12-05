@@ -21,7 +21,7 @@ public class Libro {
 	private String fecha_publicacion;
 	private int id_editorial;
 	private int id_ubicacion;
-	private int isbn;
+	private long isbn;
 	
 	public Libro() {
 		this.id = 0;
@@ -102,11 +102,11 @@ public class Libro {
 		this.id_ubicacion = id_ubicacion;
 	}
 
-	public int getIsbn() {
+	public long getIsbn() {
 		return isbn;
 	}
 
-	public void setIsbn(int isbn) {
+	public void setIsbn(long isbn) {
 		this.isbn = isbn;
 	}
 }

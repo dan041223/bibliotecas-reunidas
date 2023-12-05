@@ -7,11 +7,13 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import controlador.DataMetodos;
+import modelo.Libro;
 
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 
 public class LibroPanel extends JPanel {
@@ -141,6 +143,16 @@ public class LibroPanel extends JPanel {
 		add(btnModificar);
 
 		JButton btnBuscar = new JButton("Buscar");
+		btnBuscar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				ArrayList<Libro> libros = DataMetodos.filtraPorCamposLibros(textFieldCod.getText(),textField_Titulo.getText(), textField_Categoria.getText(),textField_Idioma.getText(),
+						 textField_Fecha.getText(),textField_Editorial.getText(),textField_Ubicacion.getText(),textField_isbn.getText());
+				limparTextFields();
+				recargarTablaAutor(libros);
+				
+			}
+		});
 		btnBuscar.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
 		btnBuscar.setBounds(1040, 531, 99, 30);
 		add(btnBuscar);
@@ -158,7 +170,7 @@ public class LibroPanel extends JPanel {
 		// ------------------Creo la tabla ---------------
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(24, 83, 615, 540);
+		scrollPane.setBounds(24, 83, 742, 540);
 		add(scrollPane);
 
 		// Vamos actualizar la IsCellEditerTable para impedir que las celdas de la tabla
@@ -173,7 +185,7 @@ public class LibroPanel extends JPanel {
 
 		scrollPane.setViewportView(tableLibros);
 		modeloLibro.setColumnIdentifiers(new Object[] { "Código ID", "Titulo", "Categoria del Libro", "Idioma",
-				"Fecha de publiacion", "Id_Editorial", "Id_Ubicacion", "ISBN" });
+				"Fecha de publicacion", "Id_Editorial", "Id_Ubicacion", "ISBN" });
 		tableLibros.setModel(modeloLibro);
 
 		recargarTablaAutor();
@@ -191,6 +203,24 @@ public class LibroPanel extends JPanel {
 		 * (modeloAutor.getRowCount() > 0) { tablaAutores.setRowSelectionInterval(0, 0);
 		 * }
 		 */
+	}
+	
+	private void recargarTablaAutor(ArrayList<Libro> libros) {
+
+		modeloLibro.setRowCount(0); // SIRVE PARA RESETEAR LA TABLA
+		for (Libro libro : libros) {
+			modeloLibro.addRow(new Object[] {
+					libro.getId(),
+					libro.getTitulo(),
+					libro.getCategoria(),
+					libro.getIdioma(),
+					libro.getFecha_publicacion(),
+					libro.getId_editorial(),
+					libro.getId_ubicacion(),
+					libro.getIsbn()
+			});
+		}
+		
 	}
 	
 	
