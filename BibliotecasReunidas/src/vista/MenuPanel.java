@@ -60,9 +60,14 @@ public class MenuPanel extends JPanel {
 		btnLogin.setBounds(281, 108, 89, 23);
 		add(btnLogin);
 		
-		JButton btnNewButton_5 = new JButton("New button");
-		btnNewButton_5.setBounds(281, 198, 89, 23);
-		add(btnNewButton_5);
+		JButton btnBiblio = new JButton("Bibliotecas");
+		btnBiblio.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Ventana_Principal.getInstance().cambiarPanel(new BibliotecaPanel());
+			}
+		});
+		btnBiblio.setBounds(281, 198, 89, 23);
+		add(btnBiblio);
 
 	}
 }

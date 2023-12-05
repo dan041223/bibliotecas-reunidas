@@ -13,6 +13,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import modelo.Autor;
+import modelo.Biblioteca;
 import modelo.Libro;
 import modelo.Libro.CategoriaLibro;
 
@@ -660,5 +661,120 @@ public class DataMetodos {
 		return libros;
 	}
 
+//====================================Aqui comienzan los metodos de Biblioteca ============================
+	
+	//Metodo para leer todos los datos de la tabla biblioteca
+	public static ArrayList<Biblioteca> LeerTablaBiblioteca() {
 
+		ConectorBBDD conextor = new ConectorBBDD();
+
+		ArrayList<Biblioteca> arrlBiblio = new ArrayList<>();
+
+		Statement statement = null;
+		ResultSet registro = null;
+		Connection conexion = null;
+		
+		try {
+			conexion = conextor.connect();
+			statement = conexion.createStatement();
+			String query = "Select * from biblioteca order by id"; 
+																		// tenemos en nuestra
+			// base de datos
+			registro = statement.executeQuery(query);
+
+			while (registro.next()) {
+
+				Biblioteca biblioteca = new Biblioteca();
+				biblioteca.setId(registro.getInt("id"));
+				biblioteca.setComunidad_autonoma(registro.getString("comunidad_autonoma"));
+				biblioteca.setProvincia(registro.getString("provincia"));
+				biblioteca.setCalle(registro.getString("calle"));
+				biblioteca.setCodigo_postal(registro.getInt("codigo_postal"));
+				biblioteca.setTelefono(registro.getInt("telefono"));
+
+				arrlBiblio.add(biblioteca);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				statement.close();
+				conexion.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				System.out.println("Error al cerrar.\n");
+			} catch (NullPointerException e) {
+
+			}
+		}
+		
+		return arrlBiblio;
+	}
+	
+	public static ArrayList<Object[]> obtenerFilasTablaBiblioteca() {
+
+		ArrayList<Biblioteca> bibliotecas = LeerTablaBiblioteca();
+
+		ArrayList<Object[]> arrlBibliotecas = new ArrayList<>();
+
+		for (Biblioteca biblioteca : bibliotecas) {
+
+			Object[] fila = new Object[] { biblioteca.getId(), biblioteca.getComunidad_autonoma(), biblioteca.getProvincia(),
+					biblioteca.getCalle(), biblioteca.getCodigo_postal(), biblioteca.getTelefono() };
+			arrlBibliotecas.add(fila);
+		}
+
+		return arrlBibliotecas;
+	}
+	
+	/// Crear biblioteca nueva
+		public static void insertarBiblioteca(String comunidadAutonoma, String provincia, String calle, int postal, int telefono) {
+
+			ConectorBBDD conextor = new ConectorBBDD();
+
+			ArrayList<Biblioteca> arrlBiblioteca = new ArrayList<>();
+
+			PreparedStatement preparedStatement = null;
+			ResultSet registro = null;
+			Connection conexion = null;
+
+			try {
+
+				conexion = conextor.connect();
+
+				String query = String.format("insert into biblioteca (comunidad_autonoma, provincia, calle, codigo_postal, telefono)values(?,?,?,?,?);");
+
+				preparedStatement = conexion.prepareStatement(query);
+
+				preparedStatement.setString(1, comunidadAutonoma);
+				preparedStatement.setString(2, provincia);
+				preparedStatement.setString(3, calle);
+				preparedStatement.setInt(4, postal);
+				preparedStatement.setInt(5, telefono);
+
+				int contador = preparedStatement.executeUpdate();
+
+				if (contador > 0) {
+					JOptionPane.showMessageDialog(null, "La Fila se ha insertado correctamente",
+							"Confirmación de los inserción", JOptionPane.INFORMATION_MESSAGE);
+				}
+
+				System.out.println("Inserción exitosa.");
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					preparedStatement.close();
+					conexion.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+					System.out.println("Error al cerrar.\n");
+				} catch (NullPointerException e) {
+
+				}
+			}
+
+		}
 }
