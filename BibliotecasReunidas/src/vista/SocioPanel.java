@@ -8,7 +8,9 @@ import modelo.Usuario.TIPO_PERFIL;
 
 import java.awt.Cursor;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -20,7 +22,9 @@ import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFormattedTextField;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
@@ -61,7 +65,7 @@ public class SocioPanel extends JPanel {
 	public int columnaSeleccionadaBorrar;
 	public int filaSeleccionadaMod;
 	public int columnaSeleccionadaMod;
-	public int idSeleccionado;
+	public static int idSeleccionado;
 	public int idSeleccionadoBorrar;
 	public String nombreSeleccionadoModificar;
 	public int telefonoSeleccionadoModificar;
@@ -123,6 +127,7 @@ public class SocioPanel extends JPanel {
 	public JFormattedTextField tfTelefonoModSocios;
 	public JFormattedTextField tfCodigoPostalModSocios;
 	public JButton btnModificar;
+	public static int idSocio;
 	
 
 	/**
@@ -293,6 +298,9 @@ public class SocioPanel extends JPanel {
 			btnConsultaIncidencias.setEnabled(false);
 			btnConsultaIncidencias.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					VentanaIncidencias veIn = new VentanaIncidencias();
+					veIn.setVisible(true);
+					veIn.setAlwaysOnTop(true);
 				}
 			});
 			btnConsultaIncidencias.setBounds(42, 310, 146, 23);

@@ -12,6 +12,7 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import modelo.Incidencias;
 import modelo.Socio;
 import modelo.Usuario;
 import modelo.Usuario.TIPO_PERFIL;
@@ -52,7 +53,7 @@ public class ConectorBBDD {
 			 Ventana_Principal vp = Ventana_Principal.getInstance();
 			 try {
 				Statement stmt = con.createStatement();
-				stmt.executeUpdate("UPDATE socios SET nombre = '" + nombre + "', dni = '" + dni + "', telefono = " + telefono + ", calle = '" + calle + "', codigo_postal = '" + codigoPostal + "', email = '" + email + "' WHERE id = " + id + ";");
+				stmt.executeUpdate("UPDATE socios SET nombre = '" + nombre + "', dni = '" + dni + "', telefono = " + telefono + ", calle = '" + calle + "', codigo_postal = '" + codigoPostal + "', email = '" + email + "' WHERE id_socio = " + id + ";");
 				JOptionPane.showMessageDialog(vp ,"Usuario modificado con éxito");
 			 } catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -65,7 +66,7 @@ public class ConectorBBDD {
 		 Ventana_Principal vp = Ventana_Principal.getInstance();
 		 try {
 			Statement stmt = con.createStatement();
-			stmt.executeUpdate("DELETE FROM socios WHERE ID = " + id + ";");
+			stmt.executeUpdate("DELETE FROM socios WHERE id_socio = " + id + ";");
 			JOptionPane.showMessageDialog(vp ,"Usuario borrado con exito");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -135,10 +136,10 @@ public class ConectorBBDD {
 
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT id, nombre, fecha_creacion, dni, telefono, calle, codigo_postal, email FROM socios;");
+			ResultSet rs = stmt.executeQuery("SELECT id_socio, nombre, fecha_creacion, dni, telefono, calle, codigo_postal, email FROM socios;");
 			while(rs.next()) {
 				socio = new Socio();
-				socio.setId(rs.getInt("id"));
+				socio.setId(rs.getInt("id_socio"));
 				socio.setNombre(rs.getString("nombre"));
 				socio.setFecha_creacion(rs.getString("fecha_creacion"));
 				socio.setDni(rs.getString("dni"));
@@ -169,10 +170,10 @@ public class ConectorBBDD {
 			
 			try {
 				Statement stmt = con.createStatement();
-				ResultSet rs = stmt.executeQuery("SELECT id, nombre, fecha_creacion, dni, telefono, calle, codigo_postal, email FROM socios WHERE id = " + id + " ;");
+				ResultSet rs = stmt.executeQuery("SELECT id_socio, nombre, fecha_creacion, dni, telefono, calle, codigo_postal, email FROM socios WHERE id = " + id + " ;");
 				while(rs.next()) {
 					socio = new Socio();
-					socio.setId(rs.getInt("id"));
+					socio.setId(rs.getInt("id_socio"));
 					socio.setNombre(rs.getString("nombre"));
 					socio.setFecha_creacion(rs.getString("fecha_creacion"));
 					socio.setDni(rs.getString("dni"));
@@ -202,10 +203,10 @@ public class ConectorBBDD {
 			
 			try {
 				Statement stmt = con.createStatement();
-				ResultSet rs = stmt.executeQuery("SELECT id, nombre, fecha_creacion, dni, telefono, calle, codigo_postal, email FROM socios WHERE email = '" + email + "' ;");
+				ResultSet rs = stmt.executeQuery("SELECT id_socio, nombre, fecha_creacion, dni, telefono, calle, codigo_postal, email FROM socios WHERE email = '" + email + "' ;");
 				while(rs.next()) {
 					socio = new Socio();
-					socio.setId(rs.getInt("id"));
+					socio.setId(rs.getInt("id_socio"));
 					socio.setNombre(rs.getString("nombre"));
 					socio.setFecha_creacion(rs.getString("fecha_creacion"));
 					socio.setDni(rs.getString("dni"));
@@ -224,8 +225,33 @@ public class ConectorBBDD {
 			return socios;
 			 
 		 }
-	 
-	 public void agregarAdministrativo() {
-		 
-	 }
+
+	public ArrayList<Incidencias> consultarIncidencias(int id) {
+		ArrayList<Incidencias> incidencias = new ArrayList<Incidencias>();
+		Incidencias incidencia;
+		Connection con = connect();
+		System.out.println(id);
+		
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT incidencias.id_incidencia, libros.id_libro, libros.titulo, incidencias.descripcion_incidencia "
+					+ "FROM incidencias, libros, socios "
+					+ "WHERE socios.id_socio = " + id + " AND libros.id_libro = incidencias.id_libro;");
+			while(rs.next()) {
+				incidencia = new Incidencias();
+				incidencia.setId(rs.getInt("id_incidencia"));
+				incidencia.setId_libro(rs.getInt("id_libro"));
+				incidencia.setNombre_libro(rs.getString("titulo"));
+				incidencia.setId_socio(id);
+				incidencia.setTexto_incidencias(rs.getString("descripcion_incidencia"));
+				
+				incidencias.add(incidencia);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return incidencias;
+	}
 }

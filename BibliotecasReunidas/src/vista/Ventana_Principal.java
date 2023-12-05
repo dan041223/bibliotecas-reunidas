@@ -39,7 +39,7 @@ public class Ventana_Principal extends JFrame {
 		ConectorBBDD con = new ConectorBBDD();
 		con.connect();
 		
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
 		
 		setBounds(100, 100, 1119, 676);
