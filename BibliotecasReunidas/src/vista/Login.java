@@ -1,7 +1,9 @@
 package vista;
 
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import controlador.ConectorBBDD;
@@ -10,7 +12,10 @@ import modelo.Usuario;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.awt.event.ActionEvent;
 import java.awt.Cursor;
@@ -21,13 +26,15 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JCheckBox;
 
 public class Login extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private JTextField tfCorreo;
-	private JTextField tfPassword;
+	private JPasswordField tfPassword;
 	static public Usuario usuario;
+	public JCheckBox chckbxRecordarme;
 	public Boolean iniciadoSesion = false;
 
 	/**
@@ -38,27 +45,27 @@ public class Login extends JPanel {
 		
 		JLabel lblLoginTitle = new JLabel("INICIO DE SESION");
 		lblLoginTitle.setFont(new Font("Tahoma", Font.PLAIN, 30));
-		lblLoginTitle.setBounds(444, 108, 269, 53);
+		lblLoginTitle.setBounds(587, 158, 269, 53);
 		add(lblLoginTitle);
 		
 		JLabel lblCorreo = new JLabel("Correo electronico:");
 		lblCorreo.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblCorreo.setBounds(479, 199, 177, 25);
+		lblCorreo.setBounds(622, 249, 177, 25);
 		add(lblCorreo);
 		
 		tfCorreo = new JTextField();
-		tfCorreo.setBounds(479, 247, 178, 23);
+		tfCorreo.setBounds(622, 297, 178, 23);
 		add(tfCorreo);
 		tfCorreo.setColumns(10);
 		
-		tfPassword = new JTextField();
+		tfPassword = new JPasswordField();
 		tfPassword.setColumns(10);
-		tfPassword.setBounds(479, 340, 177, 25);
+		tfPassword.setBounds(622, 390, 177, 25);
 		add(tfPassword);
 		
 		JLabel lblContrasena = new JLabel("Contraseña:");
 		lblContrasena.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblContrasena.setBounds(479, 301, 114, 25);
+		lblContrasena.setBounds(622, 351, 114, 25);
 		add(lblContrasena);
 		
 		JButton btnAcceder = new JButton("Acceder");
@@ -88,17 +95,58 @@ public class Login extends JPanel {
 				 * Para hacer pruebas he puesto SocioPanel pero habra que poner, cuando esté hecho, la ventana principal
 				 */
 				if(iniciadoSesion == true) {					
+					if(chckbxRecordarme.isSelected()) {
+						File fileSesionRecordada = new File("Ficheros\\SesionRecordada");
+						FileWriter fw;
+						BufferedWriter bw;
+						try {
+							fw = new FileWriter(fileSesionRecordada);
+							bw = new BufferedWriter(fw);
+							
+							bw.write(correo + ";" + password);
+							
+							bw.close();
+							fw.close();
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					}
 					Ventana_Principal.getInstance().cambiarPanel(new MenuPanel());
 				}
 			}
 		});
-		btnAcceder.setBounds(519, 409, 89, 23);
+		btnAcceder.setBounds(662, 459, 89, 23);
 		add(btnAcceder);
 		
 		JLabel lblNewLabel_1 = new JLabel("He olvidado mi contraseña");
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.ITALIC, 15));
-		lblNewLabel_1.setBounds(479, 458, 191, 14);
+		lblNewLabel_1.setBounds(622, 508, 191, 14);
 		add(lblNewLabel_1);
+		
+		chckbxRecordarme = new JCheckBox("Recordarme");
+		chckbxRecordarme.setBounds(622, 422, 97, 23);
+		add(chckbxRecordarme);
 
 	}
+	
+	@Override
+    public void addNotify() {
+        super.addNotify();
+        // Este método se llama cuando el componente es añadido al contenedor
+        Ventana_Principal vp = Ventana_Principal.getInstance();
+        if(vp.datos != null) {
+            tfCorreo.setText(vp.datos[0]);
+            tfPassword.setText(vp.datos[1]);
+            chckbxRecordarme.setSelected(true);
+        }
+        File flSesionRecordada = new File("Ficheros\\SesionRecordada");
+        try {
+			FileWriter fw = new FileWriter(flSesionRecordada);
+			BufferedWriter bw = new BufferedWriter(fw);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
 }
