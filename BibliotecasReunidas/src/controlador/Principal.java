@@ -1,5 +1,7 @@
 package controlador;
 
+//pepito123@hotmail.com
+//pepito123
 import java.awt.EventQueue;
 
 import javax.swing.JPanel;
