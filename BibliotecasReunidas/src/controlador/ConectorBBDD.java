@@ -57,7 +57,7 @@ public class ConectorBBDD {
 		 try {
 			
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM usuario WHERE email = '" + correo + "' AND password = '" + password + "';"); 
+			ResultSet rs = stmt.executeQuery("SELECT * FROM usuario WHERE email = '" + correo + "' AND password = '" + password + "';"); //' or '1'='1
 			if (rs.next()) {
 				usuario = new Usuario();
 				usuario.setNombre(rs.getString("nombre"));

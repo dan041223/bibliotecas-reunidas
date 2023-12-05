@@ -4,29 +4,29 @@ public class Libro {
 	private int id;
 	private String titulo;
 	public enum CategoriaLibro {
-	    ROMANCE,
-	    DRAMA,
-	    TERROR,
-	    SUSPENSE,
-	    CIENCIA_FICCION,
-	    POESIA,
-	    LITERATURA_INFANTIL,
-	    AVENTURA,
-	    HISTORIA,
-	    GEOGRAFIA,
-	    OTRO
+	    romance,
+	    drama,
+	    terror,
+	    suspense,
+	    ciencia_ficcion,
+	    poesia,
+	    literatura_infantil,
+	    aventura,
+	    historia,
+	    geografia,
+	    otros
 	}
 	private CategoriaLibro categoria;
 	private String idioma;
 	private String fecha_publicacion;
 	private int id_editorial;
 	private int id_ubicacion;
-	private int isbn;
+	private long isbn;
 	
 	public Libro() {
 		this.id = 0;
 		this.titulo = "";
-		this.categoria = CategoriaLibro.OTRO;;
+		this.categoria = CategoriaLibro.otros;
 		this.idioma = "";
 		this.fecha_publicacion ="";
 		this.id_editorial = 0;
@@ -102,11 +102,11 @@ public class Libro {
 		this.id_ubicacion = id_ubicacion;
 	}
 
-	public int getIsbn() {
+	public long getIsbn() {
 		return isbn;
 	}
 
-	public void setIsbn(int isbn) {
+	public void setIsbn(long isbn) {
 		this.isbn = isbn;
 	}
 }
