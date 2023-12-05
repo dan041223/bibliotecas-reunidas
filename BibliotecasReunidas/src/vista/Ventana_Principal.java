@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 import controlador.ConectorBBDD;
@@ -38,10 +39,11 @@ public class Ventana_Principal extends JFrame {
 		ConectorBBDD con = new ConectorBBDD();
 		con.connect();
 		
-		
-		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1448, 811);
+
+		setLocationRelativeTo(null);
+		
+		setBounds(100, 100, 1119, 676);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -99,5 +101,6 @@ public class Ventana_Principal extends JFrame {
 		contentPane.repaint();
 		contentPane.revalidate();
 	}
-
+	
+	
 }
