@@ -298,9 +298,11 @@ public class SocioPanel extends JPanel {
 			btnConsultaIncidencias.setEnabled(false);
 			btnConsultaIncidencias.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					VentanaIncidencias veIn = new VentanaIncidencias();
-					veIn.setVisible(true);
-					veIn.setAlwaysOnTop(true);
+					Ventana_Principal vp = Ventana_Principal.getInstance();
+					JDialog ventanaIncidencias = new JDialog(vp, "Incidencias", true);
+					ventanaIncidencias.add(new IncidenciasPanel());
+					ventanaIncidencias.setSize(1119, 676);
+					ventanaIncidencias.setVisible(true);
 				}
 			});
 			btnConsultaIncidencias.setBounds(42, 310, 146, 23);

@@ -203,7 +203,9 @@ public class ConectorBBDD {
 			
 			try {
 				Statement stmt = con.createStatement();
-				ResultSet rs = stmt.executeQuery("SELECT id_socio, nombre, fecha_creacion, dni, telefono, calle, codigo_postal, email FROM socios WHERE email = '" + email + "' ;");
+				ResultSet rs = stmt.executeQuery("SELECT id_socio, nombre, fecha_creacion, dni, telefono, calle, codigo_postal, email "
+						+ "FROM socios "
+						+ "WHERE email = '" + email + "' ;");
 				while(rs.next()) {
 					socio = new Socio();
 					socio.setId(rs.getInt("id_socio"));
@@ -234,9 +236,10 @@ public class ConectorBBDD {
 		
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT incidencias.id_incidencia, libros.id_libro, libros.titulo, incidencias.descripcion_incidencia "
-					+ "FROM incidencias, libros, socios "
-					+ "WHERE socios.id_socio = " + id + " AND libros.id_libro = incidencias.id_libro;");
+			ResultSet rs = stmt.executeQuery("SELECT id_incidencia, incidencias.id_libro, libros.titulo, incidencias.descripcion_incidencia "
+					+ "FROM incidencias, libros "
+					+ "WHERE id_socio = " + id + " "
+							+ "AND libros.id_libro = incidencias.id_libro;");
 			while(rs.next()) {
 				incidencia = new Incidencias();
 				incidencia.setId(rs.getInt("id_incidencia"));
