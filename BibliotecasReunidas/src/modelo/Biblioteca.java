@@ -4,6 +4,7 @@ public class Biblioteca  {
 
 	private int id;
 	private String comunidad_autonoma;
+	private String provincia;
 	private String calle;
 	private int codigo_postal;
 	private int telefono;
@@ -12,14 +13,16 @@ public class Biblioteca  {
 	public Biblioteca() {
 		id = 0;
 		comunidad_autonoma = "nada";
+		provincia = "a";
 		calle = "sin_calle";
 		codigo_postal = 0;
 		telefono = 0;
 	}
 
-	public Biblioteca(int id, String comunidad_autonoma, String calle, int codigo_postal, int telefono) {
+	public Biblioteca(int id, String comunidad_autonoma, String provincia, String calle, int codigo_postal, int telefono) {
 		this.id = id;
 		this.comunidad_autonoma = comunidad_autonoma;
+		this.provincia = provincia;
 		this.calle = calle;
 		this.codigo_postal = codigo_postal;
 		this.telefono = telefono;
@@ -41,6 +44,14 @@ public class Biblioteca  {
 		this.comunidad_autonoma = comunidad_autonoma;
 	}
 
+	public String getProvincia() {
+		return provincia;
+	}
+
+	public void setProvincia(String provincia) {
+		this.provincia = provincia;
+	}
+	
 	public String getCalle() {
 		return calle;
 	}
