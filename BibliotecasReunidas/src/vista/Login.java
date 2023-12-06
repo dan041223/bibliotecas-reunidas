@@ -3,29 +3,17 @@ package vista;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-
 import controlador.ConectorBBDD;
 import modelo.Usuario;
-
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.awt.event.ActionEvent;
-import java.awt.Cursor;
 import java.awt.Font;
-import java.awt.Image;
-
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import javax.swing.JCheckBox;
 
 public class Login extends JPanel {
@@ -80,7 +68,7 @@ public class Login extends JPanel {
 				ConectorBBDD con = new ConectorBBDD();
 				
 				String correo = tfCorreo.getText();
-				String password = tfPassword.getText();
+				String password = tfPassword.getPassword().toString();
 				usuario = con.consultarUsuario(correo, password);
 				
 				//Si el usuario esta vacio es que no se ha pasado ningun usuario por lo que ponemos el booleano iniciadoSesion en true
@@ -108,7 +96,6 @@ public class Login extends JPanel {
 							bw.close();
 							fw.close();
 						} catch (IOException e1) {
-							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
 					}
@@ -144,8 +131,8 @@ public class Login extends JPanel {
         try {
 			FileWriter fw = new FileWriter(flSesionRecordada);
 			BufferedWriter bw = new BufferedWriter(fw);
+			bw.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     }

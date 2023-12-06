@@ -6,16 +6,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-
-import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-
 import modelo.Socio;
 import modelo.Usuario;
 import modelo.Usuario.TIPO_PERFIL;
-import vista.Login;
 import vista.Ventana_Principal;
 
 /*
@@ -41,12 +35,12 @@ public class ConectorBBDD {
 			}   	
 	        return conn;
     }
+	 
 	 /*
 	  * Metodo que se encargar de consultar buscar en la base de datos el usuario especificado
 	  * Devuelve un usuario
 	  * Es usado en el Login para saber quien es el que ha iniciado sesion
 	  */
-	 
 	 public void cambiarSocio(int id, String nombre, String dni, int telefono, String calle, int codigoPostal, String email) {
 			 Connection con = connect();
 			 Ventana_Principal vp = Ventana_Principal.getInstance();
@@ -55,7 +49,6 @@ public class ConectorBBDD {
 				stmt.executeUpdate("UPDATE socios SET nombre = '" + nombre + "', dni = '" + dni + "', telefono = " + telefono + ", calle = '" + calle + "', codigo_postal = '" + codigoPostal + "', email = '" + email + "' WHERE id = " + id + ";");
 				JOptionPane.showMessageDialog(vp ,"Usuario modificado con éxito");
 			 } catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -68,7 +61,6 @@ public class ConectorBBDD {
 			stmt.executeUpdate("DELETE FROM socios WHERE ID = " + id + ";");
 			JOptionPane.showMessageDialog(vp ,"Usuario borrado con exito");
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	 }
@@ -80,7 +72,6 @@ public class ConectorBBDD {
 			stmt.executeUpdate("INSERT INTO socios (nombre, fecha_creacion, dni, email , calle, codigo_postal, telefono)"
 					+ " VALUES ('" + nombre + "', CURRENT_TIMESTAMP, '" + dni + "', '" + email + "', '" + calle + "', '" + codigoPostal + "', '" + telefono + "');");
 		 } catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	 }
@@ -117,7 +108,6 @@ public class ConectorBBDD {
 				JOptionPane.showMessageDialog(null, "No se ha encontrador ningún usuario con esta información", "Error al buscar usuario", JOptionPane.ERROR_MESSAGE);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return usuario;
@@ -150,7 +140,6 @@ public class ConectorBBDD {
 				socios.add(socio);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
 		
@@ -184,7 +173,6 @@ public class ConectorBBDD {
 					socios.add(socio);
 				}
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}			
 			return socios;
@@ -217,7 +205,6 @@ public class ConectorBBDD {
 					socios.add(socio);
 				}
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} 
 			

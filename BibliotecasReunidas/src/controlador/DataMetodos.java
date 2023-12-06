@@ -6,12 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.List;
-
 import javax.swing.JOptionPane;
-
 import modelo.Autor;
 import modelo.Libro;
 import modelo.Libro.CategoriaLibro;
@@ -89,7 +85,6 @@ public class DataMetodos {
 
 		boolean actualizado = false;
 		PreparedStatement preparedStatement = null;
-		ResultSet registro = null;
 		Connection conexion = null;
 
 		try {
@@ -234,10 +229,7 @@ public class DataMetodos {
 
 		ConectorBBDD conextor = new ConectorBBDD();
 
-		ArrayList<Autor> arrlAutor = new ArrayList<>();
-
 		PreparedStatement preparedStatement = null;
-		ResultSet registro = null;
 		Connection conexion = null;
 
 		try {
@@ -285,9 +277,7 @@ public class DataMetodos {
 
 		ConectorBBDD conextor = new ConectorBBDD();
 
-		boolean actualizado = false;
 		Statement statement = null;
-		ResultSet registro = null;
 		Connection conexion = null;
 
 		try {
@@ -305,7 +295,6 @@ public class DataMetodos {
 				if (count > 0) {
 					JOptionPane.showMessageDialog(null, "El proceso de eliminacion ha terminado correctamente",
 							"Confirmación de eliminacion", JOptionPane.INFORMATION_MESSAGE);
-					actualizado = true;
 				}
 			}
 
@@ -459,11 +448,8 @@ public class DataMetodos {
 			int id_editorial, int id_ubicacion, int isbn) {
 
 		ConectorBBDD conextor = new ConectorBBDD();
-
-		ArrayList<Libro> arrlLibro = new ArrayList<>();
-
+		
 		PreparedStatement preparedStatement = null;
-		ResultSet registro = null;
 		Connection conexion = null;
 
 		try {
@@ -664,7 +650,6 @@ public class DataMetodos {
 
 		boolean actualizado = false;
 		PreparedStatement preparedStatement = null;
-		ResultSet registro = null;
 		Connection conexion = null;
 
 		try {
@@ -717,9 +702,7 @@ public class DataMetodos {
 
 		ConectorBBDD conextor = new ConectorBBDD();
 
-		boolean actualizado = false;
 		Statement statement = null;
-		ResultSet registro = null;
 		Connection conexion = null;
 
 		try {
@@ -737,7 +720,6 @@ public class DataMetodos {
 				if (count > 0) {
 					JOptionPane.showMessageDialog(null, "El proceso de eliminacion ha terminado correctamente",
 							"Confirmación de eliminacion", JOptionPane.INFORMATION_MESSAGE);
-					actualizado = true;
 				}
 			}
 
