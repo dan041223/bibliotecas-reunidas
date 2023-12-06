@@ -29,7 +29,7 @@ public class DataMetodos {
 		try {
 			conexion = conextor.connect();
 			statement = conexion.createStatement();
-			String query = "Select * from Autor order by id limit 100"; // porque son los primeros 100 libros que
+			String query = "Select * from Autor order by id_autor limit 100"; // porque son los primeros 100 libros que
 																		// tenemos en nuestra
 			// base de datos
 			registro = statement.executeQuery(query);
@@ -37,7 +37,7 @@ public class DataMetodos {
 			while (registro.next()) {
 
 				Autor autor = new Autor();
-				autor.setId(registro.getInt("id"));
+				autor.setId(registro.getInt("id_autor"));
 				autor.setNombre(registro.getString("nombre"));
 				autor.setNacionalidad(registro.getString("nacionalidad"));
 				autor.setFecha_nacimiento(registro.getString("fecha_nacimiento"));
@@ -92,7 +92,7 @@ public class DataMetodos {
 
 			conexion = conextor.connect();
 
-			String query = "update autor set nombre=?, nacionalidad=?, fecha_nacimiento=? where id=?";
+			String query = "update autor set nombre=?, nacionalidad=?, fecha_nacimiento=? where id_autor=?";
 
 			preparedStatement = conexion.prepareStatement(query);
 
@@ -151,10 +151,10 @@ public class DataMetodos {
 
 		try {
 			conexion = conextor.connect();
-			String query = "Select id, nombre, nacionalidad, fecha_nacimiento from Autor where 1=1";
+			String query = "Select id_autor, nombre, nacionalidad, fecha_nacimiento from Autor where 1=1";
 
 			if (idTieneValores) {
-				query = query + " and id = ?";
+				query = query + " and id_autor = ?";
 			}
 
 			// UPPER - sirve para convertir el valor del campo en Mayuscula
@@ -201,7 +201,7 @@ public class DataMetodos {
 
 			while (registro.next()) {
 				Autor autor = new Autor();
-				autor.setId(registro.getInt("id"));
+				autor.setId(registro.getInt("id_autor"));
 				autor.setNombre(registro.getString("nombre"));
 				autor.setNacionalidad(registro.getString("nacionalidad"));
 				autor.setFecha_nacimiento(registro.getString("fecha_nacimiento"));
@@ -289,7 +289,7 @@ public class DataMetodos {
 				conexion = conextor.connect();
 				statement = conexion.createStatement();
 				System.out.println(id);
-				String query = String.format("delete from autor where id = %d;", id);
+				String query = String.format("delete from autor where id_autor = %d;", id);
 				int count = statement.executeUpdate(query);// esta funcion devuelve el numero de filas que han sido
 															// afectadas
 
@@ -339,7 +339,7 @@ public class DataMetodos {
 			while (registro.next()) {
 
 				Libro libro = new Libro();
-				libro.setId(registro.getInt("id"));
+				libro.setId(registro.getInt("id_libro"));
 				libro.setTitulo(registro.getString("titulo"));
 				libro.setCategoria(obtenerCategoriaLibro(registro.getString("categoria")));
 				libro.setIdioma(registro.getString("idioma"));
@@ -535,10 +535,10 @@ public class DataMetodos {
 		try {
 			conexion = conextor.connect();
 
-			String query = "Select id, titulo, categoria, idioma, fecha_publicacion,id_editorial, id_ubicacion,\"ISBN\" from libros where 1=1";
+			String query = "Select id_libro, titulo, categoria, idioma, fecha_publicacion,id_editorial, id_ubicacion,\"ISBN\" from libros where 1=1";
 
 			if (idTieneValores) {
-				query = query + " and id = ?";
+				query = query + " and id_libro = ?";
 			}
 
 			// UPPER - sirve para convertir el valor del campo en Mayuscula
@@ -616,7 +616,7 @@ public class DataMetodos {
 
 			while (registro.next()) {
 				Libro libro = new Libro();
-				libro.setId(registro.getInt("id"));
+				libro.setId(registro.getInt("id_libro"));
 				libro.setTitulo(registro.getString("titulo"));
 				libro.setCategoria(obtenerCategoriaLibro(registro.getString("categoria")));
 				libro.setIdioma(registro.getString("idioma"));
@@ -656,7 +656,7 @@ public class DataMetodos {
 
 			conexion = conextor.connect();
 
-			String query = "update libros set titulo=?, categoria_libro=?, idioma=?, fecha_publicacion=?, id_editorial =?, id_ubicacion=?,\"ISBN\"=? where id=?";
+			String query = "update libros set titulo=?, categoria_libro=?, idioma=?, fecha_publicacion=?, id_editorial =?, id_ubicacion=?,\"ISBN\"=? where id_libro=?";
 					
 			
 			preparedStatement = conexion.prepareStatement(query);
@@ -713,7 +713,7 @@ public class DataMetodos {
 				conexion = conextor.connect();
 				statement = conexion.createStatement();
 				System.out.println(id);
-				String query = String.format("delete from libros where id = %d;", id);
+				String query = String.format("delete from libros where id_libro = %d;", id);
 				int count = statement.executeUpdate(query);// esta funcion devuelve el numero de filas que han sido
 															// afectadas
 
@@ -756,7 +756,7 @@ public class DataMetodos {
 		try {
 			conexion = conextor.connect();
 			statement = conexion.createStatement();
-			String query = "Select * from biblioteca order by id"; 
+			String query = "Select * from biblioteca order by id_biblioteca"; 
 																		// tenemos en nuestra
 			// base de datos
 			registro = statement.executeQuery(query);
@@ -764,7 +764,7 @@ public class DataMetodos {
 			while (registro.next()) {
 
 				Biblioteca biblioteca = new Biblioteca();
-				biblioteca.setId(registro.getInt("id"));
+				biblioteca.setId(registro.getInt("id_biblioteca"));
 				biblioteca.setComunidad_autonoma(registro.getString("comunidad_autonoma"));
 				biblioteca.setProvincia(registro.getString("provincia"));
 				biblioteca.setCalle(registro.getString("calle"));
