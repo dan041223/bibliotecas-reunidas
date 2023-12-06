@@ -1,11 +1,8 @@
 package vista;
 
-import javax.swing.JPanel;
-
 import modelo.Socio;
 import modelo.Usuario;
 import modelo.Usuario.TIPO_PERFIL;
-
 import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Frame;
@@ -14,11 +11,13 @@ import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
-
 import javax.imageio.ImageIO;
+import javax.swing.JPanel;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -35,19 +34,12 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.JScrollPane;
-import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.plaf.synth.Region;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.MaskFormatter;
-
 import controlador.ConectorBBDD;
 
-import javax.swing.event.ChangeEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.SpinnerModel;
 
 public class SocioPanel extends JPanel {
 
@@ -79,6 +71,11 @@ public class SocioPanel extends JPanel {
 	 * Le pasas la fila y columna que estas seleccionando y siempre va a devolver false el isCellEditable
 	 */
 	DefaultTableModel modeloTablaSociosBuscar = new DefaultTableModel() {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
 		@Override
 		public boolean isCellEditable(int row, int column) {
 			return false;
@@ -86,6 +83,11 @@ public class SocioPanel extends JPanel {
 	};
 	
 	DefaultTableModel modeloTablaSociosEliminar = new DefaultTableModel() {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
 		@Override
 		public boolean isCellEditable(int row, int column) {
 			return false;
@@ -93,6 +95,11 @@ public class SocioPanel extends JPanel {
 	};
 	
 	DefaultTableModel modeloTablaSociosModificar = new DefaultTableModel() {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
 		@Override
 		public boolean isCellEditable(int row, int column) {
 			return false;
