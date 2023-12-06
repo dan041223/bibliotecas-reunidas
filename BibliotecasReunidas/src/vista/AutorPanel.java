@@ -2,12 +2,7 @@ package vista;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;
-
-import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.Image;
-
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
@@ -17,18 +12,13 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-
 import controlador.DataMetodos;
 import modelo.Autor;
-
 import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.List;
 import java.awt.event.ActionEvent;
-import javax.swing.ImageIcon;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+
 
 public class AutorPanel extends JPanel {
 
@@ -136,6 +126,11 @@ public class AutorPanel extends JPanel {
 
 		//
 		tablaAutores = new JTable() {
+			/**
+			 * Por defecto el JTable debe tener un serialVersionUID. Agregamos el valor por defecto
+			 */
+			private static final long serialVersionUID = 1L;
+
 			// Vamos actualizar la IsCellEditerTable para impedir que las celdas de la tabla
 			// sean modificadas.
 			public boolean isCellEditable(int row, int column) {
@@ -260,6 +255,7 @@ public class AutorPanel extends JPanel {
 		 */
 	}
 
+	@SuppressWarnings("unused")
 	private void desminuirTamanyo() {
 		JFrame frame = (JFrame)SwingUtilities.getWindowAncestor(this);
 		System.out.println("Vamos a disminuir el tamaño");
@@ -274,6 +270,7 @@ public class AutorPanel extends JPanel {
 		}
 	}
 	
+	@SuppressWarnings("unused")
 	private void aumentarTamanyo() {
 		JFrame frame = (JFrame)SwingUtilities.getWindowAncestor(this);
 		System.out.println("Vamos a aumentar el tamaño");

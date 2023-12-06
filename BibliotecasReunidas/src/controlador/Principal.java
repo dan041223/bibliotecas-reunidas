@@ -3,11 +3,6 @@ package controlador;
 //pepito123@hotmail.com
 //pepito123
 import java.awt.EventQueue;
-
-import javax.swing.JPanel;
-
-import modelo.Autor;
-import vista.AutorPanel;
 import vista.Ventana_Principal;
 
 public class Principal {

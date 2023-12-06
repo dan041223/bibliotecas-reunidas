@@ -198,7 +198,11 @@ public class LibroPanel extends JPanel {
 		// Vamos actualizar la IsCellEditerTable para impedir que las celdas de la tabla
 		// sean modificadas.
 		tableLibros = new JTable() {
-
+			/**
+			 * Por defecto el JTable debe tener un serialVersionUID. Agregamos el valor por defecto
+			 */
+			private static final long serialVersionUID = 1L;
+			
 			public boolean isCellEditable(int row, int column) {
 				return false;
 			}
