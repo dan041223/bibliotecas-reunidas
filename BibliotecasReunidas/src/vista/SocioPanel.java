@@ -201,7 +201,7 @@ public class SocioPanel extends JPanel {
 				}
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					Ventana_Principal.getInstance().cambiarPanel(new Login());
+					Ventana_Principal.getInstance().cambiarPanel(new MenuPanel());
 				}
 			});
 			add(lblCerrarSesion);
