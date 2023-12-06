@@ -68,7 +68,9 @@ public class Login extends JPanel {
 				ConectorBBDD con = new ConectorBBDD();
 				
 				String correo = tfCorreo.getText();
-				String password = tfPassword.getPassword().toString();
+				System.out.println(correo);
+				String password = tfPassword.getText().toString();
+				System.out.println(password);
 				usuario = con.consultarUsuario(correo, password);
 				
 				//Si el usuario esta vacio es que no se ha pasado ningun usuario por lo que ponemos el booleano iniciadoSesion en true
