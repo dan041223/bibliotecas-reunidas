@@ -1,26 +1,15 @@
 package vista;
 
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
-
 import controlador.ConectorBBDD;
 import modelo.Usuario;
-
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.awt.event.ActionEvent;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
 import java.awt.CardLayout;
 
 public class Ventana_Principal extends JFrame {
@@ -40,6 +29,7 @@ public class Ventana_Principal extends JFrame {
 		con.connect();
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
 		setLocationRelativeTo(null);
 		
 		setBounds(100, 100, 1119, 676);
