@@ -331,7 +331,7 @@ public class DataMetodos {
 		try {
 			conexion = conextor.connect();
 			statement = conexion.createStatement();
-			String query = "Select * from libros order by id limit 100"; // porque son los primeros 100 libros que
+			String query = "Select * from libros order by id_libro limit 100"; // porque son los primeros 100 libros que
 																			// tenemos en nuestra
 			// base de datos
 			registro = statement.executeQuery(query);
