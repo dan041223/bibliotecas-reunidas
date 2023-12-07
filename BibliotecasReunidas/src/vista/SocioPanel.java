@@ -57,7 +57,7 @@ public class SocioPanel extends JPanel {
 	public int columnaSeleccionadaBorrar;
 	public int filaSeleccionadaMod;
 	public int columnaSeleccionadaMod;
-	public static int idSeleccionado;
+	public static int idSocioSeleccionado;
 	public int idSeleccionadoBorrar;
 	public String nombreSeleccionadoModificar;
 	public int telefonoSeleccionadoModificar;
@@ -192,9 +192,9 @@ public class SocioPanel extends JPanel {
 			
 			add(imgs);
 			
-			JLabel lblCerrarSesion = new JLabel("Cerrar sesión");
+			JLabel lblCerrarSesion = new JLabel("Volver al menu");
 			lblCerrarSesion.setFont(new Font("Tahoma", Font.BOLD, 15));
-			lblCerrarSesion.setBounds(45, 12, 110, 14);
+			lblCerrarSesion.setBounds(45, 12, 181, 14);
 			lblCerrarSesion.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseEntered(MouseEvent e) {
@@ -247,7 +247,7 @@ public class SocioPanel extends JPanel {
 			});
 			
 			rdbtnBuscarPorCorreo = new JRadioButton("Buscar por correo electrónico");
-			rdbtnBuscarPorCorreo.setBounds(0, 132, 168, 23);
+			rdbtnBuscarPorCorreo.setBounds(0, 132, 220, 23);
 			panelBuscaSocio.add(rdbtnBuscarPorCorreo);
 			rdbtnBuscarPorCorreo.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -307,12 +307,12 @@ public class SocioPanel extends JPanel {
 				public void actionPerformed(ActionEvent e) {
 					Ventana_Principal vp = Ventana_Principal.getInstance();
 					JDialog ventanaIncidencias = new JDialog(vp, "Incidencias", true);
-					ventanaIncidencias.add(new IncidenciasPanel());
-					ventanaIncidencias.setSize(1119, 676);
+					ventanaIncidencias.getContentPane().add(new IncidenciasPanel());
+					ventanaIncidencias.setSize(1119, 550);
 					ventanaIncidencias.setVisible(true);
 				}
 			});
-			btnConsultaIncidencias.setBounds(42, 310, 146, 23);
+			btnConsultaIncidencias.setBounds(33, 310, 168, 23);
 			panelBuscaSocio.add(btnConsultaIncidencias);
 			
 			modeloTablaSociosBuscar.setColumnIdentifiers(new Object[]{"Id","Nombre","Email","Telefono","DNI","Calle","Codigo Postal","Fecha de Creación"});
@@ -346,7 +346,7 @@ public class SocioPanel extends JPanel {
 					columnaSeleccionada = tablaSocios.getSelectedColumn();
 					
 					if(filaSeleccionada != -1 && columnaSeleccionada != -1) {
-						idSeleccionado = (int) tablaSocios.getValueAt(filaSeleccionada, 0);
+						idSocioSeleccionado = (int) tablaSocios.getValueAt(filaSeleccionada, 0);
 						btnConsultaPrestamos.setEnabled(true);
 						btnConsultaIncidencias.setEnabled(true);
 						//Le pasas la celda seleccionada y la vuelves no editable
@@ -706,7 +706,7 @@ public class SocioPanel extends JPanel {
 					activarONoComponenteModififcar();
 				}
 			});
-			rdbtnBuscarPorCorreoModSocios.setBounds(12, 453, 168, 23);
+			rdbtnBuscarPorCorreoModSocios.setBounds(12, 453, 220, 23);
 			panelModificaSocio.add(rdbtnBuscarPorCorreoModSocios);
 			
 			ButtonGroup grupoRadioButtons3 = new ButtonGroup();
@@ -761,7 +761,7 @@ public class SocioPanel extends JPanel {
 					activarONoComponenteBorrar();
 				}
 			});
-			rdbtnBuscarSocioPorCorreoBorrar.setBounds(10, 140, 168, 23);
+			rdbtnBuscarSocioPorCorreoBorrar.setBounds(10, 140, 210, 23);
 			panelEliminaSocio.add(rdbtnBuscarSocioPorCorreoBorrar);
 
 			ButtonGroup grupoRadioButtonsElimSocios = new ButtonGroup();
@@ -786,17 +786,24 @@ public class SocioPanel extends JPanel {
 			btnBorrarSocio = new JButton("Borrar Seleccionado");
 			btnBorrarSocio.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					ConectorBBDD con = new ConectorBBDD();
-					con.eliminarSocio(idSeleccionadoBorrar);
-					modeloTablaSociosBuscar.setRowCount(0);
-					modeloTablaSociosEliminar.setRowCount(0);
-					modeloTablaSociosModificar.setRowCount(0);
-					rellenarTabla1AlPrincipio();
-					rellenarTabla2AlPrincipio();
-					rellenarTabla3AlPrincipio();
+					Ventana_Principal vp = Ventana_Principal.getInstance();
+					
+					int opcion = JOptionPane.showConfirmDialog(vp, "¿Quiere borrar el socio?", "Confirmacion", 0);
+					if(opcion == 0) {
+						ConectorBBDD con = new ConectorBBDD();
+						con.eliminarSocio(idSeleccionadoBorrar);
+						modeloTablaSociosBuscar.setRowCount(0);
+						modeloTablaSociosEliminar.setRowCount(0);
+						modeloTablaSociosModificar.setRowCount(0);
+						rellenarTabla1AlPrincipio();
+						rellenarTabla2AlPrincipio();
+						rellenarTabla3AlPrincipio();
+					}else if(opcion == 1) {
+						
+					}
 				}
 			});
-			btnBorrarSocio.setBounds(51, 368, 127, 23);
+			btnBorrarSocio.setBounds(30, 368, 176, 23);
 			panelEliminaSocio.add(btnBorrarSocio);
 			btnBorrarSocio.setEnabled(false);
 			
@@ -843,7 +850,7 @@ public class SocioPanel extends JPanel {
 			tfEmailSocioBorrar = new JTextField();
 			tfEmailSocioBorrar.setEnabled(false);
 			tfEmailSocioBorrar.setColumns(10);
-			tfEmailSocioBorrar.setBounds(20, 170, 210, 20);
+			tfEmailSocioBorrar.setBounds(10, 170, 210, 20);
 			panelEliminaSocio.add(tfEmailSocioBorrar);
 			
 			btnFiltrarSocioBorrados = new JButton("Filtrar");

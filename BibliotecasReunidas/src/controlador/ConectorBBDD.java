@@ -65,7 +65,8 @@ public class ConectorBBDD {
 		Ventana_Principal vp = Ventana_Principal.getInstance();
 		try {
 			Statement stmt = con.createStatement();
-			stmt.executeUpdate("DELETE FROM socios WHERE id_socio = " + id + ";");
+			stmt.executeUpdate("UPDATE socios SET nombre = 'Socio borrado', email = 'Email borrado', telefono = 000000000, dni = 'DNI borrado', calle = 'Calle borrada', codigo_postal = 00000"
+					+ " WHERE id_socio = " + id + ";");
 			JOptionPane.showMessageDialog(vp, "Usuario borrado con exito");
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -137,7 +138,9 @@ public class ConectorBBDD {
 		try {
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(
-					"SELECT id_socio, nombre, fecha_creacion, dni, telefono, calle, codigo_postal, email FROM socios;");
+					"SELECT id_socio, nombre, fecha_creacion, dni, telefono, calle, codigo_postal, email "
+					+ "FROM socios "
+					+ "WHERE nombre NOT ILIKE '%Socio borrado%';");
 			while (rs.next()) {
 				socio = new Socio();
 				socio.setId(rs.getInt("id_socio"));
@@ -173,8 +176,9 @@ public class ConectorBBDD {
 		try {
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(
-					"SELECT id_socio, nombre, fecha_creacion, dni, telefono, calle, codigo_postal, email FROM socios WHERE id_socio = "
-							+ id + " ;");
+					"SELECT id_socio, nombre, fecha_creacion, dni, telefono, calle, codigo_postal, email FROM socios "
+					+ "WHERE id_socio = " + id + " "
+					+ "AND nombre NOT ILIKE '%Socio borrado%';");
 			while (rs.next()) {
 				socio = new Socio();
 				socio.setId(rs.getInt("id_socio"));
@@ -210,7 +214,8 @@ public class ConectorBBDD {
 			ResultSet rs = stmt
 					.executeQuery("SELECT id_socio, nombre, fecha_creacion, dni, telefono, calle, codigo_postal, email "
 							+ "FROM socios "
-							+ "WHERE email = '" + email + "' ;");
+							+ "WHERE email = '" + email + "' "
+							+ "AND nombre NOT ILIKE '%Socio borrado%';");
 			while (rs.next()) {
 				socio = new Socio();
 				socio.setId(rs.getInt("id_socio"));
@@ -232,16 +237,82 @@ public class ConectorBBDD {
 
 	}
 
+	public void agregarIncidencia(int idSeleccionado, int idLibro, String incidenciaDescripcion) {
+		Connection con = connect();
+		try {
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate(
+					"INSERT INTO incidencias (id_socio, id_libro, descripcion_incidencia)"
+							+ " VALUES (" + idSeleccionado + "," + idLibro + ",'" + incidenciaDescripcion + "');");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	public void modificarIncidencia(int idIncidenciaSeleccionada, int idSocioSeleccionado, int idLibro,
+			String descripcionIncidencia) {
+		Connection con = connect();
+		Ventana_Principal vp = Ventana_Principal.getInstance();
+		try {
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate("UPDATE incidencias SET id_socio = " + idSocioSeleccionado + ", id_libro = " + idLibro + ", descripcion_incidencia = '" + descripcionIncidencia + "'"
+					+ " WHERE id_incidencia = " + idIncidenciaSeleccionada + ";");
+			JOptionPane.showMessageDialog(vp, "Incidencia modificada con éxito");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	public void borrarIncidencia(int idIncidenciaSeleccionada) {
+		Connection con = connect();
+		Ventana_Principal vp = Ventana_Principal.getInstance();
+		try {
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate("DELETE FROM incidencias WHERE id_incidencia = " + idIncidenciaSeleccionada  + ";");
+			JOptionPane.showMessageDialog(vp, "Incidencia borrada con exito");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void cambiarEstadoIncidenciaAResuelta(int idIncidenciaSeleccionada) {
+		Connection con = connect();
+		Ventana_Principal vp = Ventana_Principal.getInstance();
+		try {
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate("UPDATE incidencias SET estado_incidencia = true"
+					+ " WHERE id_incidencia = " + idIncidenciaSeleccionada + ";");
+			JOptionPane.showMessageDialog(vp, "Incidencia marcada como resuelta");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	public void cambiarEstadoIncidenciaANoResuelta(int idIncidenciaSeleccionada) {
+		Connection con = connect();
+		Ventana_Principal vp = Ventana_Principal.getInstance();
+		try {
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate("UPDATE incidencias SET estado_incidencia = false"
+					+ " WHERE id_incidencia = " + idIncidenciaSeleccionada + ";");
+			JOptionPane.showMessageDialog(vp, "Incidencia marcada como no resuelta");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public ArrayList<Incidencias> consultarIncidencias(int id) {
 		ArrayList<Incidencias> incidencias = new ArrayList<Incidencias>();
 		Incidencias incidencia;
 		Connection con = connect();
-		System.out.println(id);
 
 		try {
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(
-					"SELECT id_incidencia, incidencias.id_libro, libros.titulo, incidencias.descripcion_incidencia "
+					"SELECT id_incidencia, incidencias.id_libro, libros.titulo, incidencias.descripcion_incidencia, estado_incidencia "
 							+ "FROM incidencias, libros "
 							+ "WHERE id_socio = " + id + " "
 							+ "AND libros.id_libro = incidencias.id_libro;");
@@ -252,7 +323,11 @@ public class ConectorBBDD {
 				incidencia.setNombre_libro(rs.getString("titulo"));
 				incidencia.setId_socio(id);
 				incidencia.setTexto_incidencias(rs.getString("descripcion_incidencia"));
-
+				if(rs.getBoolean("estado_incidencia") == false) {
+					incidencia.setEstadoIncidencia("No resuelta");
+				}else if(rs.getBoolean("estado_incidencia") == true) {
+					incidencia.setEstadoIncidencia("Resuelta");
+				}
 				incidencias.add(incidencia);
 			}
 		} catch (SQLException e) {
@@ -262,4 +337,76 @@ public class ConectorBBDD {
 
 		return incidencias;
 	}
+
+	public ArrayList<Incidencias> consultarIncidenciasNoResueltas(int idSocioSeleccionado) {
+		ArrayList<Incidencias> incidencias = new ArrayList<Incidencias>();
+		Incidencias incidencia;
+		Connection con = connect();
+
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(
+					"SELECT id_incidencia, incidencias.id_libro, libros.titulo, incidencias.descripcion_incidencia, estado_incidencia "
+							+ "FROM incidencias, libros "
+							+ "WHERE id_socio = " + idSocioSeleccionado + " "
+							+ "AND libros.id_libro = incidencias.id_libro "
+							+ "AND estado_incidencia = FALSE;");
+			while (rs.next()) {
+				incidencia = new Incidencias();
+				incidencia.setId(rs.getInt("id_incidencia"));
+				incidencia.setId_libro(rs.getInt("id_libro"));
+				incidencia.setNombre_libro(rs.getString("titulo"));
+				incidencia.setId_socio(idSocioSeleccionado);
+				incidencia.setTexto_incidencias(rs.getString("descripcion_incidencia"));
+				if(rs.getBoolean("estado_incidencia") == false) {
+					incidencia.setEstadoIncidencia("No resuelta");
+				}else if(rs.getBoolean("estado_incidencia") == true) {
+					incidencia.setEstadoIncidencia("Resuelta");
+				}
+				incidencias.add(incidencia);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return incidencias;
+	}
+
+	public ArrayList<Incidencias> consultarIncidenciasResueltas(int idSocioSeleccionado) {
+		ArrayList<Incidencias> incidencias = new ArrayList<Incidencias>();
+		Incidencias incidencia;
+		Connection con = connect();
+
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(
+					"SELECT id_incidencia, incidencias.id_libro, libros.titulo, incidencias.descripcion_incidencia, estado_incidencia "
+							+ "FROM incidencias, libros "
+							+ "WHERE id_socio = " + idSocioSeleccionado + " "
+							+ "AND libros.id_libro = incidencias.id_libro "
+							+ "AND estado_incidencia = TRUE;");
+			while (rs.next()) {
+				incidencia = new Incidencias();
+				incidencia.setId(rs.getInt("id_incidencia"));
+				incidencia.setId_libro(rs.getInt("id_libro"));
+				incidencia.setNombre_libro(rs.getString("titulo"));
+				incidencia.setId_socio(idSocioSeleccionado);
+				incidencia.setTexto_incidencias(rs.getString("descripcion_incidencia"));
+				if(rs.getBoolean("estado_incidencia") == false) {
+					incidencia.setEstadoIncidencia("No resuelta");
+				}else if(rs.getBoolean("estado_incidencia") == true) {
+					incidencia.setEstadoIncidencia("Resuelta");
+				}
+				incidencias.add(incidencia);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return incidencias;
+	}
+	
+	
 }
