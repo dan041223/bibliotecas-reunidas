@@ -21,7 +21,7 @@ public class MenuPanel extends JPanel {
 				Ventana_Principal.getInstance().cambiarPanel(new AutorPanel());
 			}
 		});
-		btnAutores.setBounds(42, 38, 89, 23);
+		btnAutores.setBounds(573, 239, 89, 23);
 		add(btnAutores);
 		
 		JButton btnLibros = new JButton("Libros");
@@ -30,7 +30,7 @@ public class MenuPanel extends JPanel {
 				Ventana_Principal.getInstance().cambiarPanel(new LibroPanel());
 			}
 		});
-		btnLibros.setBounds(42, 108, 89, 23);
+		btnLibros.setBounds(573, 309, 89, 23);
 		add(btnLibros);
 		
 		JButton btnPrestamos = new JButton("Prestamos");
@@ -39,7 +39,7 @@ public class MenuPanel extends JPanel {
 				Ventana_Principal.getInstance().cambiarPanel(new PrestamoPanel());
 			}
 		});
-		btnPrestamos.setBounds(42, 198, 89, 23);
+		btnPrestamos.setBounds(573, 399, 89, 23);
 		add(btnPrestamos);
 		
 		JButton btnSocios = new JButton("Socios");
@@ -48,7 +48,7 @@ public class MenuPanel extends JPanel {
 				Ventana_Principal.getInstance().cambiarPanel(new SocioPanel());
 			}
 		});
-		btnSocios.setBounds(281, 38, 89, 23);
+		btnSocios.setBounds(812, 239, 89, 23);
 		add(btnSocios);
 		
 		JButton btnLogin = new JButton("Login");
@@ -57,7 +57,7 @@ public class MenuPanel extends JPanel {
 				Ventana_Principal.getInstance().cambiarPanel(new Login());
 			}
 		});
-		btnLogin.setBounds(281, 108, 89, 23);
+		btnLogin.setBounds(812, 309, 89, 23);
 		add(btnLogin);
 		
 		JButton btnBiblio = new JButton("Bibliotecas");
@@ -66,8 +66,17 @@ public class MenuPanel extends JPanel {
 				Ventana_Principal.getInstance().cambiarPanel(new BibliotecaPanel());
 			}
 		});
-		btnBiblio.setBounds(281, 198, 89, 23);
+		btnBiblio.setBounds(812, 399, 89, 23);
 		add(btnBiblio);
+		
+		JButton btnIncidencias = new JButton("Incidencias");
+		btnIncidencias.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Ventana_Principal.getInstance().cambiarPanel(new TodasIncidenciasPanel());
+			}
+		});
+		btnIncidencias.setBounds(695, 467, 89, 23);
+		add(btnIncidencias);
 
 	}
 }

@@ -267,7 +267,7 @@ public class IncidenciasPanel extends JPanel {
 	
 	public void rellenarTablaAlPrincipio() {
 		con = new ConectorBBDD();
-		for(Incidencias i : con.consultarIncidencias(idSocioSeleccionado)) {
+		for(Incidencias i : con.consultarIncidenciasPorIdSocio(idSocioSeleccionado)) {
 			modeloTablaIncidencias.addRow(new Object[] {
 					i.getId(),
 					i.getId_libro(),

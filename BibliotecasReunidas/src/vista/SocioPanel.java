@@ -212,7 +212,7 @@ public class SocioPanel extends JPanel {
 			add(lblCerrarSesion);
 			
 			JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-			tabbedPane.setBounds(10, 82, 1373, 678);
+			tabbedPane.setBounds(10, 82, 1347, 633);
 			add(tabbedPane);
 			
 			/*
@@ -288,7 +288,7 @@ public class SocioPanel extends JPanel {
 			tfEmailSocio.setEnabled(false);
 			
 			JScrollPane scrollPane = new JScrollPane();
-			scrollPane.setBounds(230, 11, 1124, 629);
+			scrollPane.setBounds(230, 11, 1102, 583);
 			panelBuscaSocio.add(scrollPane);
 			
 			JButton btnConsultaPrestamos = new JButton("Consultar prestamos");
