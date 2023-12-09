@@ -11,6 +11,9 @@ import java.util.ArrayList;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.xml.crypto.Data;
 
@@ -40,6 +43,9 @@ public class TodasIncidenciasPanel extends JPanel {
 	public JRadioButton rdbtnMostrarTodas;
 	public JComboBox cmbxLibros;
 	public JComboBox cmbxSocios;
+	public JButton btnResolver;
+	public int idIncidenciaSeleccionada;
+	private String estadoActualIncidencia;
 	DefaultTableModel modeloTablaIncidencias = new DefaultTableModel() {
 		@Override
 		public boolean isCellEditable(int row, int column) {
@@ -80,6 +86,22 @@ public class TodasIncidenciasPanel extends JPanel {
 		scrollPane.setViewportView(table);
 		modeloTablaIncidencias.setColumnIdentifiers(new Object[]{"Id Incidencia","Id Socio","Nombre Socio", "Id Libro","Titulo del Libro","Estado","Descripcion de Incidencia"});
 		table.setModel(modeloTablaIncidencias);
+		
+		ListSelectionModel modeloSeleccionTablaIncidencias = table.getSelectionModel();
+		modeloSeleccionTablaIncidencias.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		
+		modeloSeleccionTablaIncidencias.addListSelectionListener(new ListSelectionListener() {
+			
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				btnResolver.setEnabled(true);
+				cogerCamposParaResolver();
+				
+				if(modeloSeleccionTablaIncidencias.isSelectionEmpty()) {
+					btnResolver.setEnabled(false);
+				}
+			}
+		});
 		
 		JLabel lblSocio = new JLabel("Socio:");
 		lblSocio.setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -123,8 +145,15 @@ public class TodasIncidenciasPanel extends JPanel {
 		btnLimpiarCampos.setBounds(10, 384, 130, 23);
 		add(btnLimpiarCampos);
 		
-		JButton btnResolver = new JButton("Resuelta / no resuelta");
+		btnResolver = new JButton("Resuelta / no resuelta");
 		btnResolver.setEnabled(false);
+		btnResolver.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				modeloTablaIncidencias.setRowCount(0);
+				resolverNoResolver();
+				rellenarALPorParametros();
+			}
+		});
 		btnResolver.setBounds(10, 478, 172, 23);
 		add(btnResolver);
 		
@@ -139,6 +168,24 @@ public class TodasIncidenciasPanel extends JPanel {
 		btnFiltrar.setBounds(10, 428, 89, 23);
 		add(btnFiltrar);
 
+	}
+	
+	public void cogerCamposParaResolver() {
+		int filaSeleccionada = table.getSelectedRow();
+		int columnaSeleccionada = table.getSelectedColumn();
+		
+		if(filaSeleccionada != -1 && columnaSeleccionada != -1) {
+			idIncidenciaSeleccionada = (int) table.getValueAt(filaSeleccionada, 0);
+			estadoActualIncidencia = (String) table.getValueAt(filaSeleccionada, 5);
+		}
+	}
+	
+	public void resolverNoResolver() {
+		if(estadoActualIncidencia.equalsIgnoreCase("No resuelta")) {
+			con.cambiarEstadoIncidenciaAResuelta(idIncidenciaSeleccionada);
+		}else if(estadoActualIncidencia.equalsIgnoreCase("Resuelta")) {
+			con.cambiarEstadoIncidenciaANoResuelta(idIncidenciaSeleccionada);
+		}
 	}
 	
 	public void rellenarALPorParametros() {
