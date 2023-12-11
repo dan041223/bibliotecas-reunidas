@@ -1663,4 +1663,45 @@ public class DataMetodos {
 		}
 
 	}
+	
+	public static void eliminarPrestamo(int id) {
+
+		ConectorBBDD conextor = new ConectorBBDD();
+
+		Statement statement = null;
+		Connection conexion = null;
+
+		try {
+			int confirmacion = JOptionPane.showConfirmDialog(null, "Esta seguro que desea eliminar la fila ??",
+					"Confirmación de eliminacion ", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+			if (confirmacion == JOptionPane.YES_OPTION) {
+				conexion = conextor.connect();
+				statement = conexion.createStatement();
+				System.out.println(id);
+				String query = String.format("delete from prestamo where id_biblioteca = %d;", id);
+				int count = statement.executeUpdate(query);// esta funcion devuelve el numero de filas que han sido
+															// afectadas
+
+				if (count > 0) {
+					JOptionPane.showMessageDialog(null, "El proceso de eliminacion ha terminado correctamente",
+							"Confirmación de eliminacion", JOptionPane.INFORMATION_MESSAGE);
+				}
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("No se ha podido conectar con la BBDD.\n");
+		} finally {
+			try {
+				statement.close();
+				conexion.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				System.out.println("Error al cerrar.\n");
+			} catch (NullPointerException e) {
+
+			}
+		}
+	}
 }

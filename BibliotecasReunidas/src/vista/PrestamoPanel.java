@@ -40,11 +40,7 @@ public class PrestamoPanel extends JPanel {
 		lblPrestamos.setBounds(31, 41, 159, 40);
 		add(lblPrestamos);
 		
-		JButton btnEliminar = new JButton("Eliminar");
-		btnEliminar.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
-		btnEliminar.setEnabled(false);
-		btnEliminar.setBounds(225, 92, 148, 40);
-		add(btnEliminar);
+		
 		
 		JButton btnConfirmarCambios = new JButton("Confirmar Cambios");
 		btnConfirmarCambios.addActionListener(new ActionListener() {
@@ -62,9 +58,7 @@ public class PrestamoPanel extends JPanel {
 
 		        //
 				limpiarTextFields();
-				recargarTablaPrestamo();
-				btnEliminar.setEnabled(false);
-				
+				recargarTablaPrestamo();	
 			}
 		});
 		btnConfirmarCambios.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 20));
@@ -146,7 +140,19 @@ public class PrestamoPanel extends JPanel {
 		lblCodigo_6.setBounds(797, 358, 114, 25);
 		add(lblCodigo_6);
 		
-
+		JButton btnEliminar = new JButton("Eliminar");
+		btnEliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int id = Integer.parseInt(modeloPrestamo.getValueAt(TablaPrestamos.getSelectedRow(), 0).toString());
+				DataMetodos.eliminarPrestamo(id);
+				limpiarTextFields();
+				recargarTablaPrestamo();
+			}
+		});
+		btnEliminar.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
+		btnEliminar.setEnabled(false);
+		btnEliminar.setBounds(225, 92, 148, 40);
+		add(btnEliminar);
 
 	}
 	
