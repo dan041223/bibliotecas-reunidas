@@ -63,7 +63,7 @@ public class MenuPanel extends JPanel {
 		JButton btnBiblio = new JButton("Bibliotecas");
 		btnBiblio.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Ventana_Principal.getInstance().cambiarPanel(new BibliotecaPanel());
+				Ventana_Principal.getInstance().cambiarPanel(new BibliotecaPanel(null));
 			}
 		});
 		btnBiblio.setBounds(281, 198, 89, 23);
