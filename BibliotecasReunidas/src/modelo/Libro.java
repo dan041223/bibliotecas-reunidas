@@ -19,8 +19,8 @@ public class Libro {
 	private CategoriaLibro categoria;
 	private String idioma;
 	private String fecha_publicacion;
-	private int id_editorial;
-	private int id_ubicacion;
+	private String nombreDeEditorial;
+	private String ubicacion;
 	private long isbn;
 	
 	public Libro() {
@@ -29,20 +29,20 @@ public class Libro {
 		this.categoria = CategoriaLibro.otros;
 		this.idioma = "";
 		this.fecha_publicacion ="";
-		this.id_editorial = 0;
-		this.id_ubicacion = 0;
+		this.nombreDeEditorial = "";
+		this.ubicacion = "";
 		this.isbn = 0;
 	}
 
 	public Libro(int id, String titulo, CategoriaLibro categoria, String idioma, String fecha_publicacion,
-			int id_editorial, int id_ubicacion, int isbn) {
+			String nombreDeEditorial, String ubicacion, int isbn) {
 		this.id = id;
 		this.titulo = titulo;
 		this.categoria = categoria;
 		this.idioma = idioma;
 		this.fecha_publicacion = fecha_publicacion;
-		this.id_editorial = id_editorial;
-		this.id_ubicacion = id_ubicacion;
+		this.nombreDeEditorial = nombreDeEditorial;
+		this.ubicacion = ubicacion;
 		this.isbn = isbn;
 	}
 
@@ -86,20 +86,20 @@ public class Libro {
 		this.fecha_publicacion = fecha_publicacion;
 	}
 
-	public int getId_editorial() {
-		return id_editorial;
+	public String getNombreDeEditorial() {
+		return nombreDeEditorial;
 	}
 
-	public void setId_editorial(int id_editorial) {
-		this.id_editorial = id_editorial;
+	public void setNombreDeEditorial(String nombreDeEditorial) {
+		this.nombreDeEditorial = nombreDeEditorial;
 	}
 
-	public int getId_ubicacion() {
-		return id_ubicacion;
+	public String getUbicacion() {
+		return ubicacion;
 	}
 
-	public void setId_ubicacion(int id_ubicacion) {
-		this.id_ubicacion = id_ubicacion;
+	public void setUbicacion(String ubicacion) {
+		this.ubicacion = ubicacion;
 	}
 
 	public long getIsbn() {
