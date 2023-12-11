@@ -56,53 +56,54 @@ public class LibroPanel extends JPanel {
 		this.frame = frame;
 		setLayout(null);
 		setBounds(0, 0, 1186, 711);
-						
-								// btnGuardarCambios
-								btnGuardarCambios = new JButton("Guardar Cambios");
-								btnGuardarCambios.addActionListener(new ActionListener() {
-									public void actionPerformed(ActionEvent e) {
 
-										int id = Integer.parseInt(modeloLibro.getValueAt(tableLibros.getSelectedRow(), 0).toString());
-										DataMetodos.modificarTablaLibro(id, textField_Titulo.getText(), comboBoxCategoria.getSelectedItem().toString(),
-												textField_Idioma.getText(), textField_Fecha.getText(), ((Item)comboBoxEditorial.getSelectedItem()).getIdEnLaTabla(),
-												((Item)comboBoxUbicacion.getSelectedItem()).getIdEnLaTabla(), textField_isbn.getText());
-										limpiarTextFields();
-										recargarTablaAutor();
-										disminuirTamanyo();
+		// btnGuardarCambios
+		btnGuardarCambios = new JButton("Guardar Cambios");
+		btnGuardarCambios.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 
-									}
-								});
-								
-										btnCrearLibro = new JButton("Guardar nuevo libro");
-										btnCrearLibro.addActionListener(new ActionListener() {
-											public void actionPerformed(ActionEvent e) {
+				int id = Integer.parseInt(modeloLibro.getValueAt(tableLibros.getSelectedRow(), 0).toString());
+				DataMetodos.modificarTablaLibro(id, textField_Titulo.getText(),
+						comboBoxCategoria.getSelectedItem().toString(), textField_Idioma.getText(),
+						textField_Fecha.getText(), ((Item) comboBoxEditorial.getSelectedItem()).getIdEnLaTabla(),
+						((Item) comboBoxUbicacion.getSelectedItem()).getIdEnLaTabla(), textField_isbn.getText());
+				limpiarTextFields();
+				recargarTablaAutor();
+				disminuirTamanyo();
 
-												boolean camposRellenados = todosLosCamposEstanRellenosParaCrearNuevoLibro();
-												
-												if(camposRellenados) {
-													DataMetodos.insertarLibro(textField_Titulo.getText(),comboBoxCategoria.getSelectedItem().toString(),
-															textField_Idioma.getText(), textField_Fecha.getText(),
-															((Item)comboBoxEditorial.getSelectedItem()).getIdEnLaTabla(),
-															((Item)comboBoxUbicacion.getSelectedItem()).getIdEnLaTabla(),
-															Integer.parseInt(textField_isbn.getText()));
+			}
+		});
 
-													limpiarTextFields();
-													recargarTablaAutor();
-													disminuirTamanyo();
-												}else {
-													String mensaje = "Todos los campos son necesarios. Por favor rellene todos los campos";
-											        JOptionPane.showMessageDialog(null, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
-												}
-											}
-										});
-										btnCrearLibro.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
-										btnCrearLibro.setBounds(872, 529, 220, 30);
-										add(btnCrearLibro);
-										btnCrearLibro.setVisible(false);
-								btnGuardarCambios.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
-								btnGuardarCambios.setBounds(872, 529, 220, 30);
-								add(btnGuardarCambios);
-								btnGuardarCambios.setVisible(false);
+		btnCrearLibro = new JButton("Guardar nuevo libro");
+		btnCrearLibro.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				boolean camposRellenados = todosLosCamposEstanRellenosParaCrearNuevoLibro();
+
+				if (camposRellenados) {
+					DataMetodos.insertarLibro(textField_Titulo.getText(),
+							comboBoxCategoria.getSelectedItem().toString(), textField_Idioma.getText(),
+							textField_Fecha.getText(), ((Item) comboBoxEditorial.getSelectedItem()).getIdEnLaTabla(),
+							((Item) comboBoxUbicacion.getSelectedItem()).getIdEnLaTabla(),
+							Integer.parseInt(textField_isbn.getText()));
+
+					limpiarTextFields();
+					recargarTablaAutor();
+					disminuirTamanyo();
+				} else {
+					String mensaje = "Todos los campos son necesarios. Por favor rellene todos los campos";
+					JOptionPane.showMessageDialog(null, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
+		btnCrearLibro.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
+		btnCrearLibro.setBounds(872, 529, 220, 30);
+		add(btnCrearLibro);
+		btnCrearLibro.setVisible(false);
+		btnGuardarCambios.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
+		btnGuardarCambios.setBounds(872, 529, 220, 30);
+		add(btnGuardarCambios);
+		btnGuardarCambios.setVisible(false);
 
 		// Creamos los JLabels
 		JLabel lblCodigo = new JLabel("Código ID");
@@ -194,9 +195,10 @@ public class LibroPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 
 				ArrayList<Libro> libros = DataMetodos.filtraPorCamposLibros(textFieldCod.getText(),
-						textField_Titulo.getText(), comboBoxCategoria.getSelectedItem().toString(), textField_Idioma.getText(),
-						textField_Fecha.getText(), ((Item)comboBoxEditorial.getSelectedItem()).getIdEnLaTabla(), ((Item)comboBoxUbicacion.getSelectedItem()).getIdEnLaTabla(),
-						textField_isbn.getText());
+						textField_Titulo.getText(), comboBoxCategoria.getSelectedItem().toString(),
+						textField_Idioma.getText(), textField_Fecha.getText(),
+						((Item) comboBoxEditorial.getSelectedItem()).getIdEnLaTabla(),
+						((Item) comboBoxUbicacion.getSelectedItem()).getIdEnLaTabla(), textField_isbn.getText());
 				limpiarTextFields();
 				recargarTablaAutor(libros);
 
@@ -243,7 +245,6 @@ public class LibroPanel extends JPanel {
 				textFieldCod.setVisible(true);
 				textFieldCod.setEnabled(false);
 
-				
 				// ocultar botones del panel lateral
 				btnBuscar.setVisible(false);
 				btnCrearLibro.setVisible(false);
@@ -262,7 +263,7 @@ public class LibroPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 
 				int id = Integer.parseInt(modeloLibro.getValueAt(tableLibros.getSelectedRow(), 0).toString());
-				//DataMetodos.eliminarLibro(id);
+				// DataMetodos.eliminarLibro(id);
 				DataMetodos.eliminarLibroLogicamente(id);
 				limpiarTextFields();
 				recargarTablaAutor();
@@ -357,11 +358,11 @@ public class LibroPanel extends JPanel {
 						comboBoxCategoria.setSelectedItem(categoria);
 						textField_Idioma.setText(idioma);
 						textField_Fecha.setText(fecha);
-						
+
 						//
 						Item itemEditorial = getItemPorNombre(comboBoxEditorial, editorial);
 						comboBoxEditorial.setSelectedItem(itemEditorial);
-						
+
 						Item itemUbicacion = getItemPorNombre(comboBoxUbicacion, ubicacion);
 						comboBoxUbicacion.setSelectedItem(itemUbicacion);
 						textField_isbn.setText(isbn);
@@ -381,30 +382,18 @@ public class LibroPanel extends JPanel {
 		// Deshabilitar los botones por defecto
 		btnModificar.setEnabled(false);
 		btnEliminar.setEnabled(false);
-		
-		
-		String [] categorias = {"romance",
-			    "drama",
-			    "terror",
-			    "suspense",
-			    "ciencia_ficcion",
-			    "poesia",
-			    "literatura_infantil",
-			    "aventura",
-			    "historia",
-			    "geografia",
-			    "otros"};
+
+		String[] categorias = { "romance", "drama", "terror", "suspense", "ciencia_ficcion", "poesia",
+				"literatura_infantil", "aventura", "historia", "geografia", "otros" };
 		comboBoxCategoria = new JComboBox(categorias);
 		comboBoxCategoria.setBounds(949, 181, 212, 24);
 		add(comboBoxCategoria);
-		
-		
+
 		Object[] ubicaciones = DataMetodos.obtenerUbicacionesParaJComboBox();
 		comboBoxUbicacion = new JComboBox(ubicaciones);
 		comboBoxUbicacion.setBounds(949, 336, 212, 30);
 		add(comboBoxUbicacion);
-		
-		
+
 		Object[] editoriales = DataMetodos.obtenerEditorialesParaJComboBox();
 		comboBoxEditorial = new JComboBox(editoriales);
 		comboBoxEditorial.setBounds(949, 302, 212, 24);
@@ -413,8 +402,8 @@ public class LibroPanel extends JPanel {
 		// ocultar los botones del panel derecho por defecto
 		// se irán mostrando segun lo vayamos necesitando
 		btnBuscar.setVisible(false);
-		
-		//Poner ancho a las celdas de las tablas
+
+		// Poner ancho a las celdas de las tablas
 		tableLibros.getColumnModel().getColumn(0).setPreferredWidth(25);
 		tableLibros.getColumnModel().getColumn(1).setPreferredWidth(200);
 		tableLibros.getColumnModel().getColumn(6).setPreferredWidth(230);
@@ -440,7 +429,8 @@ public class LibroPanel extends JPanel {
 		modeloLibro.setRowCount(0); // SIRVE PARA RESETEAR LA TABLA
 		for (Libro libro : libros) {
 			modeloLibro.addRow(new Object[] { libro.getId(), libro.getTitulo(), libro.getCategoria(), libro.getIdioma(),
-					libro.getFecha_publicacion(), libro.getNombreDeEditorial(), libro.getUbicacion(), libro.getIsbn() });
+					libro.getFecha_publicacion(), libro.getNombreDeEditorial(), libro.getUbicacion(),
+					libro.getIsbn() });
 		}
 
 	}
@@ -475,27 +465,25 @@ public class LibroPanel extends JPanel {
 			System.out.println("Aumentado");
 		}
 	}
-	
-	public boolean todosLosCamposEstanRellenosParaCrearNuevoLibro() {		
-		boolean resultado = !textField_Titulo.getText().equals("") && 
-				!textField_Idioma.getText().equals("") &&
-				!textField_Fecha.getText().equals("") &&
-				!textField_isbn.getText().equals("") ;
-		
+
+	public boolean todosLosCamposEstanRellenosParaCrearNuevoLibro() {
+		boolean resultado = !textField_Titulo.getText().equals("") && !textField_Idioma.getText().equals("")
+				&& !textField_Fecha.getText().equals("") && !textField_isbn.getText().equals("");
+
 		return resultado;
 	}
-	
+
 	private Item getItemPorNombre(JComboBox<Item> comboBox, String nombre) {
 		boolean encontrado = false;
-		Item item=null;
-        
-		for (int i = 0; i < comboBox.getItemCount() && encontrado ==false; i++) {
-            if (comboBox.getItemAt(i).getNombreMostradoEnElCombo().equals(nombre)) {
-                encontrado = true;
-                item = comboBox.getItemAt(i);
-            }
-        }
-		
-        return item;
-    }
+		Item item = null;
+
+		for (int i = 0; i < comboBox.getItemCount() && encontrado == false; i++) {
+			if (comboBox.getItemAt(i).getNombreMostradoEnElCombo().equals(nombre)) {
+				encontrado = true;
+				item = comboBox.getItemAt(i);
+			}
+		}
+
+		return item;
+	}
 }
