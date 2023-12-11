@@ -18,7 +18,7 @@ public class MenuPanel extends JPanel {
 		JButton btnAutores = new JButton("Autores");
 		btnAutores.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Ventana_Principal.getInstance().cambiarPanel(new AutorPanel());
+				Ventana_Principal.getInstance().cambiarPanel(new AutorPanel(null));
 			}
 		});
 		btnAutores.setBounds(42, 38, 89, 23);
@@ -27,7 +27,7 @@ public class MenuPanel extends JPanel {
 		JButton btnLibros = new JButton("Libros");
 		btnLibros.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Ventana_Principal.getInstance().cambiarPanel(new LibroPanel());
+				Ventana_Principal.getInstance().cambiarPanel(new LibroPanel(null));
 			}
 		});
 		btnLibros.setBounds(42, 108, 89, 23);

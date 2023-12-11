@@ -9,12 +9,17 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import modelo.Autor;
+import modelo.Biblioteca;
+import modelo.Item;
 import modelo.Libro;
 import modelo.Libro.CategoriaLibro;
+import modelo.Ubicacion;
+import vista.UbicacionPanel;
 
 public class DataMetodos {
 
 //============================= Metodos del Jpanel Autor ==============================================
+
 	public static ArrayList<Autor> LeerTablaAutor() {
 
 		ConectorBBDD conextor = new ConectorBBDD();
@@ -28,15 +33,15 @@ public class DataMetodos {
 		try {
 			conexion = conextor.connect();
 			statement = conexion.createStatement();
-			String query = "Select * from Autor order by id limit 100"; // porque son los primeros 100 libros que
-																		// tenemos en nuestra
+			String query = "Select * from Autor order by id_autor limit 100"; // porque son los primeros 100 libros que
+			// tenemos en nuestra
 			// base de datos
 			registro = statement.executeQuery(query);
 
 			while (registro.next()) {
 
 				Autor autor = new Autor();
-				autor.setId(registro.getInt("id"));
+				autor.setId(registro.getInt("id_autor"));
 				autor.setNombre(registro.getString("nombre"));
 				autor.setNacionalidad(registro.getString("nacionalidad"));
 				autor.setFecha_nacimiento(registro.getString("fecha_nacimiento"));
@@ -91,7 +96,7 @@ public class DataMetodos {
 
 			conexion = conextor.connect();
 
-			String query = "update autor set nombre=?, nacionalidad=?, fecha_nacimiento=? where id=?";
+			String query = "update autor set nombre=?, nacionalidad=?, fecha_nacimiento=? where id_autor=?";
 
 			preparedStatement = conexion.prepareStatement(query);
 
@@ -150,10 +155,10 @@ public class DataMetodos {
 
 		try {
 			conexion = conextor.connect();
-			String query = "Select id, nombre, nacionalidad, fecha_nacimiento from Autor where 1=1";
+			String query = "Select id_autor, nombre, nacionalidad, fecha_nacimiento from Autor where 1=1";
 
 			if (idTieneValores) {
-				query = query + " and id = ?";
+				query = query + " and id_autor = ?";
 			}
 
 			// UPPER - sirve para convertir el valor del campo en Mayuscula
@@ -171,6 +176,8 @@ public class DataMetodos {
 			if (fechaDeNacimientoTieneValores) {
 				query = query + " and fecha_nacimiento=?";
 			}
+			
+			query = query + " order by id_autor";
 
 			preparedStatement = conexion.prepareStatement(query);
 
@@ -200,7 +207,7 @@ public class DataMetodos {
 
 			while (registro.next()) {
 				Autor autor = new Autor();
-				autor.setId(registro.getInt("id"));
+				autor.setId(registro.getInt("id_autor"));
 				autor.setNombre(registro.getString("nombre"));
 				autor.setNacionalidad(registro.getString("nacionalidad"));
 				autor.setFecha_nacimiento(registro.getString("fecha_nacimiento"));
@@ -288,7 +295,7 @@ public class DataMetodos {
 				conexion = conextor.connect();
 				statement = conexion.createStatement();
 				System.out.println(id);
-				String query = String.format("delete from autor where id = %d;", id);
+				String query = String.format("delete from autor where id_autor = %d;", id);
 				int count = statement.executeUpdate(query);// esta funcion devuelve el numero de filas que han sido
 															// afectadas
 
@@ -330,21 +337,22 @@ public class DataMetodos {
 		try {
 			conexion = conextor.connect();
 			statement = conexion.createStatement();
-			String query = "Select * from libros order by id limit 100"; // porque son los primeros 100 libros que
-																			// tenemos en nuestra
+			String query = "select id_libro,titulo,categoria,idioma,fecha_publicacion,e.nombre, 'Biblioteca:' || u.id_biblioteca || ' - Pasillo:' || u.pasillo || ' - Estanteria:' || u.estanteria as \"Ubicacion\","
+					+ "\"ISBN\" from  libros l, editorial e,ubicacion u where l.id_editorial = e.id_editorial and l.id_ubicacion = u.id_ubicacion and activo = true order by id_libro"
+					+ " limit 100";
 			// base de datos
 			registro = statement.executeQuery(query);
 
 			while (registro.next()) {
 
 				Libro libro = new Libro();
-				libro.setId(registro.getInt("id"));
+				libro.setId(registro.getInt("id_libro"));
 				libro.setTitulo(registro.getString("titulo"));
 				libro.setCategoria(obtenerCategoriaLibro(registro.getString("categoria")));
 				libro.setIdioma(registro.getString("idioma"));
 				libro.setFecha_publicacion(registro.getString("fecha_publicacion"));
-				libro.setId_editorial(registro.getInt("id_editorial"));
-				libro.setId_ubicacion(registro.getInt("id_ubicacion"));
+				libro.setNombreDeEditorial(registro.getString("nombre"));
+				libro.setUbicacion(registro.getString("ubicacion"));
 				libro.setIsbn(registro.getInt("isbn"));
 				arrlLibro.add(libro);
 			}
@@ -436,7 +444,7 @@ public class DataMetodos {
 		for (Libro libro : libros) {
 
 			Object[] fila = new Object[] { libro.getId(), libro.getTitulo(), libro.getCategoria(), libro.getIdioma(),
-					libro.getFecha_publicacion(), libro.getId_editorial(), libro.getId_ubicacion(), libro.getIsbn() };
+					libro.getFecha_publicacion(), libro.getNombreDeEditorial(), libro.getUbicacion(), libro.getIsbn() };
 			arrlLibros.add(fila);
 		}
 
@@ -448,7 +456,7 @@ public class DataMetodos {
 			int id_editorial, int id_ubicacion, int isbn) {
 
 		ConectorBBDD conextor = new ConectorBBDD();
-		
+
 		PreparedStatement preparedStatement = null;
 		Connection conexion = null;
 
@@ -502,7 +510,7 @@ public class DataMetodos {
 
 	// Buscar por todos los campos
 	public static ArrayList<Libro> filtraPorCamposLibros(String id, String titulo, String categoria, String idioma,
-			String fecha_publicacion, String id_editorial, String id_ubicacion, String isbn) {
+			String fecha_publicacion, int id_editorial, int id_ubicacion, String isbn) {
 
 		// trim sirve para quitar espacios a la derecha e izquierda
 		id = id.trim();
@@ -510,8 +518,6 @@ public class DataMetodos {
 		categoria = categoria.trim();
 		idioma = idioma.trim();
 		fecha_publicacion = fecha_publicacion.trim();
-		id_editorial = id_editorial.trim();
-		id_ubicacion = id_ubicacion.trim();
 		isbn = isbn.trim();
 
 		ConectorBBDD conextor = new ConectorBBDD();
@@ -527,44 +533,42 @@ public class DataMetodos {
 		boolean categoriaTieneValores = !categoria.equals("");
 		boolean idiomaTieneValor = !idioma.equals("");
 		boolean fechaTieneValores = !fecha_publicacion.equals("");
-		boolean id_editorialTieneValores = !id_editorial.equals("");
-		boolean id_ubicacionTieneValores = !id_ubicacion.equals("");
+
 		boolean isbnTieneValores = !isbn.equals("");
 
 		try {
 			conexion = conextor.connect();
 
-			String query = "Select id, titulo, categoria, idioma, fecha_publicacion,id_editorial, id_ubicacion,\"ISBN\" from libros where 1=1";
+			String query = "select id_libro,titulo,categoria,idioma,fecha_publicacion,e.nombre, 'Biblioteca:' || u.id_biblioteca || ' - Pasillo:' || u.pasillo || ' - Estanteria:' || u.estanteria as \"Ubicacion\","
+					+ "\"ISBN\" from libros l, editorial e,ubicacion u where l.id_editorial = e.id_editorial and l.id_ubicacion = u.id_ubicacion and activo = true";
 
 			if (idTieneValores) {
-				query = query + " and id = ?";
+				query = query + " and id_libro = ?";
 			}
 
 			// UPPER - sirve para convertir el valor del campo en Mayuscula
 			// LOWER - sirve para convertir el valor del campor en minuscula
 			// si el campo de texto tiene contenido = que no este vacio
 			if (tituloTieneValores) {
-				query = query + " and upper(titulo) like ?";
+				query = query + " and lower(titulo) like ?";
 			}
 
 			// si el campo de texto tiene contenido = que no este vacio
 			if (categoriaTieneValores) {
-				query = query + " and upper(categoria) like ?";
+				query = query + " and categoria = ?";
 			}
 
 			if (idiomaTieneValor) {
-				query = query + " and upper(idioma) like ? ";
+				query = query + " and lower(idioma) like ? ";
 			}
 
 			if (fechaTieneValores) {
 				query = query + " and fecha_publicacion=?";
 			}
-			if (id_editorialTieneValores) {
-				query = query + " and id_editorial =?";
-			}
-			if (id_ubicacionTieneValores) {
-				query = query + " and id_ubicacion = ? ";
-			}
+			
+			query = query + " and l.id_editorial =?";
+			query = query + " and l.id_ubicacion = ? ";
+			
 			if (isbnTieneValores) {
 				query = query + " and \"ISBN\" = ?";
 			}
@@ -578,16 +582,17 @@ public class DataMetodos {
 			}
 
 			if (tituloTieneValores) {
-				preparedStatement.setString(indice, "%" + titulo.toUpperCase() + "%");
+				preparedStatement.setString(indice, "%" + titulo.toLowerCase() + "%");
 				indice++;
 			}
 
 			if (categoriaTieneValores) {
-				preparedStatement.setString(indice, "%" + categoria.toUpperCase() + "%");
+				preparedStatement.setObject(indice, obtenerCategoriaLibro(categoria), java.sql.Types.OTHER);
 				indice++;
 			}
 			if (idiomaTieneValor) {
-				preparedStatement.setString(indice, "%" + idioma.toUpperCase() + "%");
+				preparedStatement.setString(indice, "%" + idioma.toLowerCase() + "%");
+				indice++;
 			}
 
 			if (fechaTieneValores) {
@@ -596,15 +601,12 @@ public class DataMetodos {
 				indice++;
 			}
 
-			if (id_editorialTieneValores) {
-				preparedStatement.setInt(indice, Integer.parseInt(id_editorial));
+				preparedStatement.setInt(indice, id_editorial);
 				indice++;
-			}
 
-			if (id_ubicacionTieneValores) {
-				preparedStatement.setInt(indice, Integer.parseInt(id_ubicacion));
+				preparedStatement.setInt(indice, id_ubicacion);
 				indice++;
-			}
+			
 
 			if (isbnTieneValores) {
 				preparedStatement.setLong(indice, Long.parseLong(isbn));
@@ -615,13 +617,13 @@ public class DataMetodos {
 
 			while (registro.next()) {
 				Libro libro = new Libro();
-				libro.setId(registro.getInt("id"));
+				libro.setId(registro.getInt("id_libro"));
 				libro.setTitulo(registro.getString("titulo"));
 				libro.setCategoria(obtenerCategoriaLibro(registro.getString("categoria")));
 				libro.setIdioma(registro.getString("idioma"));
 				libro.setFecha_publicacion(registro.getString("fecha_publicacion"));
-				libro.setId_editorial(registro.getInt("id_editorial"));
-				libro.setId_ubicacion(registro.getInt("id_ubicacion"));
+				libro.setNombreDeEditorial(registro.getString("nombre"));
+				libro.setUbicacion(registro.getString("Ubicacion"));
 				libro.setIsbn(registro.getLong("ISBN"));
 				libros.add(libro);
 			}
@@ -644,8 +646,8 @@ public class DataMetodos {
 	}
 
 	public static boolean modificarTablaLibro(int id, String tituloNuevo, String categoriaNueva, String idiomaNuevo,
-			String fecha_publicacionNueva, String id_editorialNuevo, String id_ubicacionNuevo, String isbnNuevo ) {
-		
+			String fecha_publicacionNueva, int id_editorialNuevo, int id_ubicacionNuevo, String isbnNuevo) {
+
 		ConectorBBDD conextor = new ConectorBBDD();
 
 		boolean actualizado = false;
@@ -656,23 +658,22 @@ public class DataMetodos {
 
 			conexion = conextor.connect();
 
-			String query = "update libros set titulo=?, categoria_libro=?, idioma=?, fecha_publicacion=?, id_editorial =?, id_ubicacion=?,\"ISBN\"=? where id=?";
-					
-			
+			String query = "update libros set titulo=?, categoria=?, idioma=?, fecha_publicacion=?, id_editorial =?, id_ubicacion=?,\"ISBN\"=? where id_libro=?";
+
 			preparedStatement = conexion.prepareStatement(query);
 
 			preparedStatement.setString(1, tituloNuevo);
-			preparedStatement.setString(2, categoriaNueva);
-			preparedStatement.setString(3, idiomaNuevo );
+			preparedStatement.setObject(2, obtenerCategoriaLibro(categoriaNueva), java.sql.Types.OTHER);
+			preparedStatement.setString(3, idiomaNuevo);
 
 			Date date = Date.valueOf(fecha_publicacionNueva);
 			preparedStatement.setDate(4, date);
-			
-			preparedStatement.setString(5,id_editorialNuevo);
-			preparedStatement.setString(6, id_ubicacionNuevo);
-			preparedStatement.setString(7,isbnNuevo);
-			
-			preparedStatement.setInt(8,id);
+
+			preparedStatement.setInt(5, id_editorialNuevo);
+			preparedStatement.setInt(6, id_ubicacionNuevo);
+			preparedStatement.setInt(7, Integer.parseInt(isbnNuevo));
+
+			preparedStatement.setInt(8, id);
 
 			int contador = preparedStatement.executeUpdate();
 
@@ -697,7 +698,7 @@ public class DataMetodos {
 		}
 		return actualizado;
 	}
-	
+
 	public static void eliminarLibro(int id) {
 
 		ConectorBBDD conextor = new ConectorBBDD();
@@ -713,7 +714,50 @@ public class DataMetodos {
 				conexion = conextor.connect();
 				statement = conexion.createStatement();
 				System.out.println(id);
-				String query = String.format("delete from libros where id = %d;", id);
+				String query = String.format("delete from libros where id_libro = %d;", id);
+				int count = statement.executeUpdate(query);// esta funcion devuelve el numero de filas que han sido
+															// afectadas
+
+				if (count > 0) {
+					JOptionPane.showMessageDialog(null, "El proceso de eliminacion ha terminado correctamente",
+							"Confirmación de eliminacion", JOptionPane.INFORMATION_MESSAGE);
+				}
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("No se ha podido conectar con la BBDD.\n");
+		} finally {
+			try {
+				statement.close();
+				conexion.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				System.out.println("Error al cerrar.\n");
+			} catch (NullPointerException e) {
+
+			}
+
+		}
+	}
+
+
+	public static void eliminarLibroLogicamente(int id) {
+
+		ConectorBBDD conextor = new ConectorBBDD();
+
+		Statement statement = null;
+		Connection conexion = null;
+
+		try {
+			int confirmacion = JOptionPane.showConfirmDialog(null, "Esta seguro que desea eliminar la fila ??",
+					"Confirmación de eliminacion ", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+			if (confirmacion == JOptionPane.YES_OPTION) {
+				conexion = conextor.connect();
+				statement = conexion.createStatement();
+				System.out.println(id);
+				String query = String.format("Update libros set activo=false where id_libro = %d;", id);
 				int count = statement.executeUpdate(query);// esta funcion devuelve el numero de filas que han sido
 															// afectadas
 
@@ -741,5 +785,745 @@ public class DataMetodos {
 	}
 
 	
+	// ===============================================Comenzamos con Biblioteca
+	// =====================================
+
+	public static ArrayList<Biblioteca> LeerTablaBiblioteca() {
+
+		ConectorBBDD conextor = new ConectorBBDD();
+
+		ArrayList<Biblioteca> arrlBiblioteca = new ArrayList<>();
+
+		Statement statement = null;
+		ResultSet registro = null;
+		Connection conexion = null;
+
+		try {
+			conexion = conextor.connect();
+			statement = conexion.createStatement();
+			String query = "Select * from biblioteca order by id_biblioteca limit 100"; // porque son los primeros 100
+																						// libros
+			// que
+			// tenemos en nuestra
+			// base de datos
+			registro = statement.executeQuery(query);
+
+			while (registro.next()) {
+
+				Biblioteca biblioteca = new Biblioteca();
+				biblioteca.setId(registro.getInt("id_biblioteca"));
+				biblioteca.setProvincia(registro.getString("provincia"));
+				biblioteca.setCodigo_postal(registro.getInt("codigo_postal"));
+				biblioteca.setTelefono(registro.getInt("telefono"));
+				biblioteca.setComunidad_autonoma(registro.getString("comunidad_autonoma"));
+				biblioteca.setCalle(registro.getString("calle"));
+				arrlBiblioteca.add(biblioteca);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				statement.close();
+				conexion.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				System.out.println("Error al cerrar.\n");
+			} catch (NullPointerException e) {
+
+			}
+		}
+
+		return arrlBiblioteca;
+
+	}
+
+	// recogemos el arrayList de autores y luego lo metemos en un arrayList de
+	// Objetos
+	public static ArrayList<Object[]> obtenerFilasTablaBiblioteca() {
+
+		ArrayList<Biblioteca> bibliotecas = LeerTablaBiblioteca();
+
+		ArrayList<Object[]> arrlBibliotecas = new ArrayList<>();
+
+		for (Biblioteca biblioteca : bibliotecas) {
+
+			Object[] fila = new Object[] {
+
+					biblioteca.getId(), biblioteca.getProvincia(), biblioteca.getCodigo_postal(),
+					biblioteca.getTelefono(), biblioteca.getComunidad_autonoma(), biblioteca.getCalle() };
+
+			arrlBibliotecas.add(fila);
+
+		}
+
+		return arrlBibliotecas;
+	}
+
+	/// Crear libro nuevo
+	public static void insertarbiblioteca(String provincia, String codigo_Postal, String telefono,
+			String comunidad_autonoma, String calle) {
+
+		ConectorBBDD conextor = new ConectorBBDD();
+
+		PreparedStatement preparedStatement = null;
+		Connection conexion = null;
+
+		try {
+
+			conexion = conextor.connect();
+
+			String query = "insert into biblioteca (provincia, codigo_postal, telefono, comunidad_autonoma,calle)values(?,?,?,?,?);";
+
+			preparedStatement = conexion.prepareStatement(query);
+
+			preparedStatement.setString(1, provincia);
+			preparedStatement.setInt(2, Integer.parseInt(codigo_Postal));
+			preparedStatement.setInt(3, Integer.parseInt(telefono));
+			preparedStatement.setString(4, comunidad_autonoma);
+			preparedStatement.setString(5, calle);
+
+			int contador = preparedStatement.executeUpdate();
+
+			if (contador > 0) {
+				JOptionPane.showMessageDialog(null, "La Fila se ha insertado correctamente",
+						"Confirmación de los inserción", JOptionPane.INFORMATION_MESSAGE);
+			}
+
+			System.out.println("Inserción exitosa.");
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				preparedStatement.close();
+				conexion.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				System.out.println("Error al cerrar.\n");
+			} catch (NullPointerException e) {
+
+			}
+		}
+
+	}
+
+	public static boolean modificarTablaBiblioteca(int id, String provinciaNueva, String codigoPostalNuevo,
+			String telefonoNuevo, String comunidadNueva, String calleNueva) {
+
+		ConectorBBDD conextor = new ConectorBBDD();
+
+		boolean actualizado = false;
+		PreparedStatement preparedStatement = null;
+		Connection conexion = null;
+
+		try {
+
+			conexion = conextor.connect();
+
+			String query = "update biblioteca set provincia=?, codigo_postal=? , telefono=?, comunidad_autonoma=?, calle=? where id_biblioteca=?";
+
+			preparedStatement = conexion.prepareStatement(query);
+
+			preparedStatement.setString(1, provinciaNueva);
+			preparedStatement.setInt(2, Integer.parseInt(codigoPostalNuevo));
+			preparedStatement.setInt(3, Integer.parseInt(telefonoNuevo));
+			preparedStatement.setString(4, comunidadNueva);
+			preparedStatement.setString(5, calleNueva);
+
+			preparedStatement.setInt(6, id);
+
+			int contador = preparedStatement.executeUpdate();
+
+			if (contador > 0) {
+				JOptionPane.showMessageDialog(null, "La Fila se ha actualizado correctamente",
+						"Confirmación de los cambios", JOptionPane.INFORMATION_MESSAGE);
+				actualizado = true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("No se ha podido conectar con la BBDD.\n");
+		} finally {
+			try {
+				preparedStatement.close();
+				conexion.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				System.out.println("Error al cerrar.\n");
+			} catch (NullPointerException e) {
+
+			}
+		}
+		return actualizado;
+	}
+
+	// Buscar por todos los campos
+	public static ArrayList<Biblioteca> filtraPorCamposBiblioteca(String id, String provincia, String codigo_postal,
+			String telefono, String comunidad_autonoma, String calle) {
+
+		// trim sirve para quitar espacios a la derecha e izquierda
+		id = id.trim();
+		provincia = provincia.trim();
+		codigo_postal = codigo_postal.trim();
+		telefono = telefono.trim();
+		telefono = telefono.trim();
+		calle = calle.trim();
+
+		ConectorBBDD conextor = new ConectorBBDD();
+
+		ArrayList<Biblioteca> bibliotecas = new ArrayList<>();
+
+		PreparedStatement preparedStatement = null;
+		ResultSet registro = null;
+		Connection conexion = null;
+
+		boolean idTieneValores = !id.equals("");// que NO este vacio = TIENE VALORES
+		boolean provinciaTieneValores = !provincia.equals(""); // que NO este vacio = TIENE VALORES
+		boolean codigo_postalTieneValores = !codigo_postal.equals("");
+		boolean telefonoTieneValores = !telefono.equals("");
+		boolean comunidad_autonomaTieneValores = !comunidad_autonoma.equals("");
+		boolean calleTieneValores = !calle.equals("");
+
+		try {
+			conexion = conextor.connect();
+
+			String query = "Select id_biblioteca, provincia, codigo_postal, telefono, comunidad_autonoma,calle from biblioteca where 1=1";
+
+			if (idTieneValores) {
+				query = query + " and id_biblioteca = ?";
+			}
+
+			// UPPER - sirve para convertir el valor del campo en Mayuscula
+			// LOWER - sirve para convertir el valor del campor en minuscula
+			// si el campo de texto tiene contenido = que no este vacio
+			if (provinciaTieneValores) {
+				query = query + " and lower(provincia) like ?";
+			}
+
+			// si el campo de texto tiene contenido = que no este vacio
+			if (codigo_postalTieneValores) {
+				query = query + " and codigo_postal = ?";
+			}
+
+			if (telefonoTieneValores) {
+				query = query + " and telefono = ? ";
+			}
+
+			if (comunidad_autonomaTieneValores) {
+				query = query + " and lower(comunidad_autonoma) like ?";
+			}
+			if (calleTieneValores) {
+				query = query + " and lower(calle) like ?";
+			}
+			
+			query = query + " order by id_biblioteca";
+
+			preparedStatement = conexion.prepareStatement(query);
+
+			int indice = 1;
+			if (idTieneValores) {
+				preparedStatement.setInt(indice, Integer.parseInt(id));
+				indice++;
+			}
+
+			if (provinciaTieneValores) {
+				preparedStatement.setString(indice, "%" + provincia.toLowerCase() + "%");
+				indice++;
+			}
+
+			if (codigo_postalTieneValores) {
+				preparedStatement.setInt(indice, Integer.parseInt(codigo_postal));
+				indice++;
+			}
+			if (telefonoTieneValores) {
+				preparedStatement.setInt(indice, Integer.parseInt(telefono));
+			}
+
+			if (comunidad_autonomaTieneValores) {
+				preparedStatement.setString(indice, "%" + comunidad_autonoma.toLowerCase() + "%");
+				indice++;
+			}
+
+			if (calleTieneValores) {
+				preparedStatement.setString(indice, "%" + calle.toLowerCase() + "%");
+				indice++;
+			}
+
+			registro = preparedStatement.executeQuery();
+
+			while (registro.next()) {
+				Biblioteca biblioteca = new Biblioteca();
+
+				biblioteca.setId(registro.getInt("id_biblioteca"));
+				biblioteca.setProvincia(registro.getString("provincia"));
+				biblioteca.setCodigo_postal(registro.getInt("codigo_postal"));
+				biblioteca.setTelefono(registro.getInt("telefono"));
+				biblioteca.setComunidad_autonoma(registro.getString("comunidad_autonoma"));
+				biblioteca.setCalle(registro.getString("calle"));
+				bibliotecas.add(biblioteca);
+
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				preparedStatement.close();
+				conexion.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				System.out.println("Error al cerrar.\n");
+			} catch (NullPointerException e) {
+
+			}
+		}
+
+		return bibliotecas;
+	}
+
+	public static void eliminarBiblioteca(int id) {
+
+		ConectorBBDD conextor = new ConectorBBDD();
+
+		Statement statement = null;
+		Connection conexion = null;
+
+		try {
+			int confirmacion = JOptionPane.showConfirmDialog(null, "Esta seguro que desea eliminar la fila ??",
+					"Confirmación de eliminacion ", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+			if (confirmacion == JOptionPane.YES_OPTION) {
+				conexion = conextor.connect();
+				statement = conexion.createStatement();
+				System.out.println(id);
+				String query = String.format("delete from biblioteca where id_biblioteca = %d;", id);
+				int count = statement.executeUpdate(query);// esta funcion devuelve el numero de filas que han sido
+															// afectadas
+
+				if (count > 0) {
+					JOptionPane.showMessageDialog(null, "El proceso de eliminacion ha terminado correctamente",
+							"Confirmación de eliminacion", JOptionPane.INFORMATION_MESSAGE);
+				}
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("No se ha podido conectar con la BBDD.\n");
+		} finally {
+			try {
+				statement.close();
+				conexion.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				System.out.println("Error al cerrar.\n");
+			} catch (NullPointerException e) {
+
+			}
+		}
+
+		// ======================================== Metodos Ubicacion
+		// ======================================
+
+	}
+
+	public static ArrayList<Ubicacion> LeerTablaUbicacion() {
+
+		ConectorBBDD conextor = new ConectorBBDD();
+
+		ArrayList<Ubicacion> arrlUbicacion = new ArrayList<>();
+
+		Statement statement = null;
+		ResultSet registro = null;
+		Connection conexion = null;
+
+		try {
+			conexion = conextor.connect();
+			statement = conexion.createStatement();
+			String query = "Select id_ubicacion,pasillo,estanteria,id_biblioteca from ubicacion order by id_ubicacion limit 100"; // porque
+																																	// son
+																																	// los
+																																	// primeros
+																																	// 100
+			// libros
+			// que
+			// tenemos en nuestra
+			// base de datos
+			registro = statement.executeQuery(query);
+
+			while (registro.next()) {
+				Ubicacion ubicacion = new Ubicacion();
+				ubicacion.setUbicacion(registro.getInt("id_ubicacion"));
+				ubicacion.setPasillo(registro.getInt("pasillo"));
+				ubicacion.setEstanteria(registro.getInt("estanteria"));
+				ubicacion.setId_biblioteca(registro.getInt("id_biblioteca"));
+				arrlUbicacion.add(ubicacion);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				statement.close();
+				conexion.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				System.out.println("Error al cerrar.\n");
+			} catch (NullPointerException e) {
+
+			}
+		}
+
+		return arrlUbicacion;
+
+	}
+
+	// recogemos el arrayList de autores y luego lo metemos en un arrayList de
+	// Objetos
+	public static ArrayList<Object[]> obtenerFilasTablaUbicacion() {
+
+		ArrayList<Ubicacion> ubicaciones = LeerTablaUbicacion();
+
+		ArrayList<Object[]> arrlUbicaciones = new ArrayList<>();
+
+		for (Ubicacion ubicacion : ubicaciones) {
+
+			Object[] fila = new Object[] {
+
+					ubicacion.getUbicacion(), ubicacion.getPasillo(), ubicacion.getEstanteria(),
+					ubicacion.getId_biblioteca() };
+
+			arrlUbicaciones.add(fila);
+
+		}
+
+		return arrlUbicaciones;
+	}
+
+	/// Crear Ubicacion nuevo
+	public static void insertarUbicacion(String pasillo, String estanteria, String id_biblioteca) {
+
+		ConectorBBDD conextor = new ConectorBBDD();
+
+		PreparedStatement preparedStatement = null;
+		Connection conexion = null;
+
+		try {
+
+			conexion = conextor.connect();
+
+			String query = "insert into ubicacion ( pasillo, estanteria, id_biblioteca)values(?,?,?);";
+
+			preparedStatement = conexion.prepareStatement(query);
+
+			preparedStatement.setInt(1, Integer.parseInt(pasillo));
+			preparedStatement.setInt(2, Integer.parseInt(estanteria));
+			preparedStatement.setInt(3, Integer.parseInt(id_biblioteca));
+
+			int contador = preparedStatement.executeUpdate();
+
+			if (contador > 0) {
+				JOptionPane.showMessageDialog(null, "La Fila se ha insertado correctamente",
+						"Confirmación de los inserción", JOptionPane.INFORMATION_MESSAGE);
+			}
+
+			System.out.println("Inserción exitosa.");
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				preparedStatement.close();
+				conexion.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				System.out.println("Error al cerrar.\n");
+			} catch (NullPointerException e) {
+
+			}
+		}
+
+	}
+
+	// Buscar por todos los campos
+	public static ArrayList<Ubicacion> filtraPorCamposUbicacion(String id, String pasillo, String estanteria,
+			String id_biblioteca) {
+
+		// trim sirve para quitar espacios a la derecha e izquierda
+		id = id.trim();
+		pasillo = pasillo.trim();
+		estanteria = estanteria.trim();
+		id_biblioteca = id_biblioteca.trim();
+
+		ConectorBBDD conextor = new ConectorBBDD();
+
+		ArrayList<Ubicacion> Ubicaciones = new ArrayList<>();
+
+		PreparedStatement preparedStatement = null;
+		ResultSet registro = null;
+		Connection conexion = null;
+
+		boolean idTieneValores = !id.equals("");// que NO este vacio = TIENE VALORES
+		boolean pasilloTieneValores = !pasillo.equals(""); // que NO este vacio = TIENE VALORES
+		boolean estanteriaTieneValores = !estanteria.equals("");
+		boolean id_bibliotecaTieneValores = !id_biblioteca.equals("");
+
+		try {
+			conexion = conextor.connect();
+
+			String query = "Select id_ubicacion, pasillo, estanteria, id_biblioteca from ubicacion where 1=1";
+
+			if (idTieneValores) {
+				query = query + " and id_biblioteca = ?";
+			}
+
+			// UPPER - sirve para convertir el valor del campo en Mayuscula
+			// LOWER - sirve para convertir el valor del campor en minuscula
+			// si el campo de texto tiene contenido = que no este vacio
+			if (pasilloTieneValores) {
+				query = query + " and pasillo = ?";
+			}
+
+			// si el campo de texto tiene contenido = que no este vacio
+			if (estanteriaTieneValores) {
+				query = query + " and estanteria = ?";
+			}
+
+			if (id_bibliotecaTieneValores) {
+				query = query + " and id_biblioteca = ? ";
+			}
+
+			preparedStatement = conexion.prepareStatement(query);
+
+			int indice = 1;
+			if (idTieneValores) {
+				preparedStatement.setInt(indice, Integer.parseInt(id));
+				indice++;
+			}
+
+			if (pasilloTieneValores) {
+				preparedStatement.setInt(indice, Integer.parseInt(pasillo));
+				indice++;
+			}
+
+			if (estanteriaTieneValores) {
+				preparedStatement.setInt(indice, Integer.parseInt(estanteria));
+				indice++;
+			}
+			if (id_bibliotecaTieneValores) {
+				preparedStatement.setInt(indice, Integer.parseInt(id_biblioteca));
+			}
+
+			registro = preparedStatement.executeQuery();
+
+			while (registro.next()) {
+				Ubicacion ubicacion = new Ubicacion();
+
+				ubicacion.setUbicacion(registro.getInt("id_ubicacion"));
+				ubicacion.setPasillo(registro.getInt("pasillo"));
+				ubicacion.setEstanteria(registro.getInt("estanteria"));
+				ubicacion.setUbicacion(registro.getInt("id_biblioteca"));
+				Ubicaciones.add(ubicacion);
+
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				preparedStatement.close();
+				conexion.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				System.out.println("Error al cerrar.\n");
+			} catch (NullPointerException e) {
+
+			}
+		}
+
+		return Ubicaciones;
+	}
 	
+	public static boolean modificarTablaUbicacion(int id, String pasilloNueva, String estanteriaNueva,
+			String id_bibliotecaNueva) {
+
+		ConectorBBDD conextor = new ConectorBBDD();
+
+		boolean actualizado = false;
+		PreparedStatement preparedStatement = null;
+		Connection conexion = null;
+
+		try {
+
+			conexion = conextor.connect();
+
+			String query = "update ubicacion set pasillo=?, estanteria=? , id_biblioteca=? where id_ubicacion=?";
+
+			preparedStatement = conexion.prepareStatement(query);
+
+			preparedStatement.setInt(1, Integer.parseInt(pasilloNueva));
+			preparedStatement.setInt(2, Integer.parseInt(estanteriaNueva));
+			preparedStatement.setInt(3, Integer.parseInt(id_bibliotecaNueva));
+			
+			preparedStatement.setInt(4, id);
+
+			int contador = preparedStatement.executeUpdate();
+
+			if (contador > 0) {
+				JOptionPane.showMessageDialog(null, "La Fila se ha actualizado correctamente",
+						"Confirmación de los cambios", JOptionPane.INFORMATION_MESSAGE);
+				actualizado = true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("No se ha podido conectar con la BBDD.\n");
+		} finally {
+			try {
+				preparedStatement.close();
+				conexion.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				System.out.println("Error al cerrar.\n");
+			} catch (NullPointerException e) {
+
+			}
+		}
+		return actualizado;
+	}
+	
+
+	public static void eliminarUbicacion(int id) {
+
+		ConectorBBDD conextor = new ConectorBBDD();
+
+		Statement statement = null;
+		Connection conexion = null;
+
+		try {
+			int confirmacion = JOptionPane.showConfirmDialog(null, "Esta seguro que desea eliminar la fila ??",
+					"Confirmación de eliminacion ", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+			if (confirmacion == JOptionPane.YES_OPTION) {
+				conexion = conextor.connect();
+				statement = conexion.createStatement();
+				System.out.println(id);
+				String query = String.format("delete from ubicacion where id_ubicacion = %d;", id);
+				int count = statement.executeUpdate(query);// esta funcion devuelve el numero de filas que han sido
+															// afectadas
+
+				if (count > 0) {
+					JOptionPane.showMessageDialog(null, "El proceso de eliminacion ha terminado correctamente",
+							"Confirmación de eliminacion", JOptionPane.INFORMATION_MESSAGE);
+				}
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("No se ha podido conectar con la BBDD.\n");
+		} finally {
+			try {
+				statement.close();
+				conexion.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				System.out.println("Error al cerrar.\n");
+			} catch (NullPointerException e) {
+
+			}
+		}
+	}
+	
+	public static Object[] obtenerUbicacionesParaJComboBox() {
+
+		ConectorBBDD conextor = new ConectorBBDD();
+
+		ArrayList<Item> ubicaciones = new ArrayList<>();
+
+		Statement statement = null;
+		ResultSet registro = null;
+		Connection conexion = null;
+
+		try {
+			conexion = conextor.connect();
+			statement = conexion.createStatement();
+			String query = "Select id_ubicacion,"
+					+ "'Biblioteca:' || id_biblioteca || ' - Pasillo:' || pasillo || ' - Estanteria:' || estanteria as \"Ubicacion\" "
+					+ "from ubicacion "
+					+ "order by id_ubicacion "
+					+ "limit 100"; 
+			
+			// libros
+			// que
+			// tenemos en nuestra
+			// base de datos
+			registro = statement.executeQuery(query);
+
+			while (registro.next()) {
+				Item item = new Item();
+				item.setNombreMostradoEnElCombo(registro.getString("Ubicacion"));
+				item.setIdEnLaTabla(registro.getInt("id_ubicacion"));				
+				ubicaciones.add(item);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				statement.close();
+				conexion.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				System.out.println("Error al cerrar.\n");
+			} catch (NullPointerException e) {
+
+			}
+		}
+
+		return ubicaciones.toArray();
+
+	}
+	
+	public static Object[] obtenerEditorialesParaJComboBox() {
+
+		ConectorBBDD conector = new ConectorBBDD();
+
+		ArrayList<Item> editoriales = new ArrayList<>();
+
+		Statement statement = null;
+		ResultSet registro = null;
+		Connection conexion = null;
+
+		try {
+			conexion = conector.connect();
+			statement = conexion.createStatement();
+			String query = "Select id_editorial,nombre "
+					+ "from editorial "
+					+ "order by id_editorial "
+					+ "limit 100"; 
+			
+			registro = statement.executeQuery(query);
+
+			while (registro.next()) {
+				Item item = new Item();
+				item.setNombreMostradoEnElCombo(registro.getString("nombre"));
+				item.setIdEnLaTabla(registro.getInt("id_editorial"));				
+				editoriales.add(item);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				statement.close();
+				conexion.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				System.out.println("Error al cerrar.\n");
+			} catch (NullPointerException e) {
+
+			}
+		}
+
+		return editoriales.toArray();
+
+	}
 }
