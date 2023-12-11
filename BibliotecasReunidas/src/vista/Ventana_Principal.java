@@ -13,16 +13,13 @@ import java.io.IOException;
 import java.awt.CardLayout;
 
 public class Ventana_Principal extends JFrame {
-	
-	
+
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	public String[] datos;
 	public Usuario usuario;
 	private static Ventana_Principal instancia;
 
-	
-	
 	private Ventana_Principal() {
 		//Para conectarnos a la bbdd ni bien se inicia la app
 		ConectorBBDD con = new ConectorBBDD();
@@ -59,30 +56,50 @@ public class Ventana_Principal extends JFrame {
 		
 		
 		
-//		if(usuario != null) {
-//			Login login = new Login();
-//			login.usuario = usuario;
-//			MenuPanel mp = new MenuPanel();
-//			cambiarPanel(mp);
-//		}else {
+	if(usuario != null) {
+			Login login = new Login();
+			login.usuario = usuario;
+			MenuPanel mp = new MenuPanel();
+			cambiarPanel(mp);
+		}else {
 			Login login = new Login();
 			cambiarPanel(login);
+		}
+		
+		/*
+		LibroPanel libropanel = new LibroPanel(this);
+		cambiarPanel(libropanel);
+	
+		
+		//this indica quien es el frame que contiene el panel
+		AutorPanel autorPanel = new AutorPanel(this);
+		cambiarPanel(autorPanel);
+		
+		
+		UbicacionPanel ubicacionPanel = new UbicacionPanel(this);
+		cambiarPanel(ubicacionPanel);
+		
+		
+		
+		BibliotecaPanel bibliotecaPabel = new BibliotecaPanel(this);
+		cambiarPanel(bibliotecaPabel);
+		*/
 		
 	}
-	
+
 	/*
 	 * Creamos una instancia de la ventana
 	 */
 	public static Ventana_Principal getInstance() {
 		if (instancia == null) {
-            instancia = new Ventana_Principal();
-        }
-        return instancia;
+			instancia = new Ventana_Principal();
+		}
+		return instancia;
 	}
-	
+
 	/*
-	 * Metodo que se encarga de reemplazar el panel actual con el que se le pasa por parametro.
-	 * Se le llama, por ejemplo, al pulsar un boton.
+	 * Metodo que se encarga de reemplazar el panel actual con el que se le pasa por
+	 * parametro. Se le llama, por ejemplo, al pulsar un boton.
 	 */
 	public void cambiarPanel(JPanel panelNuevo) {
 		contentPane.removeAll();
@@ -90,6 +107,5 @@ public class Ventana_Principal extends JFrame {
 		contentPane.repaint();
 		contentPane.revalidate();
 	}
-	
-	
+
 }
