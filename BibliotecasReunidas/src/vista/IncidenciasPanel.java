@@ -37,6 +37,7 @@ public class IncidenciasPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	public int idSocioSeleccionado = SocioPanel.idSocioSeleccionado;
 	public static int idIncidenciaSeleccionada;
+	private String estadoActualIncidencia;
 	private JTable tablaIncidencias;
 	private ConectorBBDD con;
 	public JComboBox comboBox;
@@ -44,7 +45,6 @@ public class IncidenciasPanel extends JPanel {
 	public JTextArea textArea;
 	public JButton btnBorrarIncidencia;
 	public JButton btnModificarIncidencia;
-	private String estadoActualIncidencia;
 	public JRadioButton rdbtnMostrarTodas;
 	public JRadioButton rdbtnMostrarNoResueltas;
 	public JRadioButton rdbtnMostrarResueltas;
@@ -267,7 +267,7 @@ public class IncidenciasPanel extends JPanel {
 	
 	public void rellenarTablaAlPrincipio() {
 		con = new ConectorBBDD();
-		for(Incidencias i : con.consultarIncidencias(idSocioSeleccionado)) {
+		for(Incidencias i : con.consultarIncidenciasPorIdSocio(idSocioSeleccionado)) {
 			modeloTablaIncidencias.addRow(new Object[] {
 					i.getId(),
 					i.getId_libro(),

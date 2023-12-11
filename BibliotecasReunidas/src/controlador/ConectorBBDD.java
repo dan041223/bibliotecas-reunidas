@@ -304,7 +304,7 @@ public class ConectorBBDD {
 		}
 	}
 	
-	public ArrayList<Incidencias> consultarIncidencias(int id) {
+	public ArrayList<Incidencias> consultarIncidenciasPorIdSocio(int id) {
 		ArrayList<Incidencias> incidencias = new ArrayList<Incidencias>();
 		Incidencias incidencia;
 		Connection con = connect();
@@ -392,6 +392,96 @@ public class ConectorBBDD {
 				incidencia.setId_libro(rs.getInt("id_libro"));
 				incidencia.setNombre_libro(rs.getString("titulo"));
 				incidencia.setId_socio(idSocioSeleccionado);
+				incidencia.setTexto_incidencias(rs.getString("descripcion_incidencia"));
+				if(rs.getBoolean("estado_incidencia") == false) {
+					incidencia.setEstadoIncidencia("No resuelta");
+				}else if(rs.getBoolean("estado_incidencia") == true) {
+					incidencia.setEstadoIncidencia("Resuelta");
+				}
+				incidencias.add(incidencia);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return incidencias;
+	}
+	
+	public ArrayList<Incidencias> consultarTodasIncidencias() {
+		ArrayList<Incidencias> incidencias = new ArrayList<Incidencias>();
+		Incidencias incidencia;
+		Connection con = connect();
+
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(
+					"SELECT incidencias.id_socio, socios.nombre, id_incidencia, incidencias.id_libro, libros.titulo, incidencias.descripcion_incidencia, estado_incidencia "
+							+ "FROM incidencias, libros, socios "
+							+ "WHERE libros.id_libro = incidencias.id_libro "
+							+ "AND incidencias.id_socio = socios.id_socio"
+							+ " ORDER BY id_incidencia;");
+			while (rs.next()) {
+				incidencia = new Incidencias();
+				incidencia.setId(rs.getInt("id_incidencia"));
+				incidencia.setId_libro(rs.getInt("id_libro"));
+				incidencia.setNombre_libro(rs.getString("titulo"));
+				incidencia.setId_socio(rs.getInt("id_socio"));
+				incidencia.setNombre_socio(rs.getString("nombre"));
+				incidencia.setTexto_incidencias(rs.getString("descripcion_incidencia"));
+				if(rs.getBoolean("estado_incidencia") == false) {
+					incidencia.setEstadoIncidencia("No resuelta");
+				}else if(rs.getBoolean("estado_incidencia") == true) {
+					incidencia.setEstadoIncidencia("Resuelta");
+				}
+				incidencias.add(incidencia);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return incidencias;
+	}
+
+	public ArrayList<Incidencias> tablaIncidenciasSegunParametros(int id_socio, int id_libro, String estado) {
+		ArrayList<Incidencias> incidencias = new ArrayList<Incidencias>();
+		Incidencias incidencia;
+		Connection con = connect();
+		String query = "SELECT incidencias.id_socio, socios.nombre, id_incidencia, incidencias.id_libro, libros.titulo, incidencias.descripcion_incidencia, estado_incidencia "
+				+ "FROM incidencias, libros, socios "
+				+ "WHERE libros.id_libro = incidencias.id_libro "
+				+ "AND incidencias.id_socio = socios.id_socio ";
+		if(id_socio != 0) {
+			query += ("AND incidencias.id_socio = " + id_socio + " ");
+		}else {
+		}
+		if(id_libro != 0) {
+			query += ("AND libros.id_libro = " + id_libro + " ");
+		}
+		if(estado != null) {
+			if(estado.equalsIgnoreCase("todas")) {
+				
+			}else if(estado.equalsIgnoreCase("resueltas")) {
+				query += ("AND estado_incidencia = 'TRUE' ");
+			}else if(estado.equalsIgnoreCase("no resueltas")) {
+				query += ("AND estado_incidencia = 'FALSE' ");
+			}
+			
+		}
+		
+		query.concat(";");
+
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				incidencia = new Incidencias();
+				incidencia.setId(rs.getInt("id_incidencia"));
+				incidencia.setId_libro(rs.getInt("id_libro"));
+				incidencia.setNombre_libro(rs.getString("titulo"));
+				incidencia.setId_socio(rs.getInt("id_socio"));
+				incidencia.setNombre_socio(rs.getString("nombre"));
 				incidencia.setTexto_incidencias(rs.getString("descripcion_incidencia"));
 				if(rs.getBoolean("estado_incidencia") == false) {
 					incidencia.setEstadoIncidencia("No resuelta");

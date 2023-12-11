@@ -6,25 +6,28 @@ public class Incidencias {
 	
 	private int id;
 	private int id_socio;
+	public String nombre_socio;
 	private int id_libro;
 	private String nombre_libro;
 	private String texto_incidencias;
 	public String estadoIncidencia;
 	
-	
 	public Incidencias() {
 		super();
 	}
-	public Incidencias(int id, int id_socio, int id_libro, String nombre_libro, String texto_incidencias,
-			String estadoIncidencia) {
+	
+	public Incidencias(int id, int id_socio, String nombre_socio, int id_libro, String nombre_libro,
+			String texto_incidencias, String estadoIncidencia) {
 		super();
 		this.id = id;
 		this.id_socio = id_socio;
+		this.nombre_socio = nombre_socio;
 		this.id_libro = id_libro;
 		this.nombre_libro = nombre_libro;
 		this.texto_incidencias = texto_incidencias;
 		this.estadoIncidencia = estadoIncidencia;
 	}
+	
 	public int getId() {
 		return id;
 	}
@@ -36,6 +39,12 @@ public class Incidencias {
 	}
 	public void setId_socio(int id_socio) {
 		this.id_socio = id_socio;
+	}
+	public String getNombre_socio() {
+		return nombre_socio;
+	}
+	public void setNombre_socio(String nombre_socio) {
+		this.nombre_socio = nombre_socio;
 	}
 	public int getId_libro() {
 		return id_libro;
@@ -61,6 +70,5 @@ public class Incidencias {
 	public void setEstadoIncidencia(String estadoIncidencia) {
 		this.estadoIncidencia = estadoIncidencia;
 	}
-	
 	
 }
