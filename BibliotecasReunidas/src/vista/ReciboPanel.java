@@ -106,7 +106,7 @@ public class ReciboPanel extends JPanel {
 		
 		JLabel lblMonto = new JLabel("Monto");
 		lblMonto.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblMonto.setBounds(820, 291, 95, 25);
+		lblMonto.setBounds(830, 289, 95, 25);
 		add(lblMonto);
 		
 		JLabel lblFechaRecibo = new JLabel("Fecha Recibo");

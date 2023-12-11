@@ -48,13 +48,12 @@ public class PrestamoPanel extends JPanel {
 		        String idSocioStr = textFieldIdSocio.getText();
 		        String idLibroStr = textFieldIdLibro.getText();
 		        String idUsuarioStr = textFieldIdUsuario.getText();
-		        String fechaEntregaStr = textFieldFechaEntrega.getText();
 
 		        int idSocio = Integer.parseInt(idSocioStr);
 		        int idLibro = Integer.parseInt(idLibroStr);
 		        int idUsuario = Integer.parseInt(idUsuarioStr);
 
-		        DataMetodos.insertarPrestamo(idSocio, idLibro, idUsuario, fechaEntregaStr);
+		        DataMetodos.insertarPrestamo(idSocio, idLibro, idUsuario);
 
 		        //
 				limpiarTextFields();

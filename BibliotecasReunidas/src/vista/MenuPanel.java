@@ -39,7 +39,7 @@ public class MenuPanel extends JPanel {
 				Ventana_Principal.getInstance().cambiarPanel(new PrestamoPanel());
 			}
 		});
-		btnPrestamos.setBounds(573, 399, 89, 23);
+		btnPrestamos.setBounds(573, 371, 89, 23);
 		add(btnPrestamos);
 		
 		JButton btnSocios = new JButton("Socios");
@@ -66,7 +66,7 @@ public class MenuPanel extends JPanel {
 				Ventana_Principal.getInstance().cambiarPanel(new BibliotecaPanel(null));
 			}
 		});
-		btnBiblio.setBounds(812, 399, 89, 23);
+		btnBiblio.setBounds(812, 371, 89, 23);
 		add(btnBiblio);
 		
 		JButton btnIncidencias = new JButton("Incidencias");
@@ -75,8 +75,17 @@ public class MenuPanel extends JPanel {
 				Ventana_Principal.getInstance().cambiarPanel(new TodasIncidenciasPanel());
 			}
 		});
-		btnIncidencias.setBounds(695, 467, 89, 23);
+		btnIncidencias.setBounds(812, 439, 89, 23);
 		add(btnIncidencias);
+		
+		JButton btnUsuario = new JButton("Usuarios");
+		btnUsuario.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Ventana_Principal.getInstance().cambiarPanel(new UsuarioPanel());
+			}
+		});
+		btnUsuario.setBounds(573, 439, 89, 23);
+		add(btnUsuario);
 
 	}
 }
