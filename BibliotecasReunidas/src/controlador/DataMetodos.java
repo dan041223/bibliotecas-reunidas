@@ -6,13 +6,21 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
+
 import javax.swing.JOptionPane;
 import modelo.Autor;
 import modelo.Biblioteca;
 import modelo.Item;
 import modelo.Libro;
 import modelo.Libro.CategoriaLibro;
+import modelo.Prestamo;
 import modelo.Ubicacion;
 import vista.UbicacionPanel;
 
@@ -1121,8 +1129,7 @@ public class DataMetodos {
 			}
 		}
 
-		// ======================================== Metodos Ubicacion
-		// ======================================
+		// ======================================== Metodos Ubicacion ======================================
 
 	}
 
@@ -1524,6 +1531,136 @@ public class DataMetodos {
 		}
 
 		return editoriales.toArray();
+
+	}
+	
+	// ======================================== Metodos Prestamos ======================================
+	
+	public static ArrayList<Prestamo> LeerTablaPrestamo() {
+
+		ConectorBBDD conextor = new ConectorBBDD();
+
+		ArrayList<Prestamo> arrlPrestamo= new ArrayList<>();
+
+		Statement statement = null;
+		ResultSet registro = null;
+		Connection conexion = null;
+
+		try {
+			conexion = conextor.connect();
+			statement = conexion.createStatement();
+			String query = "Select * from prestamo order by id_prestamo";
+			registro = statement.executeQuery(query);
+
+			while (registro.next()) {
+
+				Prestamo pres = new Prestamo();
+				pres.setId(registro.getInt("id_prestamo"));
+				pres.setId_socio(registro.getInt("id_socio"));
+				pres.setId_libro(registro.getInt("id_libro"));
+				pres.setId_usuario(registro.getInt("id_usuario"));
+				pres.setFecha_prestamo(registro.getString("fecha_prestamo"));
+				pres.setFecha_prevista(registro.getString("fecha_prevista"));
+				pres.setFecha_entrega(registro.getString("fecha_entrega"));
+
+				arrlPrestamo.add(pres);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				statement.close();
+				conexion.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				System.out.println("Error al cerrar.\n");
+			} catch (NullPointerException e) {
+
+			}
+		}
+
+		return arrlPrestamo;
+
+	}
+	
+	public static ArrayList<Object[]> obtenerFilasTablaPrestamos() {
+
+		ArrayList<Prestamo> prestamos = LeerTablaPrestamo();
+
+		ArrayList<Object[]> arrlPrestamos = new ArrayList<>();
+
+		for (Prestamo prestamo : prestamos) {
+
+			Object[] fila = new Object[] {
+
+					prestamo.getId(), prestamo.getId_socio(), prestamo.getId_libro(), prestamo.getId_usuario(), prestamo.getFecha_prestamo(), 
+					prestamo.getFecha_prevista(), prestamo.getFecha_entrega()};
+
+			arrlPrestamos.add(fila);
+
+		}
+
+		return arrlPrestamos;
+	}
+	
+	/// Crear prestamo nuevo
+	public static void insertarPrestamo(int cod_socio, int cod_libro, int cod_user, String fecha_entrega) {
+
+	    ConectorBBDD conector = new ConectorBBDD();
+
+	    PreparedStatement preparedStatement = null;
+	    Connection conexion = null;
+
+	    try {
+	        conexion = conector.connect();
+
+	        String query = "insert into prestamo (id_socio, id_libro, id_usuario, fecha_prestamo, fecha_pevista, fecha_entrega) values(?,?,?,?,?,?);";
+
+	        preparedStatement = conexion.prepareStatement(query);
+
+	        preparedStatement.setInt(1, cod_socio);
+	        preparedStatement.setInt(2, cod_libro);
+	        preparedStatement.setInt(3, cod_user);
+
+	        LocalDate fechaActual = LocalDate.now();
+
+	        LocalDate fecha15DiasDespues = fechaActual.plusDays(15);
+
+	        java.sql.Date fechaPrestamoSql = java.sql.Date.valueOf(fechaActual);
+	        java.sql.Date fecha15DiasDespuesSql = java.sql.Date.valueOf(fecha15DiasDespues);
+
+	        preparedStatement.setDate(4, fechaPrestamoSql);
+	        preparedStatement.setDate(5, fecha15DiasDespuesSql);
+	        
+	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy"); // Ajusta el formato según tu entrada
+	        LocalDate fechaEntregaLocalDate = LocalDate.parse(fecha_entrega, formatter);
+	        java.sql.Date fechaEntregaSql = java.sql.Date.valueOf(fechaEntregaLocalDate);
+
+	        preparedStatement.setDate(6, fechaEntregaSql);
+
+	        int contador = preparedStatement.executeUpdate();
+
+	        if (contador > 0) {
+				JOptionPane.showMessageDialog(null, "La Fila se ha insertado correctamente",
+						"Confirmación de los inserción", JOptionPane.INFORMATION_MESSAGE);
+			}
+
+			System.out.println("Inserción exitosa.");
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				preparedStatement.close();
+				conexion.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				System.out.println("Error al cerrar.\n");
+			} catch (NullPointerException e) {
+
+			}
+		}
 
 	}
 }
