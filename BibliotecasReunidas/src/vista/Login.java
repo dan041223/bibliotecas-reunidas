@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.awt.event.ActionEvent;
+import java.awt.Color;
 import java.awt.Font;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
@@ -31,7 +32,9 @@ public class Login extends JPanel {
 	 * Crea el panel
 	 */
 	public Login(JFrame frame) {
+		setBackground(new Color(128, 128, 192));
 		this.frame = frame;
+		this.frame.setBackground(Color.MAGENTA);
 		setLayout(null);
 		
 		JLabel lblLoginTitle = new JLabel("INICIO DE SESION");
@@ -60,6 +63,7 @@ public class Login extends JPanel {
 		add(lblContrasena);
 		
 		JButton btnAcceder = new JButton("Acceder");
+		btnAcceder.setOpaque(false);
 		btnAcceder.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		/*
 		 * Detecta cuando pulsas el boton, haciendo los siguientes casos:
@@ -94,7 +98,7 @@ public class Login extends JPanel {
 							fw = new FileWriter(fileSesionRecordada);
 							bw = new BufferedWriter(fw);
 							
-							bw.write(correo + ";" + password);
+							bw.write(correo);
 							
 							bw.close();
 							fw.close();
@@ -115,6 +119,7 @@ public class Login extends JPanel {
 		add(lblNewLabel_1);
 		
 		chckbxRecordarme = new JCheckBox("Recordarme");
+		chckbxRecordarme.setOpaque(false);
 		chckbxRecordarme.setBounds(622, 422, 97, 23);
 		add(chckbxRecordarme);
 
@@ -125,9 +130,8 @@ public class Login extends JPanel {
         super.addNotify();
         // Este método se llama cuando el componente es añadido al contenedor
         Ventana_Principal vp = Ventana_Principal.getInstance();
-        if(vp.datos != null) {
-            tfCorreo.setText(vp.datos[0]);
-            tfPassword.setText(vp.datos[1]);
+        if(vp.dato != null) {
+            tfCorreo.setText(vp.dato);
             chckbxRecordarme.setSelected(true);
         }
         File flSesionRecordada = new File("Ficheros\\SesionRecordada");

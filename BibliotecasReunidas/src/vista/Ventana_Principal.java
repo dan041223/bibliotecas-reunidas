@@ -16,7 +16,7 @@ public class Ventana_Principal extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	public String[] datos;
+	public String dato;
 	public Usuario usuario;
 	private static Ventana_Principal instancia;
 
@@ -44,7 +44,7 @@ public class Ventana_Principal extends JFrame {
 			fr = new FileReader(fileSesionRecordada);
 			br = new BufferedReader(fr);
 			if (br.ready()) {
-				datos = br.readLine().split(";");
+				dato = br.readLine();
 			}
 		} catch (FileNotFoundException e) {
 			//e.printStackTrace();
