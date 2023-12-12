@@ -13,57 +13,94 @@ import javax.swing.table.DefaultTableModel;
 
 import controlador.DataMetodos;
 import modelo.Biblioteca;
+import modelo.Libro;
+import modelo.Socio;
+import modelo.Usuario;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JComboBox;
 
 public class PrestamoPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	DefaultTableModel modeloPrestamo = new DefaultTableModel();
 	private JTable TablaPrestamos;
-	private JTextField textFieldIdSocio;
-	private JTextField textFieldIdLibro;
-	private JTextField textFieldIdUsuario;
-	private JTextField textFieldFechaEntrega;
 	
 	private JFrame frame;
+	
+	// Creamos los JButton
+    JButton btnAnyadir;
+    JButton btnModificar;
+    JButton btnEliminar;
+    private JTextField textFieldFechaEntrega;
+    private JTextField textFieldFechaPrevista;
+    private JTextField textFieldFechaPrestamo;
+    private JTextField textFieldIdPrestamo;
 
 	public PrestamoPanel() {
 		this.frame = frame;
 		setLayout(null);
+			
+		textFieldIdPrestamo = new JTextField();
+		textFieldIdPrestamo.setText("");
+		textFieldIdPrestamo.setEnabled(false);
+		textFieldIdPrestamo.setColumns(10);
+		textFieldIdPrestamo.setBounds(939, 193, 164, 25);
+		add(textFieldIdPrestamo);
+		
+		JComboBox comboBoxSocio = new JComboBox();
+		for(Socio socio: DataMetodos.obtenerCodigoSocio()) {
+			comboBoxSocio.addItem(socio.getId());
+		}
+		comboBoxSocio.setBounds(939, 249, 164, 22);
+		add(comboBoxSocio);
+		
+		JComboBox comboBoxLibro = new JComboBox();
+		for(Libro libro: DataMetodos.obtenerCodigoLibro()) {
+			comboBoxLibro.addItem(libro.getId());
+		}
+		comboBoxLibro.setBounds(939, 300, 164, 22);
+		add(comboBoxLibro);
+		
+		JComboBox comboBoxUsuario = new JComboBox();
+		for(Usuario usuario: DataMetodos.obtenerCodigoUsuario()) {
+			comboBoxUsuario.addItem(usuario.getId());
+		}
+		comboBoxUsuario.setBounds(939, 351, 164, 22);
+		add(comboBoxUsuario);
+		
+		textFieldFechaEntrega = new JTextField();
+		textFieldFechaEntrega.setText("");
+		textFieldFechaEntrega.setBounds(939, 505, 164, 25);
+		add(textFieldFechaEntrega);
+		textFieldFechaEntrega.setColumns(10);
+		
+		textFieldFechaPrevista = new JTextField();
+		textFieldFechaPrevista.setText("");
+		textFieldFechaPrevista.setEnabled(false);
+		textFieldFechaPrevista.setColumns(10);
+		textFieldFechaPrevista.setBounds(939, 453, 164, 25);
+		add(textFieldFechaPrevista);
+		
+		textFieldFechaPrestamo = new JTextField();
+		textFieldFechaPrestamo.setText("");
+		textFieldFechaPrestamo.setEnabled(false);
+		textFieldFechaPrestamo.setColumns(10);
+		textFieldFechaPrestamo.setBounds(939, 403, 164, 25);
+		add(textFieldFechaPrestamo);
 		
 		JLabel lblPrestamos = new JLabel("Prestamos");
 		lblPrestamos.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 20));
 		lblPrestamos.setBounds(31, 41, 159, 40);
 		add(lblPrestamos);
-		
-		
-		
-		JButton btnConfirmarCambios = new JButton("Confirmar Cambios");
-		btnConfirmarCambios.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-		        String idSocioStr = textFieldIdSocio.getText();
-		        String idLibroStr = textFieldIdLibro.getText();
-		        String idUsuarioStr = textFieldIdUsuario.getText();
-
-		        int idSocio = Integer.parseInt(idSocioStr);
-		        int idLibro = Integer.parseInt(idLibroStr);
-		        int idUsuario = Integer.parseInt(idUsuarioStr);
-
-		        DataMetodos.insertarPrestamo(idSocio, idLibro, idUsuario);
-
-		        //
-				limpiarTextFields();
-				recargarTablaPrestamo();	
-			}
-		});
-		btnConfirmarCambios.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 20));
-		btnConfirmarCambios.setBounds(921, 453, 246, 46);
-		add(btnConfirmarCambios);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(31, 148, 742, 485);
@@ -86,83 +123,120 @@ public class PrestamoPanel extends JPanel {
 		btnAnyadir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				aumentarTamanyo();
-				btnConfirmarCambios.setVisible(true);
+				
+				 int codigoSocio = (int) comboBoxSocio.getSelectedItem();
+				 int codigoLibro = (int) comboBoxLibro.getSelectedItem();
+				 int codigoUsuario = (int) comboBoxUsuario.getSelectedItem();
+
+		        DataMetodos.insertarPrestamo(codigoSocio, codigoLibro, codigoUsuario);
+
+				recargarTablaPrestamo();
+				disminuirTamanyo();
 			}
 		});
 		btnAnyadir.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
 		btnAnyadir.setBounds(31, 92, 148, 40);
 		add(btnAnyadir);
-
-		JButton btnBuscar_Superior = new JButton("Buscar");
-		btnBuscar_Superior.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
-		btnBuscar_Superior.setBounds(625, 92, 148, 40);
-		add(btnBuscar_Superior);
 		
-		textFieldIdSocio = new JTextField();
-		textFieldIdSocio.setColumns(10);
-		textFieldIdSocio.setBounds(973, 144, 194, 25);
-		add(textFieldIdSocio);
 		
-		textFieldIdLibro = new JTextField();
-		textFieldIdLibro.setColumns(10);
-		textFieldIdLibro.setBounds(973, 199, 194, 25);
-		add(textFieldIdLibro);
+		JButton btnModificar = new JButton("Modificar");
+		btnModificar.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
+		btnModificar.setBounds(227, 92, 148, 40);
+		add(btnModificar);
 		
-		textFieldIdUsuario = new JTextField();
-		textFieldIdUsuario.setColumns(10);
-		textFieldIdUsuario.setBounds(973, 248, 194, 25);
-		add(textFieldIdUsuario);
-		
-		textFieldFechaEntrega = new JTextField();
-		textFieldFechaEntrega.setColumns(10);
-		textFieldFechaEntrega.setBounds(973, 360, 194, 25);
-		add(textFieldFechaEntrega);
-		
-		recargarTablaPrestamo();
+		JButton btnEliminar = new JButton("Eliminar");
+		btnEliminar.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
+		btnEliminar.setBounds(421, 92, 148, 40);
+		add(btnEliminar);
 		
 		JLabel lblCodigo_1 =new JLabel("Codigo Socio");
 		lblCodigo_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblCodigo_1.setBounds(817, 148, 95, 25);
+		lblCodigo_1.setBounds(798, 246, 95, 25);
 		add(lblCodigo_1);
 		
 		JLabel lblCodigo_2 = new JLabel("Codigo Libro");
 		lblCodigo_2.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblCodigo_2.setBounds(817, 197, 95, 25);
+		lblCodigo_2.setBounds(798, 297, 95, 25);
 		add(lblCodigo_2);
 		
 		JLabel lblCodigo_3 = new JLabel("Codigo Usuario");
 		lblCodigo_3.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblCodigo_3.setBounds(809, 246, 114, 25);
+		lblCodigo_3.setBounds(798, 348, 114, 25);
 		add(lblCodigo_3);
 		
-		JLabel lblCodigo_6 = new JLabel("Fecha de entrega");
-		lblCodigo_6.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblCodigo_6.setBounds(797, 358, 114, 25);
-		add(lblCodigo_6);
+		JLabel lblFechaEntrega = new JLabel("Fecha Entrega");
+		lblFechaEntrega.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblFechaEntrega.setBounds(798, 503, 114, 25);
+		add(lblFechaEntrega);
 		
-		JButton btnEliminar = new JButton("Eliminar");
-		btnEliminar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int id = Integer.parseInt(modeloPrestamo.getValueAt(TablaPrestamos.getSelectedRow(), 0).toString());
-				DataMetodos.eliminarPrestamo(id);
-				limpiarTextFields();
-				recargarTablaPrestamo();
-			}
-		});
-		btnEliminar.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
-		btnEliminar.setEnabled(false);
-		btnEliminar.setBounds(225, 92, 148, 40);
-		add(btnEliminar);
+		JLabel lblFechaPrevista = new JLabel("Fecha Prevista");
+		lblFechaPrevista.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblFechaPrevista.setBounds(798, 453, 114, 25);
+		add(lblFechaPrevista);
+		
+		JLabel lblFechaPrestamo = new JLabel("Fecha Prestamo");
+		lblFechaPrestamo.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblFechaPrestamo.setBounds(798, 401, 114, 25);
+		add(lblFechaPrestamo);
+		
+		JLabel lblCodigo_1_1 = new JLabel("Codigo Prestamo");
+		lblCodigo_1_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblCodigo_1_1.setBounds(798, 191, 131, 25);
+		add(lblCodigo_1_1);
+		
+		 // Obtener el modelo de selección de la tabla
+ 		ListSelectionModel selectionModel = TablaPrestamos.getSelectionModel();
+ 		// Agregar un ListSelectionListener al modelo de selección
+ 		selectionModel.addListSelectionListener(new ListSelectionListener() {
+ 			@Override
+ 			 public void valueChanged(ListSelectionEvent e) {
+ 		        if (!e.getValueIsAdjusting()) {
+ 		            if (TablaPrestamos.getSelectedRow() >= 0) {
+ 		                String id = modeloPrestamo.getValueAt(TablaPrestamos.getSelectedRow(), 0).toString();
+ 		                String id_socio = modeloPrestamo.getValueAt(TablaPrestamos.getSelectedRow(), 1).toString();
+ 		                String id_libro = modeloPrestamo.getValueAt(TablaPrestamos.getSelectedRow(), 2).toString();
+ 		                String id_usuario = modeloPrestamo.getValueAt(TablaPrestamos.getSelectedRow(), 3).toString();
+ 		                String fecha_prestamo = modeloPrestamo.getValueAt(TablaPrestamos.getSelectedRow(), 4).toString();
+ 		                String fecha_prevista = modeloPrestamo.getValueAt(TablaPrestamos.getSelectedRow(), 5).toString();
+ 		                String fecha_entrega = "No entregado"; // Valor predeterminado si está vacío
 
+ 		                // Verifica si la columna 6 no está vacía antes de intentar obtener su valor
+ 		                Object valorColumna6 = modeloPrestamo.getValueAt(TablaPrestamos.getSelectedRow(), 6);
+ 		                if (valorColumna6 != null) {
+ 		                    fecha_entrega = valorColumna6.toString();
+ 		                }
+
+ 		                textFieldIdPrestamo.setText(id);
+ 		                comboBoxSocio.setSelectedItem(id_socio);
+ 		                comboBoxLibro.setSelectedItem(id_libro);
+ 		                comboBoxUsuario.setSelectedItem(id_usuario);
+ 		                textFieldFechaPrestamo.setText(fecha_prestamo);
+ 		                textFieldFechaPrevista.setText(fecha_prevista);
+ 		                textFieldFechaEntrega.setText(fecha_entrega);
+
+ 		                // Habilitar y deshabilitar campos según sea necesario
+ 		                btnEliminar.setEnabled(true);
+ 		                btnModificar.setEnabled(true);
+ 		                btnAnyadir.setEnabled(false);
+ 		            }
+ 		        }
+ 		    }
+ 		});
+		
+		recargarTablaPrestamo();
+		btnModificar.setEnabled(false);
+		btnEliminar.setEnabled(false);
+		textFieldIdPrestamo.setEnabled(false);	
+		textFieldFechaPrestamo.setEnabled(false);	
+		textFieldFechaPrevista.setEnabled(false);	
+		textFieldFechaEntrega.setEnabled(false);	
+	
 	}
 	
 	// ====================== metodos para esta tablas==============
 
 		private void limpiarTextFields() {
-			textFieldIdSocio.setText("");
-			textFieldIdLibro.setText("");
-			textFieldIdUsuario.setText("");
-			textFieldFechaEntrega.setText("");
+			
 		}
 
 		private void recargarTablaPrestamo() {
@@ -174,6 +248,15 @@ public class PrestamoPanel extends JPanel {
 			}
 
 		}
+		
+		private void disminuirTamanyo() {
+	        if (frame != null) {
+	            int nuevoAncho = 810;
+	            int nuevoAlto = frame.getHeight();
+	            frame.setSize(nuevoAncho, nuevoAlto);
+	            System.out.println("Disminuido");
+	        }
+	    }
 		
 		private void aumentarTamanyo() {
 			if (frame != null) {
