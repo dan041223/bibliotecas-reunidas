@@ -13,6 +13,9 @@ import controlador.DataMetodos;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.JComboBox;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -36,6 +39,7 @@ public class UsuarioPanel extends JPanel {
     JButton btnModificar;
     JButton btnEliminar;
     JComboBox<String> comboBoxPerfil; // Corregido el tipo de JComboBox
+    private JTextField textFieldId;
 
     public UsuarioPanel() {
         setLayout(null);
@@ -46,7 +50,7 @@ public class UsuarioPanel extends JPanel {
         add(lblUsuarios);
 
         JScrollPane scrollPane = new JScrollPane();
-        scrollPane.setBounds(45, 100, 757, 540);
+        scrollPane.setBounds(25, 100, 808, 540);
         add(scrollPane);
 
         btnAnyadir = new JButton("Añadir");
@@ -77,11 +81,56 @@ public class UsuarioPanel extends JPanel {
         add(btnAnyadir);
 
         btnModificar = new JButton("Modificar");
+        btnModificar.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		aumentarTamanyo();
+    			
+        		// Obtener valores de los JTextField y JComboBox
+        		int id = Integer.parseInt(textFieldId.getText());
+                String nombre = textFieldNombre.getText();
+                int telefono = Integer.parseInt(textFieldTelefono.getText());
+                String email = textFieldEmail.getText();
+                String calle = textFieldCalle.getText();
+                int codigoPostal = Integer.parseInt(textFieldPostal.getText());
+                String dni = textFieldDni.getText();
+                String perfil = (String) comboBoxPerfil.getSelectedItem();
+                String password = textFieldPassword.getText();
+
+                // Lógica para insertar el nuevo usuario en la base de datos
+                DataMetodos.modificarUsuario(id, nombre, telefono, email, calle, codigoPostal, dni, perfil, password);
+        		
+        		limpiarTextFields();
+                recargarTablaUsuario();
+                disminuirTamanyo();
+                btnAnyadir.setEnabled(true);
+                btnEliminar.setEnabled(false);
+				btnModificar.setEnabled(false);
+        	}
+        });
         btnModificar.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
         btnModificar.setBounds(377, 50, 117, 37);
         add(btnModificar);
 
         btnEliminar = new JButton("Eliminar");
+        btnEliminar.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		aumentarTamanyo();
+        			
+        		// Obtener valores de los JTextField y JComboBox
+        		int id = Integer.parseInt(textFieldId.getText());
+        		String perfil = (String) comboBoxPerfil.getSelectedItem();
+        		
+                // Lógica para insertar el nuevo usuario en la base de datos
+                DataMetodos.eliminarUsuario(id, perfil);
+        		
+        		limpiarTextFields();
+                recargarTablaUsuario();
+                disminuirTamanyo();
+                btnAnyadir.setEnabled(true);
+                btnEliminar.setEnabled(false);
+				btnModificar.setEnabled(false);
+        	}
+        });
         btnEliminar.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
         btnEliminar.setBounds(558, 50, 117, 37);
         add(btnEliminar);
@@ -99,6 +148,11 @@ public class UsuarioPanel extends JPanel {
                 "DNI", "Tipo de perfil", "Contraseña" });
         tableUsuario.setModel(modeloUsuario);
 
+        textFieldId = new JTextField();
+		textFieldId.setColumns(10);
+		textFieldId.setBounds(969, 71, 212, 30);
+		add(textFieldId);
+        
         textFieldNombre = new JTextField();
         textFieldNombre.setColumns(10);
         textFieldNombre.setBounds(969, 112, 212, 30);
@@ -178,6 +232,65 @@ public class UsuarioPanel extends JPanel {
         lblContrasea.setFont(new Font("Tahoma", Font.PLAIN, 14));
         lblContrasea.setBounds(843, 485, 89, 30);
         add(lblContrasea);
+        
+     // Obtener el modelo de selección de la tabla
+ 		ListSelectionModel selectionModel = tableUsuario.getSelectionModel();
+ 		// Agregar un ListSelectionListener al modelo de selección
+ 		selectionModel.addListSelectionListener(new ListSelectionListener() {
+ 			@Override
+ 			public void valueChanged(ListSelectionEvent e) {
+ 				if (!e.getValueIsAdjusting()) {
+					// Habilito estos botones
+ 					btnEliminar.setEnabled(true);
+					btnModificar.setEnabled(true);
+					
+	 				if (tableUsuario.getSelectedRow() >= 0) {// si tenemos una fila seleccionada
+	 				// volcar los campos de la fila en los textfields correspondientes
+						String id = modeloUsuario.getValueAt(tableUsuario.getSelectedRow(), 0).toString();
+						String nombre = modeloUsuario.getValueAt(tableUsuario.getSelectedRow(), 1).toString();
+						String telefono = modeloUsuario.getValueAt(tableUsuario.getSelectedRow(), 2).toString();
+						String email = modeloUsuario.getValueAt(tableUsuario.getSelectedRow(), 3).toString();
+						String calle = modeloUsuario.getValueAt(tableUsuario.getSelectedRow(), 4).toString();
+						String codigo_postal = modeloUsuario.getValueAt(tableUsuario.getSelectedRow(), 5).toString();
+						String dni = modeloUsuario.getValueAt(tableUsuario.getSelectedRow(), 6).toString();
+						String tipo_perfil = modeloUsuario.getValueAt(tableUsuario.getSelectedRow(), 7).toString();
+						String password = modeloUsuario.getValueAt(tableUsuario.getSelectedRow(), 8).toString();
+	
+						textFieldId.setText(id);
+						textFieldNombre.setText(nombre);
+						textFieldTelefono.setText(telefono);
+						textFieldEmail.setText(email);
+						textFieldCalle.setText(calle);
+						textFieldPostal.setText(codigo_postal);
+						textFieldDni.setText(dni);
+						comboBoxPerfil.setSelectedItem(tipo_perfil);
+						textFieldPassword.setText(password);
+						
+						// Habilitar campos
+						btnEliminar.setEnabled(true);
+						btnModificar.setEnabled(true);
+						
+						//Desabilitar campos
+						btnAnyadir.setEnabled(false);
+	 				}
+ 				}
+ 			}
+ 		});
+        
+        recargarTablaUsuario();
+        btnModificar.setEnabled(false);
+		btnEliminar.setEnabled(false);
+		textFieldId.setEnabled(false);
+		
+		JLabel lblId = new JLabel("Id");
+		lblId.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblId.setBounds(843, 69, 89, 30);
+		add(lblId);
+
+		tableUsuario.getColumnModel().getColumn(0).setPreferredWidth(25);
+		tableUsuario.getColumnModel().getColumn(1).setPreferredWidth(50);
+		tableUsuario.getColumnModel().getColumn(5).setPreferredWidth(30);
+		tableUsuario.getColumnModel().getColumn(6).setPreferredWidth(60);
     }
 
     // ====================== metodos para esta tablas==============
