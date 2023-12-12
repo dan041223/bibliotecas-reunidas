@@ -6,14 +6,24 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
+
 import javax.swing.JOptionPane;
 import modelo.Autor;
 import modelo.Biblioteca;
 import modelo.Item;
 import modelo.Libro;
 import modelo.Libro.CategoriaLibro;
+import modelo.Prestamo;
 import modelo.Ubicacion;
+import modelo.Usuario;
+import modelo.Usuario.TIPO_PERFIL;
 import vista.UbicacionPanel;
 
 public class DataMetodos {
@@ -1121,8 +1131,7 @@ public class DataMetodos {
 			}
 		}
 
-		// ======================================== Metodos Ubicacion
-		// ======================================
+		// ======================================== Metodos Ubicacion ======================================
 
 	}
 
@@ -1526,4 +1535,306 @@ public class DataMetodos {
 		return editoriales.toArray();
 
 	}
+	
+	// ======================================== Metodos Prestamos ======================================
+	
+	public static ArrayList<Prestamo> LeerTablaPrestamo() {
+
+		ConectorBBDD conextor = new ConectorBBDD();
+
+		ArrayList<Prestamo> arrlPrestamo= new ArrayList<>();
+
+		Statement statement = null;
+		ResultSet registro = null;
+		Connection conexion = null;
+
+		try {
+			conexion = conextor.connect();
+			statement = conexion.createStatement();
+			String query = "Select * from prestamo order by id_prestamo";
+			registro = statement.executeQuery(query);
+
+			while (registro.next()) {
+
+				Prestamo pres = new Prestamo();
+				pres.setId(registro.getInt("id_prestamo"));
+				pres.setId_socio(registro.getInt("id_socio"));
+				pres.setId_libro(registro.getInt("id_libro"));
+				pres.setId_usuario(registro.getInt("id_usuario"));
+				pres.setFecha_prestamo(registro.getString("fecha_prestamo"));
+				pres.setFecha_prevista(registro.getString("fecha_prevista"));
+				pres.setFecha_entrega(registro.getString("fecha_entrega"));
+
+				arrlPrestamo.add(pres);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				statement.close();
+				conexion.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				System.out.println("Error al cerrar.\n");
+			} catch (NullPointerException e) {
+
+			}
+		}
+
+		return arrlPrestamo;
+
+	}
+	
+	public static ArrayList<Object[]> obtenerFilasTablaPrestamos() {
+
+		ArrayList<Prestamo> prestamos = LeerTablaPrestamo();
+
+		ArrayList<Object[]> arrlPrestamos = new ArrayList<>();
+
+		for (Prestamo prestamo : prestamos) {
+
+			Object[] fila = new Object[] {
+
+					prestamo.getId(), prestamo.getId_socio(), prestamo.getId_libro(), prestamo.getId_usuario(), prestamo.getFecha_prestamo(), 
+					prestamo.getFecha_prevista(), prestamo.getFecha_entrega()};
+
+			arrlPrestamos.add(fila);
+
+		}
+
+		return arrlPrestamos;
+	}
+	
+	/// Crear prestamo nuevo
+	public static void insertarPrestamo(int cod_socio, int cod_libro, int cod_user ) {
+
+	    ConectorBBDD conector = new ConectorBBDD();
+
+	    PreparedStatement preparedStatement = null;
+	    Connection conexion = null;
+
+	    try {
+	        conexion = conector.connect();
+
+	        String query = "insert into prestamo (id_socio, id_libro, id_usuario, fecha_prestamo, fecha_pevista) values(?,?,?,?,?,?);";
+
+	        preparedStatement = conexion.prepareStatement(query);
+
+	        preparedStatement.setInt(1, cod_socio);
+	        preparedStatement.setInt(2, cod_libro);
+	        preparedStatement.setInt(3, cod_user);
+
+	        LocalDate fechaActual = LocalDate.now();
+
+	        LocalDate fecha15DiasDespues = fechaActual.plusDays(15);
+
+	        java.sql.Date fechaPrestamoSql = java.sql.Date.valueOf(fechaActual);
+	        java.sql.Date fecha15DiasDespuesSql = java.sql.Date.valueOf(fecha15DiasDespues);
+
+	        preparedStatement.setDate(4, fechaPrestamoSql);
+	        preparedStatement.setDate(5, fecha15DiasDespuesSql);
+
+	        int contador = preparedStatement.executeUpdate();
+
+	        if (contador > 0) {
+				JOptionPane.showMessageDialog(null, "La Fila se ha insertado correctamente",
+						"Confirmación de los inserción", JOptionPane.INFORMATION_MESSAGE);
+			}
+
+			System.out.println("Inserción exitosa.");
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				preparedStatement.close();
+				conexion.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				System.out.println("Error al cerrar.\n");
+			} catch (NullPointerException e) {
+
+			}
+		}
+
+	}
+	
+	public static void eliminarPrestamo(int id) {
+
+		ConectorBBDD conextor = new ConectorBBDD();
+
+		Statement statement = null;
+		Connection conexion = null;
+
+		try {
+			int confirmacion = JOptionPane.showConfirmDialog(null, "Esta seguro que desea eliminar la fila ??",
+					"Confirmación de eliminacion ", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+			if (confirmacion == JOptionPane.YES_OPTION) {
+				conexion = conextor.connect();
+				statement = conexion.createStatement();
+				System.out.println(id);
+				String query = String.format("delete from prestamo where id_biblioteca = %d;", id);
+				int count = statement.executeUpdate(query);// esta funcion devuelve el numero de filas que han sido
+															// afectadas
+
+				if (count > 0) {
+					JOptionPane.showMessageDialog(null, "El proceso de eliminacion ha terminado correctamente",
+							"Confirmación de eliminacion", JOptionPane.INFORMATION_MESSAGE);
+				}
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("No se ha podido conectar con la BBDD.\n");
+		} finally {
+			try {
+				statement.close();
+				conexion.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				System.out.println("Error al cerrar.\n");
+			} catch (NullPointerException e) {
+
+			}
+		}
+	}
+	
+	// ======================================== Metodos Usuarios ======================================
+	
+	public static ArrayList<Usuario> LeerTablaUsuario() {
+
+		ConectorBBDD conextor = new ConectorBBDD();
+
+		ArrayList<Usuario> arrlUsuario= new ArrayList<>();
+
+		Statement statement = null;
+		ResultSet registro = null;
+		Connection conexion = null;
+
+		try {
+			conexion = conextor.connect();
+			statement = conexion.createStatement();
+			String query = "Select * from usuario order by id_usuario";
+			registro = statement.executeQuery(query);
+
+			while (registro.next()) {
+
+				Usuario user = new Usuario();
+				user.setId(registro.getInt("id_usuario"));
+				user.setNombre(registro.getString("nombre"));
+				user.setTelefono(registro.getInt("telefono"));
+				user.setEmail(registro.getString("email"));
+				user.setCodigo_postal(registro.getInt("codigo_postal"));
+				user.setDni(registro.getString("dni"));
+				user.setTipo_perfil(obtenerTipoPerfil(registro.getString("tipo_perfil")));
+				user.setPassword(registro.getString("contraseña"));
+
+				arrlUsuario.add(user);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				statement.close();
+				conexion.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				System.out.println("Error al cerrar.\n");
+			} catch (NullPointerException e) {
+
+			}
+		}
+
+		return arrlUsuario;
+
+	}
+	
+	public static TIPO_PERFIL obtenerTipoPerfil(String perfil) {
+		TIPO_PERFIL result = null;
+
+		switch (perfil.toUpperCase()) {
+		case "administrativo":
+			result = TIPO_PERFIL.ADMINISTRATIVO;
+			break;
+
+		case "administrador":
+			result = TIPO_PERFIL.ADMINISTRATIVO;
+			break;
+		}
+		return result;
+	}
+	
+	public static ArrayList<Object[]> obtenerFilasTablaUsuario() {
+
+		ArrayList<Usuario> usuarios = LeerTablaUsuario();
+
+		ArrayList<Object[]> arrlUsuarios = new ArrayList<>();
+
+		for (Usuario usuario : usuarios) {
+
+			Object[] fila = new Object[] {
+
+					usuario.getId(), usuario.getNombre(), usuario.getTelefono(), usuario.getEmail(), usuario.getCodigo_postal(),
+					usuario.getDni(), usuario.getTipo_perfil(), usuario.getPassword()};
+
+			arrlUsuarios.add(fila);
+
+		}
+
+		return arrlUsuarios;
+	}
+	
+	/// Crear usuario nuevo
+		public static void insertarUsuario(String nombre, int telefono, String email,
+				String calle, int codigoPostal, String dni, String perfil, String password) {
+
+			ConectorBBDD conextor = new ConectorBBDD();
+
+			PreparedStatement preparedStatement = null;
+			Connection conexion = null;
+
+			try {
+
+				conexion = conextor.connect();
+
+				String query = "insert into usuario (nombre, telefono, email, calle, codigo_postal, dni, tipo_perfil, password)values(?,?,?,?,?,?,?,?);";
+
+				preparedStatement = conexion.prepareStatement(query);
+
+				preparedStatement.setString(1, nombre);
+				preparedStatement.setInt(2, telefono);
+				preparedStatement.setString(3, email);
+				preparedStatement.setString(4, calle);
+				preparedStatement.setInt(5, codigoPostal);
+				preparedStatement.setString(6, dni);
+				preparedStatement.setString(7, perfil);
+				preparedStatement.setString(8, password);
+
+				int contador = preparedStatement.executeUpdate();
+
+				if (contador > 0) {
+					JOptionPane.showMessageDialog(null, "La Fila se ha insertado correctamente",
+							"Confirmación de los inserción", JOptionPane.INFORMATION_MESSAGE);
+				}
+
+				System.out.println("Inserción exitosa.");
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					preparedStatement.close();
+					conexion.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+					System.out.println("Error al cerrar.\n");
+				} catch (NullPointerException e) {
+
+				}
+			}
+
+		}
 }
