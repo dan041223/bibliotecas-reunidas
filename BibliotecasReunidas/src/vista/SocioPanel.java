@@ -136,11 +136,14 @@ public class SocioPanel extends JPanel {
 	public JButton btnModificar;
 	public static int idSocio;
 	
+	private JFrame frame;
+
 
 	/**
 	 * Create the panel.
 	 */
-	public SocioPanel() {
+	public SocioPanel(JFrame frame) {
+		this.frame = frame;
 		setLayout(null);
 		
 		JButton btnAgregarAdministrativo = new JButton("AgregarAdministrativo");
@@ -185,7 +188,7 @@ public class SocioPanel extends JPanel {
 				}
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					Ventana_Principal.getInstance().cambiarPanel(new Login());
+					Ventana_Principal.getInstance().cambiarPanel(new Login(frame));
 				}
 			});
 			imgs.setBounds(0, 0, 47, 40);
@@ -206,7 +209,7 @@ public class SocioPanel extends JPanel {
 				}
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					Ventana_Principal.getInstance().cambiarPanel(new MenuPanel());
+					Ventana_Principal.getInstance().cambiarPanel(new MenuPanel(frame));
 				}
 			});
 			add(lblCerrarSesion);
@@ -307,7 +310,7 @@ public class SocioPanel extends JPanel {
 				public void actionPerformed(ActionEvent e) {
 					Ventana_Principal vp = Ventana_Principal.getInstance();
 					JDialog ventanaIncidencias = new JDialog(vp, "Incidencias", true);
-					ventanaIncidencias.getContentPane().add(new IncidenciasPanel());
+					ventanaIncidencias.getContentPane().add(new IncidenciasPanel(frame));
 					ventanaIncidencias.setSize(1119, 550);
 					ventanaIncidencias.setVisible(true);
 				}

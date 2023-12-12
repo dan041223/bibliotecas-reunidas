@@ -1,5 +1,6 @@
 package vista;
 
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -11,6 +12,7 @@ import javax.swing.JTextField;
 public class ReciboPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
+
 	private JTable TablaRecibos;
 	private JTextField textField;
 	private JTextField textField_1;
@@ -19,9 +21,11 @@ public class ReciboPanel extends JPanel {
 	private JTextField textField_4;
 	private JTextField textField_5;
 
+
 	/**
 	 * Create the panel.
 	 */
+
 	public ReciboPanel() {
 		setLayout(null);
 		

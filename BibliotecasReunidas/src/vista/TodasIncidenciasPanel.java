@@ -24,6 +24,7 @@ import modelo.Libro;
 import modelo.Socio;
 
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -46,6 +47,8 @@ public class TodasIncidenciasPanel extends JPanel {
 	public JButton btnResolver;
 	public int idIncidenciaSeleccionada;
 	private String estadoActualIncidencia;
+	private JFrame frame;
+
 	DefaultTableModel modeloTablaIncidencias = new DefaultTableModel() {
 		@Override
 		public boolean isCellEditable(int row, int column) {
@@ -56,7 +59,8 @@ public class TodasIncidenciasPanel extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public TodasIncidenciasPanel() {
+	public TodasIncidenciasPanel(JFrame frame) {
+		this.frame = frame;
 		setLayout(null);
 		
 		JLabel lblCerrarSesion = new JLabel("Volver al menu");
@@ -71,7 +75,7 @@ public class TodasIncidenciasPanel extends JPanel {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				Ventana_Principal.getInstance().cambiarPanel(new MenuPanel());
+				Ventana_Principal.getInstance().cambiarPanel(new MenuPanel(frame));
 			}
 		});
 		lblCerrarSesion.setFont(new Font("Tahoma", Font.BOLD, 15));
