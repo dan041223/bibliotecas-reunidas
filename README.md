@@ -1,7 +1,7 @@
 # BIBLIOTECAS REUNIDAS
 Aplicación para la gestión de las bibliotecas de la empresa *Bibliotecas Reunidas*
 ---
-## Mediante esta aplicación, los usuarios, divididos en *Administrador* y *Administrativo* podrán gestionar los siguientes ámbitos:
+## Mediante esta aplicación, los usuarios, divididos en *Administrador* y *Administrativo*, podrán gestionar los siguientes ámbitos:
 - Usuarios
 - Libros
 - Bibliotecas
