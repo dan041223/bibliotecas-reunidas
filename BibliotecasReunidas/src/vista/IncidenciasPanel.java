@@ -72,7 +72,7 @@ public class IncidenciasPanel extends JPanel {
 		add(lblIncidencias);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(356, 11, 729, 502);
+		scrollPane.setBounds(10, 93, 786, 502);
 		add(scrollPane);
 		
 		
@@ -115,7 +115,7 @@ public class IncidenciasPanel extends JPanel {
 				JOptionPane.showMessageDialog(vp, "Se ha agregado satisafactoriamente");
 			}
 		});
-		btnCrearIncidencia.setBounds(10, 456, 89, 23);
+		btnCrearIncidencia.setBounds(820, 507, 89, 23);
 		add(btnCrearIncidencia);
 		
 		btnBorrarIncidencia = new JButton("Borrar");
@@ -126,7 +126,7 @@ public class IncidenciasPanel extends JPanel {
 				rellenarTablaAlPrincipio();
 			}
 		});
-		btnBorrarIncidencia.setBounds(174, 490, 172, 23);
+		btnBorrarIncidencia.setBounds(984, 541, 172, 23);
 		btnBorrarIncidencia.setEnabled(false);
 		add(btnBorrarIncidencia);
 		
@@ -138,7 +138,7 @@ public class IncidenciasPanel extends JPanel {
 				rellenarTablaAlPrincipio();
 			}
 		});
-		btnModificarIncidencia.setBounds(10, 490, 89, 23);
+		btnModificarIncidencia.setBounds(820, 541, 89, 23);
 		btnModificarIncidencia.setEnabled(false);
 		add(btnModificarIncidencia);
 		
@@ -149,16 +149,16 @@ public class IncidenciasPanel extends JPanel {
 		
 		JLabel lblDescripcion = new JLabel("Descripcion:");
 		lblDescripcion.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblDescripcion.setBounds(10, 126, 130, 30);
+		lblDescripcion.setBounds(820, 177, 130, 30);
 		add(lblDescripcion);
 		
 		comboBox = new JComboBox();
 		comboBox.addItem("-Listado de libros-");
-		comboBox.setBounds(10, 93, 214, 22);
+		comboBox.setBounds(820, 144, 214, 22);
 		add(comboBox);
 		
 		textArea = new JTextArea();
-		textArea.setBounds(10, 167, 214, 87);
+		textArea.setBounds(820, 218, 214, 87);
 		add(textArea);
 		
 		JButton btnLimpiarCampos = new JButton("Limpiar campos");
@@ -169,7 +169,7 @@ public class IncidenciasPanel extends JPanel {
 				comboBox.setSelectedItem("-Listado de libros-");
 			}
 		});
-		btnLimpiarCampos.setBounds(10, 386, 130, 23);
+		btnLimpiarCampos.setBounds(820, 437, 130, 23);
 		add(btnLimpiarCampos);
 		
 		btnResolver = new JButton("Resuelta / no resuelta");
@@ -193,7 +193,7 @@ public class IncidenciasPanel extends JPanel {
 				}
 			}
 		});
-		btnResolver.setBounds(174, 456, 172, 23);
+		btnResolver.setBounds(984, 507, 172, 23);
 		add(btnResolver);
 		
 		rdbtnMostrarResueltas = new JRadioButton("Mostrar resueltas");
@@ -205,7 +205,7 @@ public class IncidenciasPanel extends JPanel {
 				}
 			}
 		});
-		rdbtnMostrarResueltas.setBounds(10, 282, 214, 23);
+		rdbtnMostrarResueltas.setBounds(820, 333, 214, 23);
 		add(rdbtnMostrarResueltas);
 		
 		rdbtnMostrarNoResueltas = new JRadioButton("Mostrar no resueltas");
@@ -217,7 +217,7 @@ public class IncidenciasPanel extends JPanel {
 				}
 			}
 		});
-		rdbtnMostrarNoResueltas.setBounds(10, 308, 214, 23);
+		rdbtnMostrarNoResueltas.setBounds(820, 359, 214, 23);
 		add(rdbtnMostrarNoResueltas);
 		
 		rdbtnMostrarTodas = new JRadioButton("Mostrar todas");
@@ -230,7 +230,7 @@ public class IncidenciasPanel extends JPanel {
 			}
 		});
 		rdbtnMostrarTodas.setSelected(true);
-		rdbtnMostrarTodas.setBounds(10, 334, 214, 23);
+		rdbtnMostrarTodas.setBounds(820, 385, 214, 23);
 		add(rdbtnMostrarTodas);
 		
 		ButtonGroup grupoRadio = new ButtonGroup();

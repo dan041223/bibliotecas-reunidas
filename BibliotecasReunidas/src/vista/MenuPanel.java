@@ -40,7 +40,7 @@ public class MenuPanel extends JPanel {
 		JButton btnPrestamos = new JButton("Prestamos");
 		btnPrestamos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Ventana_Principal.getInstance().cambiarPanel(new PrestamoPanel(frame));
+				Ventana_Principal.getInstance().cambiarPanel(new PrestamoPanel());
 			}
 		});
 		btnPrestamos.setBounds(573, 371, 89, 23);
