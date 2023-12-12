@@ -47,8 +47,7 @@ public class Ventana_Principal extends JFrame {
 				datos = br.readLine().split(";");
 			}
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -60,7 +59,7 @@ public class Ventana_Principal extends JFrame {
 		// MenuPanel mp = new MenuPanel();
 		// cambiarPanel(mp);
 		// }else {
-		Login login = new Login();
+		Login login = new Login(this);
 		cambiarPanel(login);
 
 	}

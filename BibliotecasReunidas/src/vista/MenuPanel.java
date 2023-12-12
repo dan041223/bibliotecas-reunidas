@@ -2,23 +2,27 @@ package vista;
 
 import javax.swing.JPanel;
 import javax.swing.JButton;
+import javax.swing.JFrame;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class MenuPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
+	private JFrame frame;
 
 	/**
 	 * Create the panel.
 	 */
-	public MenuPanel() {
+	public MenuPanel(JFrame frame) {
+		this.frame = frame;
 		setLayout(null);
 		
 		JButton btnAutores = new JButton("Autores");
 		btnAutores.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Ventana_Principal.getInstance().cambiarPanel(new AutorPanel(null));
+				Ventana_Principal.getInstance().cambiarPanel(new AutorPanel(frame));
 			}
 		});
 		btnAutores.setBounds(573, 239, 89, 23);
@@ -27,7 +31,7 @@ public class MenuPanel extends JPanel {
 		JButton btnLibros = new JButton("Libros");
 		btnLibros.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Ventana_Principal.getInstance().cambiarPanel(new LibroPanel(null));
+				Ventana_Principal.getInstance().cambiarPanel(new LibroPanel(frame));
 			}
 		});
 		btnLibros.setBounds(573, 309, 89, 23);
@@ -36,7 +40,7 @@ public class MenuPanel extends JPanel {
 		JButton btnPrestamos = new JButton("Prestamos");
 		btnPrestamos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Ventana_Principal.getInstance().cambiarPanel(new PrestamoPanel());
+				Ventana_Principal.getInstance().cambiarPanel(new PrestamoPanel(frame));
 			}
 		});
 		btnPrestamos.setBounds(573, 399, 89, 23);
@@ -45,7 +49,7 @@ public class MenuPanel extends JPanel {
 		JButton btnSocios = new JButton("Socios");
 		btnSocios.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Ventana_Principal.getInstance().cambiarPanel(new SocioPanel());
+				Ventana_Principal.getInstance().cambiarPanel(new SocioPanel(frame));
 			}
 		});
 		btnSocios.setBounds(812, 239, 89, 23);
@@ -54,7 +58,7 @@ public class MenuPanel extends JPanel {
 		JButton btnLogin = new JButton("Login");
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Ventana_Principal.getInstance().cambiarPanel(new Login());
+				Ventana_Principal.getInstance().cambiarPanel(new Login(frame));
 			}
 		});
 		btnLogin.setBounds(812, 309, 89, 23);
@@ -63,7 +67,7 @@ public class MenuPanel extends JPanel {
 		JButton btnBiblio = new JButton("Bibliotecas");
 		btnBiblio.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Ventana_Principal.getInstance().cambiarPanel(new BibliotecaPanel(null));
+				Ventana_Principal.getInstance().cambiarPanel(new BibliotecaPanel(frame));
 			}
 		});
 		btnBiblio.setBounds(812, 399, 89, 23);
@@ -72,11 +76,20 @@ public class MenuPanel extends JPanel {
 		JButton btnIncidencias = new JButton("Incidencias");
 		btnIncidencias.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Ventana_Principal.getInstance().cambiarPanel(new TodasIncidenciasPanel());
+				Ventana_Principal.getInstance().cambiarPanel(new TodasIncidenciasPanel(frame));
 			}
 		});
-		btnIncidencias.setBounds(695, 467, 89, 23);
+		btnIncidencias.setBounds(573, 453, 89, 23);
 		add(btnIncidencias);
+		
+		JButton btnUbicacion = new JButton("Ubicacion");
+		btnUbicacion.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Ventana_Principal.getInstance().cambiarPanel(new UbicacionPanel(frame));
+			}
+		});
+		btnUbicacion.setBounds(812, 454, 89, 23);
+		add(btnUbicacion);
 
 	}
 }

@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 import javax.swing.JCheckBox;
+import javax.swing.JFrame;
 
 public class Login extends JPanel {
 
@@ -25,10 +26,12 @@ public class Login extends JPanel {
 	public JCheckBox chckbxRecordarme;
 	public Boolean iniciadoSesion = false;
 
+	private JFrame frame;
 	/**
 	 * Crea el panel
 	 */
-	public Login() {
+	public Login(JFrame frame) {
+		this.frame = frame;
 		setLayout(null);
 		
 		JLabel lblLoginTitle = new JLabel("INICIO DE SESION");
@@ -99,7 +102,7 @@ public class Login extends JPanel {
 							e1.printStackTrace();
 						}
 					}
-					Ventana_Principal.getInstance().cambiarPanel(new MenuPanel());
+					Ventana_Principal.getInstance().cambiarPanel(new MenuPanel(frame));
 				}
 			}
 		});

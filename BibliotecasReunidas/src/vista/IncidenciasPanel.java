@@ -26,6 +26,7 @@ import java.awt.Font;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JTextArea;
 import javax.swing.JCheckBox;
 import javax.swing.JRadioButton;
@@ -49,7 +50,8 @@ public class IncidenciasPanel extends JPanel {
 	public JRadioButton rdbtnMostrarNoResueltas;
 	public JRadioButton rdbtnMostrarResueltas;
 	public JButton btnResolver;
-	
+	private JFrame frame;
+
 	DefaultTableModel modeloTablaIncidencias = new DefaultTableModel() {
 		@Override
 		public boolean isCellEditable(int row, int column) {
@@ -60,8 +62,8 @@ public class IncidenciasPanel extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public IncidenciasPanel() {
-		
+	public IncidenciasPanel(JFrame frame) {
+		this.frame = frame;
 		setLayout(null);
 		
 		JLabel lblIncidencias = new JLabel("Incidencias");
