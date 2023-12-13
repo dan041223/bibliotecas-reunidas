@@ -58,14 +58,14 @@ public class MenuPanel extends JPanel {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				Ventana_Principal.getInstance().cambiarPanel(new MenuPanel(frame));
+				Ventana_Principal.getInstance().cambiarPanel(new Login(frame));
 			}
 		});
 		imgs.setBounds(10, 11, 47, 40);
 		
 		add(imgs);
 		
-		JLabel lblCerrarSesion = new JLabel("Volver al menu");
+		JLabel lblCerrarSesion = new JLabel("Cerrar sesión");
 		lblCerrarSesion.setForeground(new Color(255, 255, 255));
 		lblCerrarSesion.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblCerrarSesion.setBounds(55, 23, 181, 14);
@@ -80,7 +80,7 @@ public class MenuPanel extends JPanel {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				Ventana_Principal.getInstance().cambiarPanel(new MenuPanel(frame));
+				Ventana_Principal.getInstance().cambiarPanel(new Login(frame));
 			}
 		});
 		add(lblCerrarSesion);
