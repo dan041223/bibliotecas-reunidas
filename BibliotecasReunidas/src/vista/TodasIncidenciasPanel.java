@@ -5,8 +5,12 @@ import javax.swing.JLabel;
 
 import java.awt.Cursor;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JScrollPane;
@@ -26,12 +30,15 @@ import modelo.Socio;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JRadioButton;
+import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Color;
 
 public class TodasIncidenciasPanel extends JPanel {
 
@@ -60,10 +67,12 @@ public class TodasIncidenciasPanel extends JPanel {
 	 * Create the panel.
 	 */
 	public TodasIncidenciasPanel(JFrame frame) {
+		setBackground(new Color(128, 128, 192));
 		this.frame = frame;
 		setLayout(null);
 		
 		JLabel lblCerrarSesion = new JLabel("Volver al menu");
+		lblCerrarSesion.setForeground(new Color(255, 255, 255));
 		lblCerrarSesion.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -83,7 +92,7 @@ public class TodasIncidenciasPanel extends JPanel {
 		add(lblCerrarSesion);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(248, 11, 1142, 743);
+		scrollPane.setBounds(10, 82, 835, 618);
 		add(scrollPane);
 		
 		table = new JTable();
@@ -108,36 +117,44 @@ public class TodasIncidenciasPanel extends JPanel {
 		});
 		
 		JLabel lblSocio = new JLabel("Socio:");
-		lblSocio.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblSocio.setBounds(10, 83, 93, 14);
+		lblSocio.setForeground(new Color(255, 255, 255));
+		lblSocio.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblSocio.setBounds(855, 102, 93, 14);
 		add(lblSocio);
 		
 		JLabel lblLibro = new JLabel("Libro:");
-		lblLibro.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblLibro.setBounds(10, 163, 93, 14);
+		lblLibro.setForeground(new Color(255, 255, 255));
+		lblLibro.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblLibro.setBounds(855, 158, 93, 14);
 		add(lblLibro);
 		
 		cmbxLibros = new JComboBox();
-		cmbxLibros.setBounds(10, 208, 154, 22);
+		cmbxLibros.setBounds(958, 156, 154, 22);
 		cmbxLibros.addItem("-Listado de libros-");
 		add(cmbxLibros);
 		
 		cmbxSocios = new JComboBox();
-		cmbxSocios.setBounds(10, 118, 154, 22);
+		cmbxSocios.setBounds(958, 100, 154, 22);
 		cmbxSocios.addItem("-Listado de Socios-");
 		add(cmbxSocios);
 		
 		rdbtnMostrarResueltas = new JRadioButton("Mostrar resueltas");
-		rdbtnMostrarResueltas.setBounds(6, 269, 214, 23);
+		rdbtnMostrarResueltas.setOpaque(false);
+		rdbtnMostrarResueltas.setForeground(new Color(255, 255, 255));
+		rdbtnMostrarResueltas.setBounds(851, 232, 214, 23);
 		add(rdbtnMostrarResueltas);
 		
 		rdbtnMostrarNoResueltas = new JRadioButton("Mostrar no resueltas");
-		rdbtnMostrarNoResueltas.setBounds(6, 295, 214, 23);
+		rdbtnMostrarNoResueltas.setOpaque(false);
+		rdbtnMostrarNoResueltas.setForeground(new Color(255, 255, 255));
+		rdbtnMostrarNoResueltas.setBounds(851, 258, 214, 23);
 		add(rdbtnMostrarNoResueltas);
 		
 		rdbtnMostrarTodas = new JRadioButton("Mostrar todas");
+		rdbtnMostrarTodas.setOpaque(false);
+		rdbtnMostrarTodas.setForeground(new Color(255, 255, 255));
 		rdbtnMostrarTodas.setSelected(true);
-		rdbtnMostrarTodas.setBounds(6, 321, 214, 23);
+		rdbtnMostrarTodas.setBounds(851, 284, 214, 23);
 		add(rdbtnMostrarTodas);
 		
 		ButtonGroup grupoRadio = new ButtonGroup();
@@ -146,10 +163,12 @@ public class TodasIncidenciasPanel extends JPanel {
 		grupoRadio.add(rdbtnMostrarNoResueltas);
 		
 		JButton btnLimpiarCampos = new JButton("Limpiar campos");
-		btnLimpiarCampos.setBounds(10, 384, 130, 23);
+		btnLimpiarCampos.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
+		btnLimpiarCampos.setBounds(658, 48, 154, 23);
 		add(btnLimpiarCampos);
 		
 		btnResolver = new JButton("Resuelta / no resuelta");
+		btnResolver.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
 		btnResolver.setEnabled(false);
 		btnResolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -158,10 +177,11 @@ public class TodasIncidenciasPanel extends JPanel {
 				rellenarALPorParametros();
 			}
 		});
-		btnResolver.setBounds(10, 478, 172, 23);
+		btnResolver.setBounds(245, 47, 214, 23);
 		add(btnResolver);
 		
 		btnFiltrar = new JButton("Filtrar");
+		btnFiltrar.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
 		btnFiltrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				rellenarALPorParametros();
@@ -169,9 +189,33 @@ public class TodasIncidenciasPanel extends JPanel {
 				
 			}
 		});
-		btnFiltrar.setBounds(10, 428, 89, 23);
+		btnFiltrar.setBounds(515, 47, 89, 23);
 		add(btnFiltrar);
+		
+		JLabel lblSocios = new JLabel("Incidencias");
+		lblSocios.setForeground(new Color(255, 255, 255));
+		lblSocios.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 20));
+		lblSocios.setBounds(10, 36, 184, 45);
+		add(lblSocios);
 
+		BufferedImage img1 = null;
+		try {
+			img1 = ImageIO.read(new File("res\\imagenes\\posibleFondo.png"));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		int labelWidth1 = 1424;
+	    int labelHeight1 = 825;
+	    
+	    Image scaledImg1 = img1.getScaledInstance(labelWidth1, labelHeight1, Image.SCALE_SMOOTH);
+		
+	    ImageIcon icon1 = new ImageIcon(scaledImg1);
+	    
+		JLabel lblNewLabel = new JLabel(icon1);
+		lblNewLabel.setBounds(0, 0, 1434, 825);
+		add(lblNewLabel);
 	}
 	
 	public void cogerCamposParaResolver() {

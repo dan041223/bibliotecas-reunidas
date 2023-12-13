@@ -3,6 +3,8 @@ package vista;
 import modelo.Socio;
 import modelo.Usuario;
 import modelo.Usuario.TIPO_PERFIL;
+
+import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Frame;
@@ -143,31 +145,12 @@ public class SocioPanel extends JPanel {
 	 * Create the panel.
 	 */
 	public SocioPanel(JFrame frame) {
+		setBackground(new Color(128, 128, 192));
 		this.frame = frame;
 		setLayout(null);
 		
-		JButton btnAgregarAdministrativo = new JButton("AgregarAdministrativo");
-		btnAgregarAdministrativo.setBounds(268, 10, 139, 23);
-		add(btnAgregarAdministrativo);
-		
-		if(usuario.getTipo_perfil().equals(TIPO_PERFIL.ADMINISTRATIVO)) {
-			btnAgregarAdministrativo.setEnabled(false);
-		}else if(usuario.getTipo_perfil().equals(TIPO_PERFIL.ADMINISTRADOR)) {
-			btnAgregarAdministrativo.setEnabled(true);
-		}
-		
-		JButton btnAgregarLibro = new JButton("Agregar libro");
-		btnAgregarLibro.setBounds(439, 10, 139, 23);
-		add(btnAgregarLibro);
-		
-		if(usuario.getTipo_perfil().equals(TIPO_PERFIL.ADMINISTRATIVO)) {
-			btnAgregarLibro.setEnabled(true);
-		}else if(usuario.getTipo_perfil().equals(TIPO_PERFIL.ADMINISTRADOR)) {
-			btnAgregarLibro.setEnabled(true);
-		}
-		
 		try {
-			BufferedImage img = ImageIO.read(new File("imagenes\\flechita_atras.png"));
+			BufferedImage img = ImageIO.read(new File("res\\imagenes\\flechita_atras.png"));
 			
 			int labelWidth = 40;
 		    int labelHeight = 40;
@@ -177,6 +160,7 @@ public class SocioPanel extends JPanel {
 		    ImageIcon icon = new ImageIcon(scaledImg);
 		    
 			JLabel imgs = new JLabel(icon);
+			imgs.setForeground(new Color(255, 255, 255));
 			imgs.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseEntered(MouseEvent e) {
@@ -188,16 +172,18 @@ public class SocioPanel extends JPanel {
 				}
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					Ventana_Principal.getInstance().cambiarPanel(new Login(frame));
+					Ventana_Principal.getInstance().cambiarPanel(new MenuPanel(frame));
 				}
 			});
-			imgs.setBounds(0, 0, 47, 40);
+			imgs.setBounds(10, 11, 47, 40);
 			
 			add(imgs);
 			
 			JLabel lblCerrarSesion = new JLabel("Volver al menu");
+			lblCerrarSesion.setForeground(new Color(255, 255, 255));
+			lblCerrarSesion.setBackground(new Color(255, 255, 255));
 			lblCerrarSesion.setFont(new Font("Tahoma", Font.BOLD, 15));
-			lblCerrarSesion.setBounds(45, 12, 181, 14);
+			lblCerrarSesion.setBounds(55, 23, 181, 14);
 			lblCerrarSesion.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseEntered(MouseEvent e) {
@@ -215,7 +201,8 @@ public class SocioPanel extends JPanel {
 			add(lblCerrarSesion);
 			
 			JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-			tabbedPane.setBounds(10, 82, 1347, 633);
+			tabbedPane.setBackground(new Color(128, 128, 192));
+			tabbedPane.setBounds(10, 82, 1320, 718);
 			add(tabbedPane);
 			
 			/*
@@ -227,21 +214,25 @@ public class SocioPanel extends JPanel {
 			 */
 			
 			JPanel panelBuscaSocio = new JPanel();
+			panelBuscaSocio.setBackground(new Color(128, 128, 192));
 			tabbedPane.addTab("Buscar socios", null, panelBuscaSocio, null);
 			panelBuscaSocio.setLayout(null);
 			
 			JButton btnFiltrar = new JButton("Filtrar");
+			btnFiltrar.setOpaque(false);
 			btnFiltrar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					rellenarTabla1PorFiltro();
 				}
 			});
-			btnFiltrar.setBounds(75, 409, 89, 23);
+			btnFiltrar.setBounds(418, 8, 89, 23);
 			panelBuscaSocio.add(btnFiltrar);
 			
 			rdbtnBuscarPorId = new JRadioButton("Buscar por id");
+			rdbtnBuscarPorId.setForeground(new Color(255, 255, 255));
+			rdbtnBuscarPorId.setOpaque(false);
 			rdbtnBuscarPorId.setSelected(true);
-			rdbtnBuscarPorId.setBounds(0, 48, 109, 23);
+			rdbtnBuscarPorId.setBounds(1013, 82, 109, 23);
 			panelBuscaSocio.add(rdbtnBuscarPorId);
 			rdbtnBuscarPorId.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -250,7 +241,9 @@ public class SocioPanel extends JPanel {
 			});
 			
 			rdbtnBuscarPorCorreo = new JRadioButton("Buscar por correo electrónico");
-			rdbtnBuscarPorCorreo.setBounds(0, 132, 220, 23);
+			rdbtnBuscarPorCorreo.setForeground(new Color(255, 255, 255));
+			rdbtnBuscarPorCorreo.setOpaque(false);
+			rdbtnBuscarPorCorreo.setBounds(1013, 242, 220, 23);
 			panelBuscaSocio.add(rdbtnBuscarPorCorreo);
 			rdbtnBuscarPorCorreo.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -267,7 +260,8 @@ public class SocioPanel extends JPanel {
 			SpinnerNumberModel modeloMinimoSpinner = new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1);
 			
 			spinnerIdSocio = new JSpinner(modeloMinimoSpinner);
-			spinnerIdSocio.setBounds(10, 78, 56, 32);
+			spinnerIdSocio.setOpaque(false);
+			spinnerIdSocio.setBounds(1023, 154, 56, 32);
 			panelBuscaSocio.add(spinnerIdSocio);
 			
 			try {
@@ -280,29 +274,22 @@ public class SocioPanel extends JPanel {
 			}
 			
 			JLabel lblNewLabel = new JLabel("Buscar Socios");
+			lblNewLabel.setForeground(new Color(255, 255, 255));
+			lblNewLabel.setBackground(new Color(255, 255, 255));
 			lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 20));
 			lblNewLabel.setBounds(10, 11, 210, 30);
 			panelBuscaSocio.add(lblNewLabel);
 			
 			tfEmailSocio = new JTextField();
-			tfEmailSocio.setBounds(10, 162, 210, 20);
+			tfEmailSocio.setBounds(1023, 324, 210, 20);
 			panelBuscaSocio.add(tfEmailSocio);
 			tfEmailSocio.setColumns(10);
 			tfEmailSocio.setEnabled(false);
 			
 			JScrollPane scrollPane = new JScrollPane();
-			scrollPane.setBounds(230, 11, 1102, 583);
+			scrollPane.setBackground(new Color(128, 128, 192));
+			scrollPane.setBounds(10, 42, 993, 637);
 			panelBuscaSocio.add(scrollPane);
-			
-			JButton btnConsultaPrestamos = new JButton("Consultar prestamos");
-			btnConsultaPrestamos.setEnabled(false);
-			btnConsultaPrestamos.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					
-				}
-			});
-			btnConsultaPrestamos.setBounds(42, 239, 146, 23);
-			panelBuscaSocio.add(btnConsultaPrestamos);
 			
 			JButton btnConsultaIncidencias = new JButton("Consultar incidencias");
 			btnConsultaIncidencias.setEnabled(false);
@@ -315,19 +302,20 @@ public class SocioPanel extends JPanel {
 					ventanaIncidencias.setVisible(true);
 				}
 			});
-			btnConsultaIncidencias.setBounds(33, 310, 168, 23);
+			btnConsultaIncidencias.setBounds(583, 8, 168, 23);
 			panelBuscaSocio.add(btnConsultaIncidencias);
 			
 			modeloTablaSociosBuscar.setColumnIdentifiers(new Object[]{"Id","Nombre","Email","Telefono","DNI","Calle","Codigo Postal","Fecha de Creación"});
 			
 			JButton btnVerTodosSociosBuscar = new JButton("Ver todos");
+			btnVerTodosSociosBuscar.setOpaque(false);
 			btnVerTodosSociosBuscar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					modeloTablaSociosBuscar.setRowCount(0);
 					rellenarTabla1AlPrincipio();
 				}
 			});
-			btnVerTodosSociosBuscar.setBounds(75, 471, 89, 23);
+			btnVerTodosSociosBuscar.setBounds(248, 8, 89, 23);
 			panelBuscaSocio.add(btnVerTodosSociosBuscar);
 			
 			tablaSocios = new JTable();
@@ -350,7 +338,6 @@ public class SocioPanel extends JPanel {
 					
 					if(filaSeleccionada != -1 && columnaSeleccionada != -1) {
 						idSocioSeleccionado = (int) tablaSocios.getValueAt(filaSeleccionada, 0);
-						btnConsultaPrestamos.setEnabled(true);
 						btnConsultaIncidencias.setEnabled(true);
 						//Le pasas la celda seleccionada y la vuelves no editable
 						modeloTablaSociosBuscar.isCellEditable(filaSeleccionada, columnaSeleccionada);
@@ -366,7 +353,6 @@ public class SocioPanel extends JPanel {
 				@Override
 				public void valueChanged(ListSelectionEvent e) {
 					if(modeloSeleccionTabla.isSelectionEmpty()) {
-						btnConsultaPrestamos.setEnabled(false);
 						btnConsultaIncidencias.setEnabled(false);
 					}
 				}
@@ -383,6 +369,7 @@ public class SocioPanel extends JPanel {
 			 * ==============================================================================================
 			 */
 			JPanel panelAgregaSocio = new JPanel();
+			panelAgregaSocio.setBackground(new Color(128, 128, 192));
 			tabbedPane.addTab("Agregar socio", null, panelAgregaSocio, null);
 			panelAgregaSocio.setLayout(null);
 			
@@ -507,72 +494,80 @@ public class SocioPanel extends JPanel {
 			 */
 			
 			JPanel panelModificaSocio = new JPanel();
+			panelModificaSocio.setBackground(new Color(128, 128, 192));
 			tabbedPane.addTab("Modificar socio", null, panelModificaSocio, null);
 			panelModificaSocio.setLayout(null);
 			
 			JLabel lblModificarSocios = new JLabel("Modificar Socios");
+			lblModificarSocios.setForeground(new Color(255, 255, 255));
 			lblModificarSocios.setFont(new Font("Tahoma", Font.BOLD, 20));
 			lblModificarSocios.setBounds(10, 11, 210, 30);
 			panelModificaSocio.add(lblModificarSocios);
 			
 			JLabel lblNombreModificarSocio = new JLabel("Nombre:");
+			lblNombreModificarSocio.setForeground(new Color(255, 255, 255));
 			lblNombreModificarSocio.setFont(new Font("Tahoma", Font.BOLD, 15));
-			lblNombreModificarSocio.setBounds(10, 52, 114, 30);
+			lblNombreModificarSocio.setBounds(1014, 47, 114, 30);
 			panelModificaSocio.add(lblNombreModificarSocio);
 			
 			tfNombreModSocios = new JTextField();
 			tfNombreModSocios.setColumns(10);
-			tfNombreModSocios.setBounds(127, 61, 176, 20);
+			tfNombreModSocios.setBounds(1131, 56, 176, 20);
 			panelModificaSocio.add(tfNombreModSocios);
 			
 			tfEmailModSocios = new JTextField();
 			tfEmailModSocios.setColumns(10);
-			tfEmailModSocios.setBounds(127, 102, 176, 20);
+			tfEmailModSocios.setBounds(1131, 97, 176, 20);
 			panelModificaSocio.add(tfEmailModSocios);
 			
 			JLabel lblEmailModificarSocios = new JLabel("Email:");
+			lblEmailModificarSocios.setForeground(new Color(255, 255, 255));
 			lblEmailModificarSocios.setFont(new Font("Tahoma", Font.BOLD, 15));
-			lblEmailModificarSocios.setBounds(10, 93, 114, 30);
+			lblEmailModificarSocios.setBounds(1014, 88, 114, 30);
 			panelModificaSocio.add(lblEmailModificarSocios);
 			
 			tfTelefonoModSocios = new JFormattedTextField(mask);
 			tfTelefonoModSocios.setColumns(10);
-			tfTelefonoModSocios.setBounds(127, 142, 176, 20);
+			tfTelefonoModSocios.setBounds(1131, 137, 176, 20);
 			panelModificaSocio.add(tfTelefonoModSocios);
 			
 			JLabel lblTelefonoModificarSocios = new JLabel("Telefono:");
+			lblTelefonoModificarSocios.setForeground(new Color(255, 255, 255));
 			lblTelefonoModificarSocios.setFont(new Font("Tahoma", Font.BOLD, 15));
-			lblTelefonoModificarSocios.setBounds(10, 133, 114, 30);
+			lblTelefonoModificarSocios.setBounds(1014, 128, 114, 30);
 			panelModificaSocio.add(lblTelefonoModificarSocios);
 			
 			JLabel lblDniModificarSocios = new JLabel("DNI:");
+			lblDniModificarSocios.setForeground(new Color(255, 255, 255));
 			lblDniModificarSocios.setFont(new Font("Tahoma", Font.BOLD, 15));
-			lblDniModificarSocios.setBounds(10, 170, 114, 30);
+			lblDniModificarSocios.setBounds(1014, 165, 114, 30);
 			panelModificaSocio.add(lblDniModificarSocios);
 			
 			tfDniModSocios = new JFormattedTextField(mask2);
 			tfDniModSocios.setColumns(10);
-			tfDniModSocios.setBounds(127, 179, 176, 20);
+			tfDniModSocios.setBounds(1131, 174, 176, 20);
 			panelModificaSocio.add(tfDniModSocios);
 			
 			tfCalleModSocios = new JTextField();
 			tfCalleModSocios.setColumns(10);
-			tfCalleModSocios.setBounds(127, 220, 176, 20);
+			tfCalleModSocios.setBounds(1131, 215, 176, 20);
 			panelModificaSocio.add(tfCalleModSocios);
 			
 			JLabel lblCalleModificarSocios = new JLabel("Calle:");
+			lblCalleModificarSocios.setForeground(new Color(255, 255, 255));
 			lblCalleModificarSocios.setFont(new Font("Tahoma", Font.BOLD, 15));
-			lblCalleModificarSocios.setBounds(10, 211, 114, 30);
+			lblCalleModificarSocios.setBounds(1014, 206, 114, 30);
 			panelModificaSocio.add(lblCalleModificarSocios);
 			
 			tfCodigoPostalModSocios = new JFormattedTextField(mask3);
 			tfCodigoPostalModSocios.setColumns(10);
-			tfCodigoPostalModSocios.setBounds(127, 261, 176, 20);
+			tfCodigoPostalModSocios.setBounds(1131, 256, 176, 20);
 			panelModificaSocio.add(tfCodigoPostalModSocios);
 			
 			JLabel lblCodigoPostalModificarSocios = new JLabel("Codigo postal:");
+			lblCodigoPostalModificarSocios.setForeground(new Color(255, 255, 255));
 			lblCodigoPostalModificarSocios.setFont(new Font("Tahoma", Font.BOLD, 15));
-			lblCodigoPostalModificarSocios.setBounds(10, 252, 114, 30);
+			lblCodigoPostalModificarSocios.setBounds(1014, 247, 114, 30);
 			panelModificaSocio.add(lblCodigoPostalModificarSocios);
 			
 			btnModificar = new JButton("Modificar");
@@ -607,7 +602,7 @@ public class SocioPanel extends JPanel {
 					}
 				}
 			});
-			btnModificar.setBounds(207, 317, 89, 23);
+			btnModificar.setBounds(1211, 312, 89, 23);
 			panelModificaSocio.add(btnModificar);
 			
 			JButton btnNewButton = new JButton("Limpiar");
@@ -622,11 +617,11 @@ public class SocioPanel extends JPanel {
 					btnModificar.setEnabled(false);
 				}
 			});
-			btnNewButton.setBounds(15, 317, 89, 23);
+			btnNewButton.setBounds(1019, 312, 89, 23);
 			panelModificaSocio.add(btnNewButton);
 			
 			JScrollPane scrollPane_1 = new JScrollPane();
-			scrollPane_1.setBounds(313, 11, 1045, 628);
+			scrollPane_1.setBounds(10, 52, 991, 542);
 			panelModificaSocio.add(scrollPane_1);
 			
 			tablaSociosMod = new JTable();
@@ -684,32 +679,36 @@ public class SocioPanel extends JPanel {
 					rellenarTabla3PorFiltro();
 				}
 			});
-			btnFiltrarModSocios.setBounds(22, 529, 89, 23);
+			btnFiltrarModSocios.setBounds(1026, 524, 89, 23);
 			panelModificaSocio.add(btnFiltrarModSocios);
 			
 			rdbtnBuscarPorIdModSocios = new JRadioButton("Buscar por id");
+			rdbtnBuscarPorIdModSocios.setForeground(new Color(255, 255, 255));
+			rdbtnBuscarPorIdModSocios.setOpaque(false);
 			rdbtnBuscarPorIdModSocios.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					activarONoComponenteModififcar();
 				}
 			});
 			rdbtnBuscarPorIdModSocios.setSelected(true);
-			rdbtnBuscarPorIdModSocios.setBounds(12, 369, 109, 23);
+			rdbtnBuscarPorIdModSocios.setBounds(1016, 364, 109, 23);
 			panelModificaSocio.add(rdbtnBuscarPorIdModSocios);
 			
 			SpinnerNumberModel modeloMinimoSpinnerMod = new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1);
 			
 			spinnerIdModSocios = new JSpinner(modeloMinimoSpinnerMod);
-			spinnerIdModSocios.setBounds(22, 399, 56, 32);
+			spinnerIdModSocios.setBounds(1026, 394, 56, 32);
 			panelModificaSocio.add(spinnerIdModSocios);
 			
 			rdbtnBuscarPorCorreoModSocios = new JRadioButton("Buscar por correo electrónico");
+			rdbtnBuscarPorCorreoModSocios.setForeground(new Color(255, 255, 255));
+			rdbtnBuscarPorCorreoModSocios.setOpaque(false);
 			rdbtnBuscarPorCorreoModSocios.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					activarONoComponenteModififcar();
 				}
 			});
-			rdbtnBuscarPorCorreoModSocios.setBounds(12, 453, 220, 23);
+			rdbtnBuscarPorCorreoModSocios.setBounds(1016, 448, 220, 23);
 			panelModificaSocio.add(rdbtnBuscarPorCorreoModSocios);
 			
 			ButtonGroup grupoRadioButtons3 = new ButtonGroup();
@@ -720,7 +719,7 @@ public class SocioPanel extends JPanel {
 			tfFiltrarEmailModSocios = new JTextField();
 			tfFiltrarEmailModSocios.setEnabled(false);
 			tfFiltrarEmailModSocios.setColumns(10);
-			tfFiltrarEmailModSocios.setBounds(22, 483, 210, 20);
+			tfFiltrarEmailModSocios.setBounds(1026, 478, 210, 20);
 			panelModificaSocio.add(tfFiltrarEmailModSocios);
 			
 			JButton btnVerTodosSociosMod = new JButton("Ver todos");
@@ -730,7 +729,7 @@ public class SocioPanel extends JPanel {
 					rellenarTabla3AlPrincipio();
 				}
 			});
-			btnVerTodosSociosMod.setBounds(207, 529, 89, 23);
+			btnVerTodosSociosMod.setBounds(1211, 524, 89, 23);
 			panelModificaSocio.add(btnVerTodosSociosMod);
 			
 			/*
@@ -743,28 +742,33 @@ public class SocioPanel extends JPanel {
 			 * ==============================================================================================
 			 */
 			JPanel panelEliminaSocio = new JPanel();
+			panelEliminaSocio.setBackground(new Color(128, 128, 192));
 			tabbedPane.addTab("Eliminar socio", null, panelEliminaSocio, null);
 			panelEliminaSocio.setLayout(null);
 
 			SpinnerNumberModel modeloMinimoSpinnerBorrar = new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1);
 			
 			rdbtnBuscarSocioPorIdBorrar = new JRadioButton("Buscar por id");
+			rdbtnBuscarSocioPorIdBorrar.setOpaque(false);
+			rdbtnBuscarSocioPorIdBorrar.setForeground(new Color(255, 255, 255));
 			rdbtnBuscarSocioPorIdBorrar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					activarONoComponenteBorrar();
 				}
 			});
 			rdbtnBuscarSocioPorIdBorrar.setSelected(true);
-			rdbtnBuscarSocioPorIdBorrar.setBounds(10, 56, 109, 23);
+			rdbtnBuscarSocioPorIdBorrar.setBounds(1099, 89, 109, 23);
 			panelEliminaSocio.add(rdbtnBuscarSocioPorIdBorrar);
 			
 			rdbtnBuscarSocioPorCorreoBorrar = new JRadioButton("Buscar por correo electrónico");
+			rdbtnBuscarSocioPorCorreoBorrar.setOpaque(false);
+			rdbtnBuscarSocioPorCorreoBorrar.setForeground(new Color(255, 255, 255));
 			rdbtnBuscarSocioPorCorreoBorrar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					activarONoComponenteBorrar();
 				}
 			});
-			rdbtnBuscarSocioPorCorreoBorrar.setBounds(10, 140, 210, 23);
+			rdbtnBuscarSocioPorCorreoBorrar.setBounds(1095, 252, 210, 23);
 			panelEliminaSocio.add(rdbtnBuscarSocioPorCorreoBorrar);
 
 			ButtonGroup grupoRadioButtonsElimSocios = new ButtonGroup();
@@ -773,12 +777,13 @@ public class SocioPanel extends JPanel {
 			grupoRadioButtonsElimSocios.add(rdbtnBuscarSocioPorIdBorrar);
 			
 			JLabel lblBorrarSocios = new JLabel("Borrar Socios");
+			lblBorrarSocios.setForeground(new Color(255, 255, 255));
 			lblBorrarSocios.setFont(new Font("Tahoma", Font.BOLD, 20));
 			lblBorrarSocios.setBounds(10, 11, 210, 30);
 			panelEliminaSocio.add(lblBorrarSocios);
 			
 			JScrollPane scrollPaneTablaBorrar = new JScrollPane();
-			scrollPaneTablaBorrar.setBounds(230, 11, 1128, 628);
+			scrollPaneTablaBorrar.setBounds(10, 55, 1047, 539);
 			panelEliminaSocio.add(scrollPaneTablaBorrar);
 			
 			tablaSociosBorrar = new JTable();
@@ -806,7 +811,7 @@ public class SocioPanel extends JPanel {
 					}
 				}
 			});
-			btnBorrarSocio.setBounds(30, 368, 176, 23);
+			btnBorrarSocio.setBounds(619, 19, 176, 23);
 			panelEliminaSocio.add(btnBorrarSocio);
 			btnBorrarSocio.setEnabled(false);
 			
@@ -847,13 +852,13 @@ public class SocioPanel extends JPanel {
 			});
 			
 			spinnerIdSocioBorrar = new JSpinner(modeloMinimoSpinnerBorrar);
-			spinnerIdSocioBorrar.setBounds(20, 86, 56, 32);
+			spinnerIdSocioBorrar.setBounds(1109, 155, 56, 32);
 			panelEliminaSocio.add(spinnerIdSocioBorrar);
 			
 			tfEmailSocioBorrar = new JTextField();
 			tfEmailSocioBorrar.setEnabled(false);
 			tfEmailSocioBorrar.setColumns(10);
-			tfEmailSocioBorrar.setBounds(10, 170, 210, 20);
+			tfEmailSocioBorrar.setBounds(1095, 326, 210, 20);
 			panelEliminaSocio.add(tfEmailSocioBorrar);
 			
 			btnFiltrarSocioBorrados = new JButton("Filtrar");
@@ -862,7 +867,7 @@ public class SocioPanel extends JPanel {
 					rellenarTabla2PorFiltro();
 				}
 			});
-			btnFiltrarSocioBorrados.setBounds(72, 231, 89, 23);
+			btnFiltrarSocioBorrados.setBounds(874, 19, 89, 23);
 			panelEliminaSocio.add(btnFiltrarSocioBorrados);
 			
 			JButton btnVerTodosSociosBorrar = new JButton("Ver todos");
@@ -872,8 +877,15 @@ public class SocioPanel extends JPanel {
 					rellenarTabla2AlPrincipio();
 				}
 			});
-			btnVerTodosSociosBorrar.setBounds(72, 453, 89, 23);
+			btnVerTodosSociosBorrar.setBounds(427, 19, 89, 23);
 			panelEliminaSocio.add(btnVerTodosSociosBorrar);
+			
+			JLabel lblSocios = new JLabel("Socios");
+			lblSocios.setForeground(new Color(255, 255, 255));
+			lblSocios.setBackground(new Color(255, 255, 255));
+			lblSocios.setFont(new Font("Tahoma", Font.BOLD, 20));
+			lblSocios.setBounds(10, 48, 210, 30);
+			add(lblSocios);
 			
 			/*
 			 * ==============================================================================================
@@ -885,6 +897,24 @@ public class SocioPanel extends JPanel {
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
+		BufferedImage img1 = null;
+		try {
+			img1 = ImageIO.read(new File("res\\imagenes\\posibleFondo.png"));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		int labelWidth1 = 1424;
+	    int labelHeight1 = 825;
+	    
+	    Image scaledImg1 = img1.getScaledInstance(labelWidth1, labelHeight1, Image.SCALE_SMOOTH);
+		
+	    ImageIcon icon1 = new ImageIcon(scaledImg1);
+	    
+		JLabel lblNewLabel = new JLabel(icon1);
+		lblNewLabel.setBounds(0, 0, 1434, 825);
+		add(lblNewLabel);
 	}
 	
 	@Override
