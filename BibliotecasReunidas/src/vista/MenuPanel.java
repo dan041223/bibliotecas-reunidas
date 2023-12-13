@@ -323,6 +323,40 @@ public class MenuPanel extends JPanel {
 		lblNewLabel_1_6.setBounds(1048, 465, 218, 74);
 		add(lblNewLabel_1_6);
 		
+		BufferedImage img10 = null;
+		try {
+			img10 = ImageIO.read(new File("res\\imagenes\\button_recibos.png"));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		int labelWidth10 = 178;
+	    int labelHeight10 = 74;
+	    
+	    Image scaledImg10 = img10.getScaledInstance(labelWidth10, labelHeight10, Image.SCALE_SMOOTH);
+		
+	    ImageIcon icon10 = new ImageIcon(scaledImg10);
+		
+		JLabel recibos = new JLabel(icon10);
+		recibos.setText("");
+		recibos.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				Ventana_Principal.getInstance().cambiarPanel(new ReciboPanel());
+			}
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				setCursor(Cursor.getDefaultCursor());
+			}
+		});
+		recibos.setBounds(608, 641, 218, 74);
+		add(recibos);
+		
 		BufferedImage img9 = null;
 		try {
 			img9 = ImageIO.read(new File("res\\imagenes\\button_ubicaciones.png"));
