@@ -1805,7 +1805,8 @@ public class DataMetodos {
 		try {
 			conexion = conextor.connect();
 			Statement stmt = conexion.createStatement();
-			//stmt.executeUpdate("UPDATE prestamo SET fecha_entrega= '"+ +"' WHERE id_prestamo = " + id + ";");
+			LocalDate fechaActual = LocalDate.now();
+			stmt.executeUpdate("UPDATE prestamo SET fecha_entrega= '"+fechaActual +"' WHERE id_prestamo = " + id + ";");
 					
 
 			System.out.println("Inserción exitosa.");

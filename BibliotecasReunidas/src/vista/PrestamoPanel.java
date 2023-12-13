@@ -3,6 +3,8 @@ package vista;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+
+import java.awt.Checkbox;
 import java.awt.Font;
 import java.awt.Frame;
 import java.util.ArrayList;
@@ -25,6 +27,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
 import javax.swing.JCheckBox;
@@ -45,6 +48,7 @@ public class PrestamoPanel extends JPanel {
     private JTextField textFieldFechaPrevista;
     private JTextField textFieldFechaPrestamo;
     private JTextField textFieldIdPrestamo;
+    private JCheckBox  CheckBoxEntregar;
 
 	public PrestamoPanel() {
 		this.frame = frame;
@@ -98,10 +102,6 @@ public class PrestamoPanel extends JPanel {
 		textFieldFechaPrestamo.setBounds(939, 403, 164, 25);
 		add(textFieldFechaPrestamo);
 			
-		JCheckBox CheckBoxEntregar = new JCheckBox("Entregado");
-		CheckBoxEntregar.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 18));
-		CheckBoxEntregar.setBounds(939, 586, 123, 47);
-		add(CheckBoxEntregar);
 		
 		JLabel lblPrestamos = new JLabel("Prestamos");
 		lblPrestamos.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 20));
@@ -157,12 +157,12 @@ public class PrestamoPanel extends JPanel {
 				
 				DataMetodos.modificarPrestamo(id, codigoSocio, codigoLibro, codigoUsuario);
 				
-				limpiarTextFields();
                 recargarTablaPrestamo();
                 disminuirTamanyo();
                 btnAnyadir.setEnabled(true);
                 btnEliminar.setEnabled(false);
 				btnModificar.setEnabled(false);
+				CheckBoxEntregar.setEnabled(false);	
 			}
 		});
 		btnModificar.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
@@ -177,17 +177,39 @@ public class PrestamoPanel extends JPanel {
 				int id = Integer.parseInt(textFieldIdPrestamo.getText());
 				 DataMetodos.eliminarPrestamo(id);
 				
-				limpiarTextFields();
                 recargarTablaPrestamo();
                 disminuirTamanyo();
                 btnAnyadir.setEnabled(true);
                 btnEliminar.setEnabled(false);
 				btnModificar.setEnabled(false);
+				CheckBoxEntregar.setEnabled(false);	
 			}
 		});
 		btnEliminar.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
 		btnEliminar.setBounds(421, 92, 148, 40);
 		add(btnEliminar);
+		
+		CheckBoxEntregar = new JCheckBox("Entregado");
+		CheckBoxEntregar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				aumentarTamanyo();
+				
+				int id = Integer.parseInt(textFieldIdPrestamo.getText());
+				
+				DataMetodos.marcarEntregado(id);
+				
+                recargarTablaPrestamo();
+                disminuirTamanyo();
+                btnAnyadir.setEnabled(true);
+                btnEliminar.setEnabled(false);
+				btnModificar.setEnabled(false);
+				CheckBoxEntregar.setSelected(false);
+				CheckBoxEntregar.setEnabled(false);	
+			}
+		});
+		CheckBoxEntregar.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 18));
+		CheckBoxEntregar.setBounds(939, 586, 123, 47);
+		add(CheckBoxEntregar);
 		
 		JLabel lblCodigo_1 =new JLabel("Codigo Socio");
 		lblCodigo_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -275,10 +297,6 @@ public class PrestamoPanel extends JPanel {
 	}
 	
 	// ====================== metodos para esta tablas==============
-
-		private void limpiarTextFields() {
-			
-		}
 
 		private void recargarTablaPrestamo() {
 
