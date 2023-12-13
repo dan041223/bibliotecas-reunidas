@@ -58,11 +58,6 @@ public class ReciboPanel extends JPanel {
 		btnEliminar.setBounds(394, 81, 148, 40);
 		add(btnEliminar);
 		
-		JButton btnBuscar_Superior = new JButton("Buscar");
-		btnBuscar_Superior.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
-		btnBuscar_Superior.setBounds(641, 82, 148, 40);
-		add(btnBuscar_Superior);
-		
 		textField = new JTextField();
 		textField.setColumns(10);
 		textField.setBounds(975, 141, 194, 25);

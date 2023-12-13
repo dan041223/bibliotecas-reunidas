@@ -31,6 +31,10 @@ public class Recibo  {
 		this.fech_recibo = fech_recibo;
 		this.pago = pago;
 	}
+	
+	public String obtenerTipoPagoComoString() {
+        return pago.name();
+    }
 
 	public int getId() {
 		return id;
