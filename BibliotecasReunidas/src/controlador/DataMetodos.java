@@ -1781,6 +1781,40 @@ public class DataMetodos {
 
 	}
 	
+	public static void modificarPrestamo(int id, int codigoSocio, int codigoLibro, int codigoUsuario) {
+			ConectorBBDD conextor = new ConectorBBDD();
+			Connection conexion = null;
+			
+			try {
+				conexion = conextor.connect();
+				Statement stmt = conexion.createStatement();
+				stmt.executeUpdate("UPDATE prestamo SET id_socio = '"+codigoSocio+"', id_libro = '"+codigoLibro+"', id_usuario = '"+codigoUsuario+"' "
+						+ "WHERE id_prestamo = " + id + ";");
+						
+
+				System.out.println("Inserción exitosa.");
+		}  catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void marcarEntregado(int id) {
+		ConectorBBDD conextor = new ConectorBBDD();
+		Connection conexion = null;
+		
+		try {
+			conexion = conextor.connect();
+			Statement stmt = conexion.createStatement();
+			LocalDate fechaActual = LocalDate.now();
+			stmt.executeUpdate("UPDATE prestamo SET fecha_entrega= '"+fechaActual +"' WHERE id_prestamo = " + id + ";");
+					
+
+			System.out.println("Inserción exitosa.");
+	}  catch (SQLException e) {
+		e.printStackTrace();
+	}
+}
+	
 	public static void eliminarPrestamo(int id) {
 
 		ConectorBBDD conextor = new ConectorBBDD();
@@ -1796,9 +1830,8 @@ public class DataMetodos {
 				conexion = conextor.connect();
 				statement = conexion.createStatement();
 				System.out.println(id);
-				String query = String.format("delete from prestamo where id_biblioteca = %d;", id);
-				int count = statement.executeUpdate(query);// esta funcion devuelve el numero de filas que han sido
-															// afectadas
+				String query = String.format("delete from prestamo where id_prestamo = %d;", id);
+				int count = statement.executeUpdate(query);
 
 				if (count > 0) {
 					JOptionPane.showMessageDialog(null, "El proceso de eliminacion ha terminado correctamente",
