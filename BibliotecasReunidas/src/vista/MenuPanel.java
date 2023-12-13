@@ -101,7 +101,7 @@ public class MenuPanel extends JPanel {
 	    ImageIcon icon2 = new ImageIcon(scaledImg2);
 		
 		JLabel lblNewLabel_1 = new JLabel(icon2);
-		lblNewLabel_1.setText("a");
+		lblNewLabel_1.setText("");
 		lblNewLabel_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -135,7 +135,7 @@ public class MenuPanel extends JPanel {
 	    ImageIcon icon3 = new ImageIcon(scaledImg3);
 		
 		JLabel lblNewLabel_1_1 = new JLabel(icon3);
-		lblNewLabel_1_1.setText("a");
+		lblNewLabel_1_1.setText("");
 		lblNewLabel_1_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -169,7 +169,7 @@ public class MenuPanel extends JPanel {
 	    ImageIcon icon4 = new ImageIcon(scaledImg4);
 		
 		JLabel lblNewLabel_1_2 = new JLabel(icon4);
-		lblNewLabel_1_2.setText("a");
+		lblNewLabel_1_2.setText("");
 		lblNewLabel_1_2.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -203,7 +203,7 @@ public class MenuPanel extends JPanel {
 	    ImageIcon icon5 = new ImageIcon(scaledImg5);
 		
 		JLabel lblNewLabel_1_3 = new JLabel(icon5);
-		lblNewLabel_1_3.setText("a");
+		lblNewLabel_1_3.setText("");
 		lblNewLabel_1_3.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -237,7 +237,7 @@ public class MenuPanel extends JPanel {
 	    ImageIcon icon6 = new ImageIcon(scaledImg6);
 		
 		JLabel lblNewLabel_1_4 = new JLabel(icon6);
-		lblNewLabel_1_4.setText("a");
+		lblNewLabel_1_4.setText("");
 		lblNewLabel_1_4.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -271,7 +271,7 @@ public class MenuPanel extends JPanel {
 	    ImageIcon icon7 = new ImageIcon(scaledImg7);
 		
 		JLabel lblNewLabel_1_5 = new JLabel(icon7);
-		lblNewLabel_1_5.setText("a");
+		lblNewLabel_1_5.setText("");
 		lblNewLabel_1_5.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -305,7 +305,7 @@ public class MenuPanel extends JPanel {
 	    ImageIcon icon8 = new ImageIcon(scaledImg8);
 		
 		JLabel lblNewLabel_1_6 = new JLabel(icon8);
-		lblNewLabel_1_6.setText("a");
+		lblNewLabel_1_6.setText("");
 		lblNewLabel_1_6.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -339,7 +339,7 @@ public class MenuPanel extends JPanel {
 	    ImageIcon icon9 = new ImageIcon(scaledImg9);
 		
 		JLabel lblNewLabel_1_7 = new JLabel(icon9);
-		lblNewLabel_1_7.setText("a");
+		lblNewLabel_1_7.setText("");
 		lblNewLabel_1_7.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
