@@ -34,7 +34,6 @@ public class Login extends JPanel {
 	public Login(JFrame frame) {
 		setBackground(new Color(128, 128, 192));
 		this.frame = frame;
-		this.frame.setBackground(Color.MAGENTA);
 		setLayout(null);
 		
 		JLabel lblLoginTitle = new JLabel("INICIO DE SESION");
