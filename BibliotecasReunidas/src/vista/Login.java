@@ -64,7 +64,7 @@ public class Login extends JPanel {
 		
 		JButton btnAcceder = new JButton("Acceder");
 		btnAcceder.setOpaque(false);
-		btnAcceder.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnAcceder.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
 		/*
 		 * Detecta cuando pulsas el boton, haciendo los siguientes casos:
 		 * En caso de que encuentre el usuario dice en una ventanita que se ha encontrado y pasa a la ventana principal (Socios por ahora para pruebas)

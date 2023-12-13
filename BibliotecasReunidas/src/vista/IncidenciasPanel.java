@@ -1,7 +1,9 @@
 package vista;
 
 import javax.swing.JPanel;
+import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
@@ -17,12 +19,17 @@ import modelo.Incidencias;
 import modelo.Libro;
 
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import java.awt.Font;
+import java.awt.Image;
+
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JComboBox;
@@ -32,6 +39,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JRadioButton;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
+import java.awt.Color;
 
 public class IncidenciasPanel extends JPanel {
 
@@ -63,10 +71,12 @@ public class IncidenciasPanel extends JPanel {
 	 * Create the panel.
 	 */
 	public IncidenciasPanel(JFrame frame) {
+		setBackground(new Color(128, 128, 192));
 		this.frame = frame;
 		setLayout(null);
 		
 		JLabel lblIncidencias = new JLabel("Incidencias");
+		lblIncidencias.setForeground(new Color(255, 255, 255));
 		lblIncidencias.setFont(new Font("Tahoma", Font.BOLD, 20));
 		lblIncidencias.setBounds(10, 11, 130, 30);
 		add(lblIncidencias);
@@ -103,6 +113,7 @@ public class IncidenciasPanel extends JPanel {
 		});
 		
 		JButton btnCrearIncidencia = new JButton("Crear");
+		btnCrearIncidencia.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
 		btnCrearIncidencia.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -115,10 +126,11 @@ public class IncidenciasPanel extends JPanel {
 				JOptionPane.showMessageDialog(vp, "Se ha agregado satisafactoriamente");
 			}
 		});
-		btnCrearIncidencia.setBounds(820, 507, 89, 23);
+		btnCrearIncidencia.setBounds(112, 59, 89, 23);
 		add(btnCrearIncidencia);
 		
 		btnBorrarIncidencia = new JButton("Borrar");
+		btnBorrarIncidencia.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
 		btnBorrarIncidencia.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				borrarIncidencia();
@@ -126,11 +138,12 @@ public class IncidenciasPanel extends JPanel {
 				rellenarTablaAlPrincipio();
 			}
 		});
-		btnBorrarIncidencia.setBounds(984, 541, 172, 23);
+		btnBorrarIncidencia.setBounds(586, 59, 172, 23);
 		btnBorrarIncidencia.setEnabled(false);
 		add(btnBorrarIncidencia);
 		
 		btnModificarIncidencia = new JButton("Modificar");
+		btnModificarIncidencia.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
 		btnModificarIncidencia.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				modificarIncidencia();
@@ -138,16 +151,18 @@ public class IncidenciasPanel extends JPanel {
 				rellenarTablaAlPrincipio();
 			}
 		});
-		btnModificarIncidencia.setBounds(820, 541, 89, 23);
+		btnModificarIncidencia.setBounds(211, 59, 130, 23);
 		btnModificarIncidencia.setEnabled(false);
 		add(btnModificarIncidencia);
 		
 		JLabel lblLibro = new JLabel("Libro:");
+		lblLibro.setForeground(new Color(255, 255, 255));
 		lblLibro.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblLibro.setBounds(10, 52, 130, 30);
 		add(lblLibro);
 		
 		JLabel lblDescripcion = new JLabel("Descripcion:");
+		lblDescripcion.setForeground(new Color(255, 255, 255));
 		lblDescripcion.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblDescripcion.setBounds(820, 177, 130, 30);
 		add(lblDescripcion);
@@ -162,6 +177,7 @@ public class IncidenciasPanel extends JPanel {
 		add(textArea);
 		
 		JButton btnLimpiarCampos = new JButton("Limpiar campos");
+		btnLimpiarCampos.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
 		btnLimpiarCampos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				comboBox.setSelectedItem(0);
@@ -169,10 +185,11 @@ public class IncidenciasPanel extends JPanel {
 				comboBox.setSelectedItem("-Listado de libros-");
 			}
 		});
-		btnLimpiarCampos.setBounds(820, 437, 130, 23);
+		btnLimpiarCampos.setBounds(820, 438, 178, 23);
 		add(btnLimpiarCampos);
 		
 		btnResolver = new JButton("Resuelta / no resuelta");
+		btnResolver.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
 		btnResolver.setEnabled(false);
 		btnResolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -193,10 +210,12 @@ public class IncidenciasPanel extends JPanel {
 				}
 			}
 		});
-		btnResolver.setBounds(984, 507, 172, 23);
+		btnResolver.setBounds(351, 59, 225, 23);
 		add(btnResolver);
 		
 		rdbtnMostrarResueltas = new JRadioButton("Mostrar resueltas");
+		rdbtnMostrarResueltas.setOpaque(false);
+		rdbtnMostrarResueltas.setForeground(new Color(255, 255, 255));
 		rdbtnMostrarResueltas.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				if(rdbtnMostrarResueltas.isSelected()) {
@@ -209,6 +228,8 @@ public class IncidenciasPanel extends JPanel {
 		add(rdbtnMostrarResueltas);
 		
 		rdbtnMostrarNoResueltas = new JRadioButton("Mostrar no resueltas");
+		rdbtnMostrarNoResueltas.setOpaque(false);
+		rdbtnMostrarNoResueltas.setForeground(new Color(255, 255, 255));
 		rdbtnMostrarNoResueltas.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				if(rdbtnMostrarNoResueltas.isSelected()) {
@@ -221,6 +242,8 @@ public class IncidenciasPanel extends JPanel {
 		add(rdbtnMostrarNoResueltas);
 		
 		rdbtnMostrarTodas = new JRadioButton("Mostrar todas");
+		rdbtnMostrarTodas.setOpaque(false);
+		rdbtnMostrarTodas.setForeground(new Color(255, 255, 255));
 		rdbtnMostrarTodas.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				if(rdbtnMostrarTodas.isSelected()) {
@@ -237,6 +260,31 @@ public class IncidenciasPanel extends JPanel {
 		grupoRadio.add(rdbtnMostrarTodas);
 		grupoRadio.add(rdbtnMostrarResueltas);
 		grupoRadio.add(rdbtnMostrarNoResueltas);
+		
+		JLabel lblLibro_1 = new JLabel("Libro:");
+		lblLibro_1.setForeground(new Color(255, 255, 255));
+		lblLibro_1.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblLibro_1.setBounds(820, 103, 130, 30);
+		add(lblLibro_1);
+		
+		BufferedImage img1 = null;
+		try {
+			img1 = ImageIO.read(new File("res\\imagenes\\posibleFondo.png"));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		int labelWidth1 = 1424;
+	    int labelHeight1 = 825;
+	    
+	    Image scaledImg1 = img1.getScaledInstance(labelWidth1, labelHeight1, Image.SCALE_SMOOTH);
+		
+	    ImageIcon icon1 = new ImageIcon(scaledImg1);
+	    
+		JLabel lblNewLabel = new JLabel(icon1);
+		lblNewLabel.setBounds(0, 0, 1434, 825);
+		add(lblNewLabel);
 	}
 	
 	public void rellenarTablaConNoResueltas() {
