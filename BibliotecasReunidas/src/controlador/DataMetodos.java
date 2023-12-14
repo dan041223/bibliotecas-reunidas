@@ -2232,4 +2232,26 @@ public class DataMetodos {
 
 			return arrlRecibos;
 		}
+		
+		public static void modificarRecibo(int id, int id_socio, int id_libro, String tipo_pago) {
+			ConectorBBDD conextor = new ConectorBBDD();
+
+			Connection conexion = null;
+			try {
+				conexion = conextor.connect();
+				if(tipo_pago.equalsIgnoreCase("efectivo")) {
+					Statement stmt = conexion.createStatement();
+					stmt.executeUpdate("UPDATE recibo SET id_socio = " + id_socio + ", id_libro = "
+							+ id_libro + ", tipo_pago = 'efectivo' WHERE id_recibo = " + id + ";");
+				}else if(tipo_pago.equalsIgnoreCase("tarjeta")) {
+					Statement stmt = conexion.createStatement();
+					stmt.executeUpdate("UPDATE recibo SET id_socio = " + id_socio + ", id_libro = "
+							+ id_libro + ", tipo_pago = 'tarjeta' WHERE id_recibo = " + id + ";");
+				}
+				
+				System.out.println("Modificación exitosa.");
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 }

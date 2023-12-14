@@ -19,6 +19,8 @@ import modelo.Recibo;
 import modelo.Socio;
 
 import javax.swing.JComboBox;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class ReciboPanel extends JPanel {
 
@@ -30,10 +32,14 @@ public class ReciboPanel extends JPanel {
 	private JTextField textFieldFechaRecibo;
 
 
-	/**
-	 * Create the panel.
-	 */
-
+	// Creamos los JButton
+	JButton btnModificar;
+    JButton btnEliminar;
+    private JComboBox comboBoxRecibo;
+    private JComboBox comboBoxSocio;
+    private JComboBox comboBoxLibro;
+    private JComboBox comboBoxPago;
+    
 	public ReciboPanel() {
 		this.frame = frame;
 		setLayout(null);
@@ -60,26 +66,21 @@ public class ReciboPanel extends JPanel {
 		LabelTitulo.setBounds(40, 34, 101, 36);
 		add(LabelTitulo);
 		
-		JButton btnModificar = new JButton("Modificar");
-		btnModificar.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
-		btnModificar.setBounds(40, 81, 148, 40);
-		add(btnModificar);
-		
- 	    JComboBox comboBoxRecibo = new JComboBox();
+ 	   comboBoxRecibo = new JComboBox();
  	   for(Recibo recibo: DataMetodos.obtenerCodigoRecibo()) {
 			comboBoxRecibo.addItem(recibo.getId());
 		}
  	    comboBoxRecibo.setBounds(975, 142, 194, 22);
  	    add(comboBoxRecibo);
  	    
- 	    JComboBox comboBoxSocio = new JComboBox();
+ 	   comboBoxSocio = new JComboBox();
  	   for(Socio socio: DataMetodos.obtenerCodigoSocio()) {
 			comboBoxSocio.addItem(socio.getId());
 		}
  	    comboBoxSocio.setBounds(975, 189, 194, 22);
  	    add(comboBoxSocio);
  	    
- 	    JComboBox comboBoxLibro = new JComboBox();
+ 	   comboBoxLibro = new JComboBox();
  	   for(Libro libro: DataMetodos.obtenerCodigoLibro()) {
 			comboBoxLibro.addItem(libro.getId());
 		}
@@ -97,7 +98,7 @@ public class ReciboPanel extends JPanel {
 		add(textFieldFechaRecibo);
 		
 		String[] Pagos = { "efectivo", "tarjeta" };
-		JComboBox comboBoxPago = new JComboBox(Pagos);
+		comboBoxPago = new JComboBox(Pagos);
 		comboBoxPago.setBounds(975, 396, 194, 22);
 		add(comboBoxPago);
 		
@@ -131,7 +132,32 @@ public class ReciboPanel extends JPanel {
 		lblTipoPago.setBounds(820, 393, 95, 25);
 		add(lblTipoPago);
 		
-		JButton btnEliminar = new JButton("Eliminar");
+		btnModificar = new JButton("Modificar");
+		btnModificar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				 aumentarTamanyo();
+				 
+				 int id_recibo = (int) comboBoxSocio.getSelectedItem();
+				 int id_socio = (int) comboBoxSocio.getSelectedItem();
+				 int id_libro = (int) comboBoxLibro.getSelectedItem();
+				 String tipo_pago = (String) comboBoxPago.getSelectedItem();
+				 
+				 DataMetodos.modificarRecibo(id_recibo, id_socio, id_libro, tipo_pago);
+				 
+				 recargarTablaRecibo();
+	             disminuirTamanyo();
+	             btnEliminar.setEnabled(false);
+	      	     btnModificar.setEnabled(false);    
+	      	   	 comboBoxSocio.setEnabled(false);   
+	      	  	 comboBoxLibro.setEnabled(false);        
+	      	  	 comboBoxPago.setEnabled(false); 
+			}
+		});
+		btnModificar.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
+		btnModificar.setBounds(40, 81, 148, 40);
+		add(btnModificar);
+		
+		btnEliminar = new JButton("Eliminar");
 		btnEliminar.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
 		btnEliminar.setBounds(249, 82, 148, 40);
 		add(btnEliminar);
@@ -160,8 +186,10 @@ public class ReciboPanel extends JPanel {
 
  		                // Habilitar y deshabilitar campos según sea necesario
  		                btnEliminar.setEnabled(true);
- 		                btnModificar.setEnabled(true); 
- 		                textFieldFechaRecibo.setEnabled(false); 
+ 		                btnModificar.setEnabled(true);   
+ 		                comboBoxSocio.setEnabled(true);   
+ 		       	  		comboBoxLibro.setEnabled(true); 
+ 		       	  		comboBoxPago.setEnabled(true); 
  		            }
  		        }
  		    }
@@ -170,6 +198,12 @@ public class ReciboPanel extends JPanel {
  		recargarTablaRecibo();
  		btnEliminar.setEnabled(false);
  	    btnModificar.setEnabled(false);   
+ 	    comboBoxRecibo.setEnabled(false);   
+ 	   	comboBoxSocio.setEnabled(false);   
+ 	  	comboBoxLibro.setEnabled(false);   
+ 	  	textFieldMonto.setEnabled(false);   
+ 	  	textFieldFechaRecibo.setEnabled(false);   
+ 	  	comboBoxPago.setEnabled(false);   
 	}
 	
 	private void recargarTablaRecibo() {
