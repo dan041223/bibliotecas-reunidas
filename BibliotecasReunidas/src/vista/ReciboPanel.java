@@ -158,6 +158,23 @@ public class ReciboPanel extends JPanel {
 		add(btnModificar);
 		
 		btnEliminar = new JButton("Eliminar");
+		btnEliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				 aumentarTamanyo();
+				 
+				 int id_recibo = (int) comboBoxSocio.getSelectedItem();
+				 
+				 DataMetodos.eliminarRecibo(id_recibo);
+				 
+				 recargarTablaRecibo();
+	             disminuirTamanyo();
+	             btnEliminar.setEnabled(false);
+	      	     btnModificar.setEnabled(false);    
+	      	   	 comboBoxSocio.setEnabled(false);   
+	      	  	 comboBoxLibro.setEnabled(false);        
+	      	  	 comboBoxPago.setEnabled(false); 
+			}
+		});
 		btnEliminar.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
 		btnEliminar.setBounds(249, 82, 148, 40);
 		add(btnEliminar);
