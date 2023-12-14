@@ -99,6 +99,15 @@ public class MenuPanel extends JPanel {
 		});
 		btnUbicacion.setBounds(812, 454, 89, 23);
 		add(btnUbicacion);
+		
+		JButton btnRecibos = new JButton("Recibos");
+		btnRecibos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Ventana_Principal.getInstance().cambiarPanel(new ReciboPanel());
+			}
+		});
+		btnRecibos.setBounds(573, 502, 89, 23);
+		add(btnRecibos);
 
 	}
 }

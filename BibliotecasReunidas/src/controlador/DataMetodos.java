@@ -1731,6 +1731,46 @@ public class DataMetodos {
 		return arrlUsuario;
 	}
 	
+	public static ArrayList<Recibo> obtenerCodigoRecibo() {
+		ConectorBBDD conextor = new ConectorBBDD();
+
+		ArrayList<Recibo> arrlRecibo= new ArrayList<>();
+
+		Statement statement = null;
+		ResultSet registro = null;
+		Connection conexion = null;
+
+		try {
+			conexion = conextor.connect();
+			statement = conexion.createStatement();
+			String query = "Select id_recibo from recibo order by id_recibo";
+			registro = statement.executeQuery(query);
+
+			while (registro.next()) {
+
+				Recibo user = new Recibo();
+				user.setId(registro.getInt("id_recibo"));
+
+				arrlRecibo.add(user);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				statement.close();
+				conexion.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				System.out.println("Error al cerrar.\n");
+			} catch (NullPointerException e) {
+
+			}
+		}
+
+		return arrlRecibo;
+	}
+	
 	public static void insertarPrestamo(int cod_socio, int cod_libro, int cod_user, String tipoPago) {
 	    ConectorBBDD conector = new ConectorBBDD();
 	    PreparedStatement preparedStatementPrestamo = null;
@@ -1811,11 +1851,11 @@ public class DataMetodos {
 		
 		switch (pago) {
 		case "efectivo":
-			result = tipoPago.EFECTIVO;
+			result = tipoPago.efectivo;
 			break;
 
 		case "tarjeta":
-			result = tipoPago.TARJETA;
+			result = tipoPago.tarjeta;
 			break;
 		}
 
@@ -2124,5 +2164,72 @@ public class DataMetodos {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+		}
+		
+		// ======================================== Metodos Usuarios ======================================
+		
+		public static ArrayList<Recibo> LeerTablaRecibo() {
+
+			ConectorBBDD conextor = new ConectorBBDD();
+
+			ArrayList<Recibo> arrlRecibo= new ArrayList<>();
+
+			Statement statement = null;
+			ResultSet registro = null;
+			Connection conexion = null;
+
+			try {
+				conexion = conextor.connect();
+				statement = conexion.createStatement();
+				String query = "Select * from recibo order by id_recibo";
+				registro = statement.executeQuery(query);
+
+				while (registro.next()) {
+
+					Recibo recibo = new Recibo();
+					recibo.setId(registro.getInt("id_recibo"));
+					recibo.setId_libro(registro.getInt("id_libro"));
+					recibo.setId_socio(registro.getInt("id_socio"));
+					recibo.setMonto(registro.getInt("monto"));
+					recibo.setFech_recibo(registro.getString("fecha_recibo"));
+					recibo.setPago(obtenerTipoPago(registro.getString("tipo_pago")));
+
+					arrlRecibo.add(recibo);
+				}
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					statement.close();
+					conexion.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+					System.out.println("Error al cerrar.\n");
+				} catch (NullPointerException e) {
+
+				}
+			}
+
+			return arrlRecibo;
+		}
+		
+		public static ArrayList<Object[]> obtenerFilasTablaRecibo() {
+
+			ArrayList<Recibo> recibos = LeerTablaRecibo();
+
+			ArrayList<Object[]> arrlRecibos = new ArrayList<>();
+
+			for (Recibo recibo : recibos) {
+
+				Object[] fila = new Object[] {
+
+						recibo.getId(), recibo.getId_socio(), recibo.getId_libro(), recibo.getMonto(), recibo.getFech_recibo(), recibo.getPago()};
+
+				arrlRecibos.add(fila);
+
+			}
+
+			return arrlRecibos;
 		}
 }

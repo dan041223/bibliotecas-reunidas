@@ -8,18 +8,26 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JButton;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
+
+import controlador.DataMetodos;
+import modelo.Libro;
+import modelo.Recibo;
+import modelo.Socio;
+
+import javax.swing.JComboBox;
 
 public class ReciboPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-
+	private JFrame frame;
 	private JTable TablaRecibos;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_4;
-	private JTextField textField_5;
+	DefaultTableModel modeloRecibo = new DefaultTableModel();
+	private JTextField textFieldMonto;
+	private JTextField textFieldFechaRecibo;
 
 
 	/**
@@ -27,75 +35,80 @@ public class ReciboPanel extends JPanel {
 	 */
 
 	public ReciboPanel() {
+		this.frame = frame;
 		setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(40, 133, 749, 478);
 		add(scrollPane);
 		
-		TablaRecibos = new JTable();
+		TablaRecibos = new JTable() {
+			private static final long serialVersionUID = 1L;
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
 		scrollPane.setViewportView(TablaRecibos);
+		
+		modeloRecibo.setColumnIdentifiers(
+				new Object[] {"Id Recibo", "Id Socios", "Id Libros", "Monto", "Fecha Recibos", "Tipo de Pago"});
+		
+		TablaRecibos.setModel(modeloRecibo);
 		
 		JLabel LabelTitulo = new JLabel("Recibos");
 		LabelTitulo.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 20));
 		LabelTitulo.setBounds(40, 34, 101, 36);
 		add(LabelTitulo);
 		
-		JButton btnAnyadir = new JButton("Añadir");
-		btnAnyadir.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
-		btnAnyadir.setBounds(40, 81, 148, 40);
-		add(btnAnyadir);
+		JButton btnModificar = new JButton("Modificar");
+		btnModificar.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
+		btnModificar.setBounds(40, 81, 148, 40);
+		add(btnModificar);
 		
-		JButton btnModificar_Superior = new JButton("Modificar");
-		btnModificar_Superior.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
-		btnModificar_Superior.setEnabled(false);
-		btnModificar_Superior.setBounds(216, 81, 148, 40);
-		add(btnModificar_Superior);
+ 	    JComboBox comboBoxRecibo = new JComboBox();
+ 	   for(Recibo recibo: DataMetodos.obtenerCodigoRecibo()) {
+			comboBoxRecibo.addItem(recibo.getId());
+		}
+ 	    comboBoxRecibo.setBounds(975, 142, 194, 22);
+ 	    add(comboBoxRecibo);
+ 	    
+ 	    JComboBox comboBoxSocio = new JComboBox();
+ 	   for(Socio socio: DataMetodos.obtenerCodigoSocio()) {
+			comboBoxSocio.addItem(socio.getId());
+		}
+ 	    comboBoxSocio.setBounds(975, 189, 194, 22);
+ 	    add(comboBoxSocio);
+ 	    
+ 	    JComboBox comboBoxLibro = new JComboBox();
+ 	   for(Libro libro: DataMetodos.obtenerCodigoLibro()) {
+			comboBoxLibro.addItem(libro.getId());
+		}
+ 	    comboBoxLibro.setBounds(975, 246, 194, 22);
+ 	    add(comboBoxLibro);
 		
-		JButton btnEliminar = new JButton("Eliminar");
-		btnEliminar.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
-		btnEliminar.setEnabled(false);
-		btnEliminar.setBounds(394, 81, 148, 40);
-		add(btnEliminar);
+		textFieldMonto = new JTextField();
+		textFieldMonto.setColumns(10);
+		textFieldMonto.setBounds(975, 291, 194, 25);
+		add(textFieldMonto);
 		
-		textField = new JTextField();
-		textField.setColumns(10);
-		textField.setBounds(975, 141, 194, 25);
-		add(textField);
+		textFieldFechaRecibo = new JTextField();
+		textFieldFechaRecibo.setColumns(10);
+		textFieldFechaRecibo.setBounds(975, 342, 194, 25);
+		add(textFieldFechaRecibo);
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(975, 188, 194, 25);
-		add(textField_1);
-		
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
-		textField_2.setBounds(975, 238, 194, 25);
-		add(textField_2);
-		
-		textField_3 = new JTextField();
-		textField_3.setColumns(10);
-		textField_3.setBounds(975, 291, 194, 25);
-		add(textField_3);
-		
-		textField_4 = new JTextField();
-		textField_4.setColumns(10);
-		textField_4.setBounds(975, 342, 194, 25);
-		add(textField_4);
-		
-		textField_5 = new JTextField();
-		textField_5.setColumns(10);
-		textField_5.setBounds(975, 388, 194, 25);
-		add(textField_5);
+		String[] Pagos = { "efectivo", "tarjeta" };
+		JComboBox comboBoxPago = new JComboBox(Pagos);
+		comboBoxPago.setBounds(975, 396, 194, 22);
+		add(comboBoxPago);
 		
 		JLabel lblCodigoSocio = new JLabel("Codigo Socio");
 		lblCodigoSocio.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblCodigoSocio.setBounds(820, 134, 95, 25);
+		lblCodigoSocio.setBounds(820, 186, 95, 25);
 		add(lblCodigoSocio);
 		
 		JLabel lblCodigoRecibo = new JLabel("Codigo Recibo");
 		lblCodigoRecibo.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblCodigoRecibo.setBounds(820, 193, 95, 25);
+		lblCodigoRecibo.setBounds(820, 139, 95, 25);
 		add(lblCodigoRecibo);
 		
 		JLabel lblCodigoLibro = new JLabel("Codigo Libro");
@@ -117,6 +130,71 @@ public class ReciboPanel extends JPanel {
 		lblTipoPago.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblTipoPago.setBounds(820, 393, 95, 25);
 		add(lblTipoPago);
+		
+		JButton btnEliminar = new JButton("Eliminar");
+		btnEliminar.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
+		btnEliminar.setBounds(249, 82, 148, 40);
+		add(btnEliminar);
+		
+		// Obtener el modelo de selección de la tabla
+ 		ListSelectionModel selectionModel = TablaRecibos.getSelectionModel();
+ 		// Agregar un ListSelectionListener al modelo de selección
+ 		selectionModel.addListSelectionListener(new ListSelectionListener() {
+ 			@Override
+ 			 public void valueChanged(ListSelectionEvent e) {
+ 		        if (!e.getValueIsAdjusting()) {
+ 		            if (TablaRecibos.getSelectedRow() >= 0) {
+ 		                String id_recibo = modeloRecibo.getValueAt(TablaRecibos.getSelectedRow(), 0).toString();
+ 		                String id_socio = modeloRecibo.getValueAt(TablaRecibos.getSelectedRow(), 1).toString();
+ 		                String id_libro = modeloRecibo.getValueAt(TablaRecibos.getSelectedRow(), 2).toString();
+ 		                String monto = modeloRecibo.getValueAt(TablaRecibos.getSelectedRow(), 3).toString();
+ 		                String fecha_recibo = modeloRecibo.getValueAt(TablaRecibos.getSelectedRow(), 4).toString();
+ 		                String tipo_pago = modeloRecibo.getValueAt(TablaRecibos.getSelectedRow(), 5).toString();
 
+ 		               comboBoxRecibo.setSelectedItem(id_recibo);
+ 		               comboBoxSocio.setSelectedItem(id_socio);
+ 		               comboBoxLibro.setSelectedItem(id_libro);
+ 		                textFieldMonto.setText(monto);
+ 		                textFieldFechaRecibo.setText(fecha_recibo);
+ 		                comboBoxPago.setSelectedItem(tipo_pago);
+
+ 		                // Habilitar y deshabilitar campos según sea necesario
+ 		                btnEliminar.setEnabled(true);
+ 		                btnModificar.setEnabled(true); 
+ 		                textFieldFechaRecibo.setEnabled(false); 
+ 		            }
+ 		        }
+ 		    }
+ 		});
+ 		
+ 		recargarTablaRecibo();
+ 		btnEliminar.setEnabled(false);
+ 	    btnModificar.setEnabled(false);   
+	}
+	
+	private void recargarTablaRecibo() {
+		modeloRecibo.setRowCount(0); // SIRVE PARA RESETEAR LA TABLA
+		for (Object[] filaDeRecibo : DataMetodos.obtenerFilasTablaRecibo()) {
+			modeloRecibo.addRow(filaDeRecibo);
+		}
+
+	}
+	
+	private void disminuirTamanyo() {
+        if (frame != null) {
+            int nuevoAncho = 810;
+            int nuevoAlto = frame.getHeight();
+            frame.setSize(nuevoAncho, nuevoAlto);
+            System.out.println("Disminuido");
+        }
+    }
+	
+	private void aumentarTamanyo() {
+		if (frame != null) {
+			int nuevoAncho = 1250;
+			int nuevoAlto = frame.getHeight();
+			frame.setSize(nuevoAncho, nuevoAlto);
+
+		}
 	}
 }
