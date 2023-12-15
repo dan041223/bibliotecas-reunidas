@@ -2255,7 +2255,7 @@ public class DataMetodos {
 			}
 		}
 		
-		public static void eliminarRecibo(int id, int id_socio) {
+		public static void eliminarRecibo(int id) {
 			ConectorBBDD conextor = new ConectorBBDD();
 
 			Statement statement = null;
