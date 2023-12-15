@@ -5,6 +5,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import java.awt.Font;
+import java.awt.Image;
+
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -17,12 +19,21 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
+import java.awt.Color;
+import java.awt.Cursor;
 
 public class UbicacionPanel extends JPanel {
 
@@ -48,11 +59,69 @@ public class UbicacionPanel extends JPanel {
 	 * Create the panel.
 	 */
 	public UbicacionPanel(JFrame frame) {
+		setBackground(new Color(128, 128, 192));
 		this.frame = frame;
 
 		setLayout(null);
+		
+		BufferedImage img = null;
+		try {
+			img = ImageIO.read(new File("res\\imagenes\\flechita_atras.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		int labelWidth = 40;
+	    int labelHeight = 40;
+	    
+	    Image scaledImg = img.getScaledInstance(labelWidth, labelHeight, Image.SCALE_SMOOTH);
+		
+	    ImageIcon icon = new ImageIcon(scaledImg);
+	    
+		JLabel imgs = new JLabel(icon);
+		imgs.setForeground(new Color(255, 255, 255));
+		imgs.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				setCursor(Cursor.getDefaultCursor());
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				Ventana_Principal.getInstance().cambiarPanel(new MenuPanel(frame));
+			}
+		});
+		imgs.setBounds(10, 11, 47, 40);
+		
+		add(imgs);
+		
+		JLabel lblCerrarSesion = new JLabel("Volver al menu");
+		lblCerrarSesion.setForeground(new Color(255, 255, 255));
+		lblCerrarSesion.setBackground(new Color(255, 255, 255));
+		lblCerrarSesion.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblCerrarSesion.setBounds(55, 23, 181, 14);
+		lblCerrarSesion.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				setCursor(Cursor.getDefaultCursor());
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				Ventana_Principal.getInstance().cambiarPanel(new MenuPanel(frame));
+			}
+		});
+		add(lblCerrarSesion);
 
 		JLabel lblNewLabel = new JLabel("Ubicación");
+		lblNewLabel.setForeground(new Color(255, 255, 255));
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 20));
 		lblNewLabel.setBounds(78, 66, 167, 39);
 		add(lblNewLabel);
@@ -84,43 +153,47 @@ public class UbicacionPanel extends JPanel {
 		tableUbicacion.setModel(modeloUbicacion);
 
 		JLabel lblCodigo = new JLabel("Codigo ID");
+		lblCodigo.setForeground(new Color(255, 255, 255));
 		lblCodigo.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblCodigo.setBounds(725, 158, 78, 33);
+		lblCodigo.setBounds(834, 158, 78, 33);
 		add(lblCodigo);
 
 		JLabel lblProvincia = new JLabel("Pasillo");
+		lblProvincia.setForeground(new Color(255, 255, 255));
 		lblProvincia.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblProvincia.setBounds(725, 215, 78, 33);
+		lblProvincia.setBounds(834, 215, 78, 33);
 		add(lblProvincia);
 
 		JLabel lblCodigoPostal = new JLabel("Estante");
+		lblCodigoPostal.setForeground(new Color(255, 255, 255));
 		lblCodigoPostal.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblCodigoPostal.setBounds(725, 288, 104, 33);
+		lblCodigoPostal.setBounds(834, 288, 104, 33);
 		add(lblCodigoPostal);
 
 		JLabel lblTelefono = new JLabel("Código biblioteca ");
+		lblTelefono.setForeground(new Color(255, 255, 255));
 		lblTelefono.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblTelefono.setBounds(725, 345, 120, 33);
+		lblTelefono.setBounds(834, 345, 120, 33);
 		add(lblTelefono);
 
 		textField_Id = new JTextField();
-		textField_Id.setBounds(841, 158, 221, 33);
+		textField_Id.setBounds(950, 158, 221, 33);
 		add(textField_Id);
 		textField_Id.setColumns(10);
 
 		textField_Pasillo = new JTextField();
 		textField_Pasillo.setColumns(10);
-		textField_Pasillo.setBounds(841, 217, 221, 33);
+		textField_Pasillo.setBounds(950, 217, 221, 33);
 		add(textField_Pasillo);
 
 		textField_Estante = new JTextField();
 		textField_Estante.setColumns(10);
-		textField_Estante.setBounds(841, 290, 221, 33);
+		textField_Estante.setBounds(950, 290, 221, 33);
 		add(textField_Estante);
 
 		textField_CodigoBiblioteca = new JTextField();
 		textField_CodigoBiblioteca.setColumns(10);
-		textField_CodigoBiblioteca.setBounds(841, 347, 221, 33);
+		textField_CodigoBiblioteca.setBounds(950, 347, 221, 33);
 		add(textField_CodigoBiblioteca);
 
 		btnGuardarUbicacion = new JButton("Guardar nueva ubicacion");
@@ -305,6 +378,25 @@ public class UbicacionPanel extends JPanel {
 		btnEliminar.setEnabled(false);
 		btnModificar_Superior.setEnabled(false);
 		disminuirTamanyo();
+		
+		BufferedImage img1 = null;
+		try {
+			img1 = ImageIO.read(new File("res\\imagenes\\posibleFondo.png"));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		int labelWidth1 = 1424;
+	    int labelHeight1 = 825;
+	    
+	    Image scaledImg1 = img1.getScaledInstance(labelWidth1, labelHeight1, Image.SCALE_SMOOTH);
+		
+	    ImageIcon icon1 = new ImageIcon(scaledImg1);
+	    
+		JLabel lblFondo = new JLabel(icon1);
+		lblFondo.setBounds(0, 0, 1434, 825);
+		add(lblFondo);
 	}
 
 	private void recargarTablaUbicacion() {

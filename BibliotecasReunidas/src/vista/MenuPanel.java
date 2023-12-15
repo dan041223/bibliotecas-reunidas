@@ -58,14 +58,14 @@ public class MenuPanel extends JPanel {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				Ventana_Principal.getInstance().cambiarPanel(new MenuPanel(frame));
+				Ventana_Principal.getInstance().cambiarPanel(new Login(frame));
 			}
 		});
 		imgs.setBounds(10, 11, 47, 40);
 		
 		add(imgs);
 		
-		JLabel lblCerrarSesion = new JLabel("Volver al menu");
+		JLabel lblCerrarSesion = new JLabel("Cerrar sesión");
 		lblCerrarSesion.setForeground(new Color(255, 255, 255));
 		lblCerrarSesion.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblCerrarSesion.setBounds(55, 23, 181, 14);
@@ -80,7 +80,7 @@ public class MenuPanel extends JPanel {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				Ventana_Principal.getInstance().cambiarPanel(new MenuPanel(frame));
+				Ventana_Principal.getInstance().cambiarPanel(new Login(frame));
 			}
 		});
 		add(lblCerrarSesion);
@@ -101,7 +101,7 @@ public class MenuPanel extends JPanel {
 	    ImageIcon icon2 = new ImageIcon(scaledImg2);
 		
 		JLabel lblNewLabel_1 = new JLabel(icon2);
-		lblNewLabel_1.setText("a");
+		lblNewLabel_1.setText("");
 		lblNewLabel_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -135,7 +135,7 @@ public class MenuPanel extends JPanel {
 	    ImageIcon icon3 = new ImageIcon(scaledImg3);
 		
 		JLabel lblNewLabel_1_1 = new JLabel(icon3);
-		lblNewLabel_1_1.setText("a");
+		lblNewLabel_1_1.setText("");
 		lblNewLabel_1_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -169,7 +169,7 @@ public class MenuPanel extends JPanel {
 	    ImageIcon icon4 = new ImageIcon(scaledImg4);
 		
 		JLabel lblNewLabel_1_2 = new JLabel(icon4);
-		lblNewLabel_1_2.setText("a");
+		lblNewLabel_1_2.setText("");
 		lblNewLabel_1_2.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -203,7 +203,7 @@ public class MenuPanel extends JPanel {
 	    ImageIcon icon5 = new ImageIcon(scaledImg5);
 		
 		JLabel lblNewLabel_1_3 = new JLabel(icon5);
-		lblNewLabel_1_3.setText("a");
+		lblNewLabel_1_3.setText("");
 		lblNewLabel_1_3.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -237,7 +237,7 @@ public class MenuPanel extends JPanel {
 	    ImageIcon icon6 = new ImageIcon(scaledImg6);
 		
 		JLabel lblNewLabel_1_4 = new JLabel(icon6);
-		lblNewLabel_1_4.setText("a");
+		lblNewLabel_1_4.setText("");
 		lblNewLabel_1_4.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -271,7 +271,7 @@ public class MenuPanel extends JPanel {
 	    ImageIcon icon7 = new ImageIcon(scaledImg7);
 		
 		JLabel lblNewLabel_1_5 = new JLabel(icon7);
-		lblNewLabel_1_5.setText("a");
+		lblNewLabel_1_5.setText("");
 		lblNewLabel_1_5.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -305,7 +305,7 @@ public class MenuPanel extends JPanel {
 	    ImageIcon icon8 = new ImageIcon(scaledImg8);
 		
 		JLabel lblNewLabel_1_6 = new JLabel(icon8);
-		lblNewLabel_1_6.setText("a");
+		lblNewLabel_1_6.setText("");
 		lblNewLabel_1_6.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -323,6 +323,40 @@ public class MenuPanel extends JPanel {
 		lblNewLabel_1_6.setBounds(1048, 465, 218, 74);
 		add(lblNewLabel_1_6);
 		
+		BufferedImage img10 = null;
+		try {
+			img10 = ImageIO.read(new File("res\\imagenes\\button_recibos.png"));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		int labelWidth10 = 178;
+	    int labelHeight10 = 74;
+	    
+	    Image scaledImg10 = img10.getScaledInstance(labelWidth10, labelHeight10, Image.SCALE_SMOOTH);
+		
+	    ImageIcon icon10 = new ImageIcon(scaledImg10);
+		
+		JLabel recibos = new JLabel(icon10);
+		recibos.setText("");
+		recibos.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				Ventana_Principal.getInstance().cambiarPanel(new ReciboPanel());
+			}
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				setCursor(Cursor.getDefaultCursor());
+			}
+		});
+		recibos.setBounds(608, 641, 218, 74);
+		add(recibos);
+		
 		BufferedImage img9 = null;
 		try {
 			img9 = ImageIO.read(new File("res\\imagenes\\button_ubicaciones.png"));
@@ -339,7 +373,7 @@ public class MenuPanel extends JPanel {
 	    ImageIcon icon9 = new ImageIcon(scaledImg9);
 		
 		JLabel lblNewLabel_1_7 = new JLabel(icon9);
-		lblNewLabel_1_7.setText("a");
+		lblNewLabel_1_7.setText("");
 		lblNewLabel_1_7.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {

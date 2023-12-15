@@ -3,8 +3,11 @@ package vista;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+
+import java.awt.Checkbox;
 import java.awt.Font;
 import java.awt.Frame;
+import java.awt.Image;
 import java.util.ArrayList;
 
 import javax.swing.JScrollPane;
@@ -17,6 +20,8 @@ import modelo.Libro;
 import modelo.Socio;
 import modelo.Usuario;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
@@ -25,6 +30,16 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.awt.event.ActionEvent;
+import javax.swing.JComboBox;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.time.LocalDate;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
 import javax.swing.JCheckBox;
@@ -45,42 +60,99 @@ public class PrestamoPanel extends JPanel {
     private JTextField textFieldFechaPrevista;
     private JTextField textFieldFechaPrestamo;
     private JTextField textFieldIdPrestamo;
+    private JCheckBox  CheckBoxEntregar;
 
 	public PrestamoPanel() {
+		setBackground(new Color(128, 128, 192));
 		this.frame = frame;
 		setLayout(null);
 			
+		BufferedImage img = null;
+		try {
+			img = ImageIO.read(new File("res\\imagenes\\flechita_atras.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		int labelWidth = 40;
+	    int labelHeight = 40;
+	    
+	    Image scaledImg = img.getScaledInstance(labelWidth, labelHeight, Image.SCALE_SMOOTH);
+		
+	    ImageIcon icon = new ImageIcon(scaledImg);
+	    
+		JLabel imgs = new JLabel(icon);
+		imgs.setForeground(new Color(255, 255, 255));
+		imgs.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				setCursor(Cursor.getDefaultCursor());
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				Ventana_Principal.getInstance().cambiarPanel(new MenuPanel(frame));
+			}
+		});
+		imgs.setBounds(10, 11, 47, 40);
+		
+		add(imgs);
+		
+		JLabel lblCerrarSesion = new JLabel("Volver al menu");
+		lblCerrarSesion.setForeground(new Color(255, 255, 255));
+		lblCerrarSesion.setBackground(new Color(255, 255, 255));
+		lblCerrarSesion.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblCerrarSesion.setBounds(55, 23, 181, 14);
+		lblCerrarSesion.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				setCursor(Cursor.getDefaultCursor());
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				Ventana_Principal.getInstance().cambiarPanel(new MenuPanel(frame));
+			}
+		});
+		add(lblCerrarSesion);
 		textFieldIdPrestamo = new JTextField();
 		textFieldIdPrestamo.setText("");
 		textFieldIdPrestamo.setEnabled(false);
 		textFieldIdPrestamo.setColumns(10);
-		textFieldIdPrestamo.setBounds(939, 193, 164, 25);
+		textFieldIdPrestamo.setBounds(1059, 195, 164, 25);
 		add(textFieldIdPrestamo);
 		
 		JComboBox comboBoxSocio = new JComboBox();
 		for(Socio socio: DataMetodos.obtenerCodigoSocio()) {
 			comboBoxSocio.addItem(socio.getId());
 		}
-		comboBoxSocio.setBounds(939, 249, 164, 22);
+		comboBoxSocio.setBounds(1059, 251, 164, 22);
 		add(comboBoxSocio);
 		
 		JComboBox comboBoxLibro = new JComboBox();
 		for(Libro libro: DataMetodos.obtenerCodigoLibro()) {
 			comboBoxLibro.addItem(libro.getId());
 		}
-		comboBoxLibro.setBounds(939, 300, 164, 22);
+		comboBoxLibro.setBounds(1059, 302, 164, 22);
 		add(comboBoxLibro);
 		
 		JComboBox comboBoxUsuario = new JComboBox();
 		for(Usuario usuario: DataMetodos.obtenerCodigoUsuario()) {
 			comboBoxUsuario.addItem(usuario.getId());
 		}
-		comboBoxUsuario.setBounds(939, 351, 164, 22);
+		comboBoxUsuario.setBounds(1059, 353, 164, 22);
 		add(comboBoxUsuario);
 		
 		textFieldFechaEntrega = new JTextField();
 		textFieldFechaEntrega.setText("");
-		textFieldFechaEntrega.setBounds(939, 505, 164, 25);
+		textFieldFechaEntrega.setBounds(1059, 507, 164, 25);
 		add(textFieldFechaEntrega);
 		textFieldFechaEntrega.setColumns(10);
 		
@@ -88,22 +160,19 @@ public class PrestamoPanel extends JPanel {
 		textFieldFechaPrevista.setText("");
 		textFieldFechaPrevista.setEnabled(false);
 		textFieldFechaPrevista.setColumns(10);
-		textFieldFechaPrevista.setBounds(939, 453, 164, 25);
+		textFieldFechaPrevista.setBounds(1059, 455, 164, 25);
 		add(textFieldFechaPrevista);
 		
 		textFieldFechaPrestamo = new JTextField();
 		textFieldFechaPrestamo.setText("");
 		textFieldFechaPrestamo.setEnabled(false);
 		textFieldFechaPrestamo.setColumns(10);
-		textFieldFechaPrestamo.setBounds(939, 403, 164, 25);
+		textFieldFechaPrestamo.setBounds(1059, 405, 164, 25);
 		add(textFieldFechaPrestamo);
 			
-		JCheckBox CheckBoxEntregar = new JCheckBox("Entregado");
-		CheckBoxEntregar.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 18));
-		CheckBoxEntregar.setBounds(939, 586, 123, 47);
-		add(CheckBoxEntregar);
 		
 		JLabel lblPrestamos = new JLabel("Prestamos");
+		lblPrestamos.setForeground(new Color(255, 255, 255));
 		lblPrestamos.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 20));
 		lblPrestamos.setBounds(31, 41, 159, 40);
 		add(lblPrestamos);
@@ -157,12 +226,12 @@ public class PrestamoPanel extends JPanel {
 				
 				DataMetodos.modificarPrestamo(id, codigoSocio, codigoLibro, codigoUsuario);
 				
-				limpiarTextFields();
                 recargarTablaPrestamo();
                 disminuirTamanyo();
                 btnAnyadir.setEnabled(true);
                 btnEliminar.setEnabled(false);
 				btnModificar.setEnabled(false);
+				CheckBoxEntregar.setEnabled(false);	
 			}
 		});
 		btnModificar.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
@@ -177,51 +246,80 @@ public class PrestamoPanel extends JPanel {
 				int id = Integer.parseInt(textFieldIdPrestamo.getText());
 				 DataMetodos.eliminarPrestamo(id);
 				
-				limpiarTextFields();
                 recargarTablaPrestamo();
                 disminuirTamanyo();
                 btnAnyadir.setEnabled(true);
                 btnEliminar.setEnabled(false);
 				btnModificar.setEnabled(false);
+				CheckBoxEntregar.setEnabled(false);	
 			}
 		});
 		btnEliminar.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
 		btnEliminar.setBounds(421, 92, 148, 40);
 		add(btnEliminar);
 		
+		CheckBoxEntregar = new JCheckBox("Entregado");
+		CheckBoxEntregar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				aumentarTamanyo();
+				
+				int id = Integer.parseInt(textFieldIdPrestamo.getText());
+				
+				DataMetodos.marcarEntregado(id);
+				
+                recargarTablaPrestamo();
+                disminuirTamanyo();
+                btnAnyadir.setEnabled(true);
+                btnEliminar.setEnabled(false);
+				btnModificar.setEnabled(false);
+				CheckBoxEntregar.setSelected(false);
+				CheckBoxEntregar.setEnabled(false);	
+			}
+		});
+		CheckBoxEntregar.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 18));
+		CheckBoxEntregar.setBounds(939, 586, 123, 47);
+		add(CheckBoxEntregar);
+		
 		JLabel lblCodigo_1 =new JLabel("Codigo Socio");
+		lblCodigo_1.setForeground(new Color(255, 255, 255));
 		lblCodigo_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblCodigo_1.setBounds(798, 246, 95, 25);
+		lblCodigo_1.setBounds(918, 248, 95, 25);
 		add(lblCodigo_1);
 		
 		JLabel lblCodigo_2 = new JLabel("Codigo Libro");
+		lblCodigo_2.setForeground(new Color(255, 255, 255));
 		lblCodigo_2.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblCodigo_2.setBounds(798, 297, 95, 25);
+		lblCodigo_2.setBounds(918, 299, 95, 25);
 		add(lblCodigo_2);
 		
 		JLabel lblCodigo_3 = new JLabel("Codigo Usuario");
+		lblCodigo_3.setForeground(new Color(255, 255, 255));
 		lblCodigo_3.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblCodigo_3.setBounds(798, 348, 114, 25);
+		lblCodigo_3.setBounds(918, 350, 114, 25);
 		add(lblCodigo_3);
 		
 		JLabel lblFechaEntrega = new JLabel("Fecha Entrega");
+		lblFechaEntrega.setForeground(new Color(255, 255, 255));
 		lblFechaEntrega.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblFechaEntrega.setBounds(798, 503, 114, 25);
+		lblFechaEntrega.setBounds(918, 505, 114, 25);
 		add(lblFechaEntrega);
 		
 		JLabel lblFechaPrevista = new JLabel("Fecha Prevista");
+		lblFechaPrevista.setForeground(new Color(255, 255, 255));
 		lblFechaPrevista.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblFechaPrevista.setBounds(798, 453, 114, 25);
+		lblFechaPrevista.setBounds(918, 455, 114, 25);
 		add(lblFechaPrevista);
 		
 		JLabel lblFechaPrestamo = new JLabel("Fecha Prestamo");
+		lblFechaPrestamo.setForeground(new Color(255, 255, 255));
 		lblFechaPrestamo.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblFechaPrestamo.setBounds(798, 401, 114, 25);
+		lblFechaPrestamo.setBounds(918, 403, 114, 25);
 		add(lblFechaPrestamo);
 		
 		JLabel lblCodigo_1_1 = new JLabel("Codigo Prestamo");
+		lblCodigo_1_1.setForeground(new Color(255, 255, 255));
 		lblCodigo_1_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblCodigo_1_1.setBounds(798, 191, 131, 25);
+		lblCodigo_1_1.setBounds(918, 193, 131, 25);
 		add(lblCodigo_1_1);
 		
 		 // Obtener el modelo de selección de la tabla
@@ -271,14 +369,29 @@ public class PrestamoPanel extends JPanel {
 		textFieldFechaPrestamo.setEnabled(false);	
 		textFieldFechaPrevista.setEnabled(false);	
 		textFieldFechaEntrega.setEnabled(false);	
+	
+		BufferedImage img1 = null;
+		try {
+			img1 = ImageIO.read(new File("res\\imagenes\\posibleFondo.png"));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		int labelWidth1 = 1424;
+	    int labelHeight1 = 825;
+	    
+	    Image scaledImg1 = img1.getScaledInstance(labelWidth1, labelHeight1, Image.SCALE_SMOOTH);
+		
+	    ImageIcon icon1 = new ImageIcon(scaledImg1);
+	    
+		JLabel lblNewLabel = new JLabel(icon1);
+		lblNewLabel.setBounds(0, 0, 1434, 825);
+		add(lblNewLabel);
 		CheckBoxEntregar.setEnabled(false);	
 	}
 	
 	// ====================== metodos para esta tablas==============
-
-		private void limpiarTextFields() {
-			
-		}
 
 		private void recargarTablaPrestamo() {
 
@@ -295,7 +408,6 @@ public class PrestamoPanel extends JPanel {
 	            int nuevoAncho = 810;
 	            int nuevoAlto = frame.getHeight();
 	            frame.setSize(nuevoAncho, nuevoAlto);
-	            System.out.println("Disminuido");
 	        }
 	    }
 		

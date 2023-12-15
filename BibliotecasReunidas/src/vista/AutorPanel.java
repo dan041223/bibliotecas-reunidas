@@ -5,11 +5,15 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import java.awt.Font;
+import java.awt.Image;
+
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JTable;
@@ -18,8 +22,15 @@ import controlador.DataMetodos;
 import modelo.Autor;
 import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
+import java.awt.Color;
+import java.awt.Cursor;
 
 public class AutorPanel extends JPanel {
 
@@ -44,58 +55,118 @@ public class AutorPanel extends JPanel {
 	 * Create the panel.
 	 */
 	public AutorPanel(JFrame frame) {
+		setBackground(new Color(128, 128, 192));
 
 		// para saber quien contiene el panel.
 		this.frame = frame;
-
-		System.out.println("Ventana Autor Panel");
+		
+		BufferedImage img = null;
+		try {
+			img = ImageIO.read(new File("res\\imagenes\\flechita_atras.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		int labelWidth = 40;
+	    int labelHeight = 40;
+	    
+	    Image scaledImg = img.getScaledInstance(labelWidth, labelHeight, Image.SCALE_SMOOTH);
+		
+	    ImageIcon icon = new ImageIcon(scaledImg);
+	    
+		JLabel imgs = new JLabel(icon);
+		imgs.setForeground(new Color(255, 255, 255));
+		imgs.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				setCursor(Cursor.getDefaultCursor());
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				Ventana_Principal.getInstance().cambiarPanel(new MenuPanel(frame));
+			}
+		});
+		imgs.setBounds(10, 11, 47, 40);
+		
+		add(imgs);
+		
+		JLabel lblCerrarSesion = new JLabel("Volver al menu");
+		lblCerrarSesion.setForeground(new Color(255, 255, 255));
+		lblCerrarSesion.setBackground(new Color(255, 255, 255));
+		lblCerrarSesion.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblCerrarSesion.setBounds(55, 23, 181, 14);
+		lblCerrarSesion.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				setCursor(Cursor.getDefaultCursor());
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				Ventana_Principal.getInstance().cambiarPanel(new MenuPanel(frame));
+			}
+		});
+		add(lblCerrarSesion);
 
 		setLayout(null);
 		setBounds(0, 0, 1186, 644);
 
 		JLabel lblcodigoID = new JLabel("Código ID");
+		lblcodigoID.setForeground(new Color(255, 255, 255));
 		lblcodigoID.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblcodigoID.setBounds(776, 121, 80, 34);
+		lblcodigoID.setBounds(899, 123, 80, 34);
 		add(lblcodigoID);
 
 		JLabel lblNombre = new JLabel("Nombre ");
+		lblNombre.setForeground(new Color(255, 255, 255));
 		lblNombre.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblNombre.setBounds(776, 204, 60, 34);
+		lblNombre.setBounds(899, 206, 60, 34);
 		add(lblNombre);
 
 		JLabel lblNacionalidad = new JLabel("Nacionalidad");
+		lblNacionalidad.setForeground(new Color(255, 255, 255));
 		lblNacionalidad.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblNacionalidad.setBounds(776, 295, 80, 34);
+		lblNacionalidad.setBounds(899, 297, 80, 34);
 		add(lblNacionalidad);
 
 		JLabel lblFecha = new JLabel("Fecha de Nacimiento");
+		lblFecha.setForeground(new Color(255, 255, 255));
 		lblFecha.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblFecha.setBounds(765, 379, 137, 34);
+		lblFecha.setBounds(888, 381, 137, 34);
 		add(lblFecha);
 
 		textField_nombre = new JTextField();
-		textField_nombre.setBounds(928, 207, 228, 34);
+		textField_nombre.setBounds(1051, 209, 228, 34);
 		add(textField_nombre);
 		textField_nombre.setColumns(10);
 
 		textField_Cod = new JTextField();
 		textField_Cod.setColumns(10);
-		textField_Cod.setBounds(928, 124, 228, 34);
+		textField_Cod.setBounds(1051, 126, 228, 34);
 		add(textField_Cod);
 
 		textField_Nacionalidad = new JTextField();
 		textField_Nacionalidad.setColumns(10);
-		textField_Nacionalidad.setBounds(928, 298, 228, 34);
+		textField_Nacionalidad.setBounds(1051, 300, 228, 34);
 		add(textField_Nacionalidad);
 
 		textField_Fecha = new JTextField();
 		textField_Fecha.setColumns(10);
-		textField_Fecha.setBounds(928, 382, 228, 34);
+		textField_Fecha.setBounds(1051, 384, 228, 34);
 		add(textField_Fecha);
 
 		JLabel lblTitulo = new JLabel("AUTOR ");
+		lblTitulo.setForeground(new Color(255, 255, 255));
 		lblTitulo.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 20));
-		lblTitulo.setBounds(22, 29, 94, 24);
+		lblTitulo.setBounds(30, 69, 94, 24);
 		add(lblTitulo);
 
 		//
@@ -150,7 +221,7 @@ public class AutorPanel extends JPanel {
 		//
 		JScrollPane scrollPane = new JScrollPane();
 
-		scrollPane.setBounds(22, 132, 683, 437);
+		scrollPane.setBounds(30, 150, 683, 437);
 		add(scrollPane);
 
 		//
@@ -201,7 +272,7 @@ public class AutorPanel extends JPanel {
 			}
 		});
 		btnEliminar.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
-		btnEliminar.setBounds(375, 88, 160, 34);
+		btnEliminar.setBounds(383, 106, 160, 34);
 		add(btnEliminar);
 
 		tablaAutores.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);// Solo se puede seleccionar una fila a la
@@ -256,7 +327,7 @@ public class AutorPanel extends JPanel {
 			}
 		});
 		btnAnyadir.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
-		btnAnyadir.setBounds(22, 86, 160, 36);
+		btnAnyadir.setBounds(30, 104, 160, 36);
 		add(btnAnyadir);
 		
 		btnModificar = new JButton("Modificar");
@@ -269,7 +340,7 @@ public class AutorPanel extends JPanel {
 			}
 		});
 		btnModificar.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
-		btnModificar.setBounds(192, 87, 160, 36);
+		btnModificar.setBounds(200, 105, 160, 36);
 		add(btnModificar);
 		
 		btnBuscarSuperior = new JButton("Buscar");
@@ -281,7 +352,7 @@ public class AutorPanel extends JPanel {
 			}
 		});
 		btnBuscarSuperior.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
-		btnBuscarSuperior.setBounds(545, 86, 160, 36);
+		btnBuscarSuperior.setBounds(553, 104, 160, 36);
 		add(btnBuscarSuperior);
 		
 		btnCancelar = new JButton("Cancelar");
@@ -312,6 +383,25 @@ public class AutorPanel extends JPanel {
 		btnEliminar.setEnabled(false);
 		btnModificar.setEnabled(false);
 		disminuirTamanyo();
+		
+		BufferedImage img1 = null;
+		try {
+			img1 = ImageIO.read(new File("res\\imagenes\\posibleFondo.png"));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		int labelWidth1 = 1424;
+	    int labelHeight1 = 825;
+	    
+	    Image scaledImg1 = img1.getScaledInstance(labelWidth1, labelHeight1, Image.SCALE_SMOOTH);
+		
+	    ImageIcon icon1 = new ImageIcon(scaledImg1);
+	    
+		JLabel lblNewLabel = new JLabel(icon1);
+		lblNewLabel.setBounds(0, 0, 1434, 825);
+		add(lblNewLabel);
 		
 	}
 
