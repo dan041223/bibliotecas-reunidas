@@ -1,6 +1,9 @@
 package vista;
 
 import javax.swing.JPanel;
+
+import modelo.Usuario;
+
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -23,6 +26,7 @@ public class MenuPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private JFrame frame;
+	public Usuario usuario = Login.usuario;
 
 	/**
 	 * Create the panel.
@@ -204,20 +208,26 @@ public class MenuPanel extends JPanel {
 		
 		JLabel lblNewLabel_1_3 = new JLabel(icon5);
 		lblNewLabel_1_3.setText("");
-		lblNewLabel_1_3.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				Ventana_Principal.getInstance().cambiarPanel(new UsuarioPanel());
-			}
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-			}
-			@Override
-			public void mouseExited(MouseEvent e) {
-				setCursor(Cursor.getDefaultCursor());
-			}
-		});
+		if(usuario.getTipo_perfil().toString().equalsIgnoreCase("administrativo")) {
+			lblNewLabel_1_3.setEnabled(false);
+		}else if(usuario.getTipo_perfil().toString().equalsIgnoreCase("administrador")) {
+			lblNewLabel_1_3.setEnabled(true);
+			lblNewLabel_1_3.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					Ventana_Principal.getInstance().cambiarPanel(new UsuarioPanel());
+				}
+				@Override
+				public void mouseEntered(MouseEvent e) {
+					setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+				}
+				@Override
+				public void mouseExited(MouseEvent e) {
+					setCursor(Cursor.getDefaultCursor());
+				}
+			});
+		}
+		
 		lblNewLabel_1_3.setBounds(141, 596, 218, 74);
 		add(lblNewLabel_1_3);
 		
