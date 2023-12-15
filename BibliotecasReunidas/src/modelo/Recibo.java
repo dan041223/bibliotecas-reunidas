@@ -4,33 +4,37 @@ package modelo;
 
 public class Recibo  {
 	private int id;
+	private int id_socio;
 	private int id_libro;
-	private int id_usuario;
 	private int monto;
 	private String fech_recibo;
 	public enum tipoPago{
-		EFECTIVO,
-		TARJETA
+		efectivo,
+		tarjeta
 	}
 	private tipoPago pago;
 	
 	public Recibo() {
 		this.id = 0;
+		this.id_socio = 0;
 		this.id_libro = 0;
-		this.id_usuario = 0;
 		this.monto = 0;
 		this.fech_recibo = "";
-		this.pago = tipoPago.EFECTIVO;
+		this.pago = tipoPago.efectivo;
 	}
 	
-	public Recibo(int id, int id_libro, int id_usuario, int monto, String fech_recibo, tipoPago pago) {
+	public Recibo(int id,  int id_socio, int id_libro, int monto, String fech_recibo, tipoPago pago) {
 		this.id = id;
 		this.id_libro = id_libro;
-		this.id_usuario = id_usuario;
+		this.id_socio = id_socio;
 		this.monto = monto;
 		this.fech_recibo = fech_recibo;
 		this.pago = pago;
 	}
+	
+	public String obtenerTipoPagoComoString() {
+        return pago.name();
+    }
 
 	public int getId() {
 		return id;
@@ -48,12 +52,12 @@ public class Recibo  {
 		this.id_libro = id_libro;
 	}
 
-	public int getId_usuario() {
-		return id_usuario;
+	public int getId_socio() {
+		return id_socio;
 	}
 
-	public void setId_usuario(int id_usuario) {
-		this.id_usuario = id_usuario;
+	public void setId_socio(int id_socio) {
+		this.id_socio = id_socio;
 	}
 
 	public int getMonto() {

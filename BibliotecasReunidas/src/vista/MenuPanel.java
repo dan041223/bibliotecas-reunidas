@@ -388,6 +388,7 @@ public class MenuPanel extends JPanel {
 				setCursor(Cursor.getDefaultCursor());
 			}
 		});
+
 		lblNewLabel_1_7.setBounds(1048, 596, 218, 74);
 		add(lblNewLabel_1_7);
 		
