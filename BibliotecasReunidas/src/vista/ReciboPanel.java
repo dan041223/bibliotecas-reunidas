@@ -6,6 +6,15 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
@@ -21,6 +30,8 @@ import modelo.Socio;
 import javax.swing.JComboBox;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Color;
+import java.awt.Cursor;
 
 public class ReciboPanel extends JPanel {
 
@@ -42,7 +53,64 @@ public class ReciboPanel extends JPanel {
     
 	public ReciboPanel() {
 		this.frame = frame;
+		setBackground(new Color(128, 128, 192));
 		setLayout(null);
+		
+		BufferedImage img = null;
+		try {
+			img = ImageIO.read(new File("res\\imagenes\\flechita_atras.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		int labelWidth = 40;
+	    int labelHeight = 40;
+	    
+	    Image scaledImg = img.getScaledInstance(labelWidth, labelHeight, Image.SCALE_SMOOTH);
+		
+	    ImageIcon icon = new ImageIcon(scaledImg);
+	    
+		JLabel imgs = new JLabel(icon);
+		imgs.setForeground(new Color(255, 255, 255));
+		imgs.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				setCursor(Cursor.getDefaultCursor());
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				Ventana_Principal.getInstance().cambiarPanel(new MenuPanel(null));
+			}
+		});
+		imgs.setBounds(10, 11, 47, 40);
+		
+		add(imgs);
+		
+		JLabel lblCerrarSesion = new JLabel("Volver al menu");
+		lblCerrarSesion.setForeground(new Color(255, 255, 255));
+		lblCerrarSesion.setBackground(new Color(255, 255, 255));
+		lblCerrarSesion.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblCerrarSesion.setBounds(55, 23, 181, 14);
+		lblCerrarSesion.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				setCursor(Cursor.getDefaultCursor());
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				Ventana_Principal.getInstance().cambiarPanel(new MenuPanel(null));
+			}
+		});
+		add(lblCerrarSesion);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(40, 133, 749, 478);
@@ -62,6 +130,7 @@ public class ReciboPanel extends JPanel {
 		TablaRecibos.setModel(modeloRecibo);
 		
 		JLabel LabelTitulo = new JLabel("Recibos");
+		LabelTitulo.setForeground(new Color(255, 255, 255));
 		LabelTitulo.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 20));
 		LabelTitulo.setBounds(40, 34, 101, 36);
 		add(LabelTitulo);
@@ -103,31 +172,37 @@ public class ReciboPanel extends JPanel {
 		add(comboBoxPago);
 		
 		JLabel lblCodigoSocio = new JLabel("Codigo Socio");
+		lblCodigoSocio.setForeground(new Color(255, 255, 255));
 		lblCodigoSocio.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblCodigoSocio.setBounds(820, 186, 95, 25);
 		add(lblCodigoSocio);
 		
 		JLabel lblCodigoRecibo = new JLabel("Codigo Recibo");
+		lblCodigoRecibo.setForeground(new Color(255, 255, 255));
 		lblCodigoRecibo.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblCodigoRecibo.setBounds(820, 139, 95, 25);
 		add(lblCodigoRecibo);
 		
 		JLabel lblCodigoLibro = new JLabel("Codigo Libro");
+		lblCodigoLibro.setForeground(new Color(255, 255, 255));
 		lblCodigoLibro.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblCodigoLibro.setBounds(820, 243, 95, 25);
 		add(lblCodigoLibro);
 		
 		JLabel lblMonto = new JLabel("Monto");
+		lblMonto.setForeground(new Color(255, 255, 255));
 		lblMonto.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblMonto.setBounds(830, 289, 95, 25);
 		add(lblMonto);
 		
 		JLabel lblFechaRecibo = new JLabel("Fecha Recibo");
+		lblFechaRecibo.setForeground(new Color(255, 255, 255));
 		lblFechaRecibo.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblFechaRecibo.setBounds(820, 342, 95, 25);
 		add(lblFechaRecibo);
 		
 		JLabel lblTipoPago = new JLabel("Tipo Pago");
+		lblTipoPago.setForeground(new Color(255, 255, 255));
 		lblTipoPago.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblTipoPago.setBounds(820, 393, 95, 25);
 		add(lblTipoPago);
@@ -245,7 +320,24 @@ public class ReciboPanel extends JPanel {
 			int nuevoAncho = 1250;
 			int nuevoAlto = frame.getHeight();
 			frame.setSize(nuevoAncho, nuevoAlto);
-
 		}
+		BufferedImage img1 = null;
+		try {
+			img1 = ImageIO.read(new File("res\\imagenes\\posibleFondo.png"));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		int labelWidth1 = 1424;
+	    int labelHeight1 = 825;
+	    
+	    Image scaledImg1 = img1.getScaledInstance(labelWidth1, labelHeight1, Image.SCALE_SMOOTH);
+		
+	    ImageIcon icon1 = new ImageIcon(scaledImg1);
+	    
+		JLabel lblNewLabel = new JLabel(icon1);
+		lblNewLabel.setBounds(0, 0, 1434, 825);
+		add(lblNewLabel);
 	}
 }

@@ -6,7 +6,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="src" path="imagenes"/>
+	<classpathentry excluding="Ficheros/" kind="src" path="res"/>
 	<classpathentry kind="src" path="Ficheros"/>
 	<classpathentry kind="lib" path="lib/postgresql-42.7.0.jar"/>
 	<classpathentry kind="output" path="bin"/>

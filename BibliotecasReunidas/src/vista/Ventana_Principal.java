@@ -1,5 +1,6 @@
 package vista;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -11,16 +12,19 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.awt.CardLayout;
+import java.awt.Image;
+import java.awt.Toolkit;
 
 public class Ventana_Principal extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	public String[] datos;
+	public String dato;
 	public Usuario usuario;
 	private static Ventana_Principal instancia;
 
 	private Ventana_Principal() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Ventana_Principal.class.getResource("/imagenes/logoSinFondo.png")));
 		// Para conectarnos a la bbdd ni bien se inicia la app
 		ConectorBBDD con = new ConectorBBDD();
 		con.connect();
@@ -29,7 +33,7 @@ public class Ventana_Principal extends JFrame {
 
 		setLocationRelativeTo(null);
 
-		setBounds(100, 100, 1400, 765);
+		setBounds(100, 100, 1456, 876);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -44,7 +48,7 @@ public class Ventana_Principal extends JFrame {
 			fr = new FileReader(fileSesionRecordada);
 			br = new BufferedReader(fr);
 			if (br.ready()) {
-				datos = br.readLine().split(";");
+				dato = br.readLine();
 			}
 		} catch (FileNotFoundException e) {
 			//e.printStackTrace();

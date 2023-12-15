@@ -5,6 +5,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import java.awt.Font;
+import java.awt.Image;
+
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
@@ -13,14 +15,24 @@ import javax.swing.table.DefaultTableModel;
 import controlador.DataMetodos;
 import modelo.Item;
 import modelo.Libro;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
+import java.awt.Color;
+import java.awt.Cursor;
 
 public class LibroPanel extends JPanel {
 
@@ -52,10 +64,67 @@ public class LibroPanel extends JPanel {
 	 * Create the panel.
 	 */
 	public LibroPanel(JFrame frame) {
+		setBackground(new Color(128, 128, 192));
 
 		this.frame = frame;
 		setLayout(null);
 		setBounds(0, 0, 1186, 711);
+		
+		BufferedImage img = null;
+		try {
+			img = ImageIO.read(new File("res\\imagenes\\flechita_atras.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		int labelWidth = 40;
+	    int labelHeight = 40;
+	    
+	    Image scaledImg = img.getScaledInstance(labelWidth, labelHeight, Image.SCALE_SMOOTH);
+		
+	    ImageIcon icon = new ImageIcon(scaledImg);
+	    
+		JLabel imgs = new JLabel(icon);
+		imgs.setForeground(new Color(255, 255, 255));
+		imgs.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				setCursor(Cursor.getDefaultCursor());
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				Ventana_Principal.getInstance().cambiarPanel(new MenuPanel(frame));
+			}
+		});
+		imgs.setBounds(10, 11, 47, 40);
+		
+		add(imgs);
+		
+		JLabel lblCerrarSesion = new JLabel("Volver al menu");
+		lblCerrarSesion.setForeground(new Color(255, 255, 255));
+		lblCerrarSesion.setBackground(new Color(255, 255, 255));
+		lblCerrarSesion.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblCerrarSesion.setBounds(55, 23, 181, 14);
+		lblCerrarSesion.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				setCursor(Cursor.getDefaultCursor());
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				Ventana_Principal.getInstance().cambiarPanel(new MenuPanel(frame));
+			}
+		});
+		add(lblCerrarSesion);
 
 		// btnGuardarCambios
 		btnGuardarCambios = new JButton("Guardar Cambios");
@@ -107,48 +176,57 @@ public class LibroPanel extends JPanel {
 
 		// Creamos los JLabels
 		JLabel lblCodigo = new JLabel("Código ID");
+		lblCodigo.setForeground(new Color(255, 255, 255));
 		lblCodigo.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblCodigo.setBounds(810, 89, 89, 30);
 		add(lblCodigo);
 
 		JLabel lblTitulo = new JLabel("Titulo");
+		lblTitulo.setForeground(new Color(255, 255, 255));
 		lblTitulo.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblTitulo.setBounds(810, 132, 89, 30);
 		add(lblTitulo);
 
 		JLabel lblCategoriaDelLibro = new JLabel("Categoria Del Libro");
+		lblCategoriaDelLibro.setForeground(new Color(255, 255, 255));
 		lblCategoriaDelLibro.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblCategoriaDelLibro.setBounds(810, 172, 120, 30);
 		add(lblCategoriaDelLibro);
 
 		JLabel lblIdioma = new JLabel("Idioma");
+		lblIdioma.setForeground(new Color(255, 255, 255));
 		lblIdioma.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblIdioma.setBounds(810, 212, 120, 30);
 		add(lblIdioma);
 
 		JLabel lblFechaDePublicacin = new JLabel("Fecha de Publicación");
+		lblFechaDePublicacin.setForeground(new Color(255, 255, 255));
 		lblFechaDePublicacin.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblFechaDePublicacin.setBounds(810, 252, 156, 30);
 		add(lblFechaDePublicacin);
 
 		JLabel lblEditorial = new JLabel("Editorial");
+		lblEditorial.setForeground(new Color(255, 255, 255));
 		lblEditorial.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblEditorial.setBounds(810, 292, 120, 24);
 		add(lblEditorial);
 
 		JLabel lblUbicacion = new JLabel("Ubicacion ");
+		lblUbicacion.setForeground(new Color(255, 255, 255));
 		lblUbicacion.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblUbicacion.setBounds(810, 332, 113, 24);
 		add(lblUbicacion);
 
 		JLabel lblIsbn = new JLabel("ISBN");
+		lblIsbn.setForeground(new Color(255, 255, 255));
 		lblIsbn.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblIsbn.setBounds(810, 366, 156, 30);
 		add(lblIsbn);
 
 		JLabel lblLibro = new JLabel("Libro");
+		lblLibro.setForeground(new Color(255, 255, 255));
 		lblLibro.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 20));
-		lblLibro.setBounds(43, 28, 79, 45);
+		lblLibro.setBounds(30, 47, 79, 45);
 		add(lblLibro);
 
 		// Creando TextFields
@@ -232,7 +310,7 @@ public class LibroPanel extends JPanel {
 				btnCrearLibro.setVisible(true);
 			}
 		});
-		btnAnyadir.setBounds(130, 41, 89, 32);
+		btnAnyadir.setBounds(136, 89, 89, 32);
 		add(btnAnyadir);
 
 		btnModificar = new JButton("Modificar");
@@ -255,7 +333,7 @@ public class LibroPanel extends JPanel {
 			}
 		});
 		btnModificar.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
-		btnModificar.setBounds(230, 41, 120, 32);
+		btnModificar.setBounds(236, 89, 120, 32);
 		add(btnModificar);
 
 		btnEliminar = new JButton("Eliminar");
@@ -274,13 +352,13 @@ public class LibroPanel extends JPanel {
 			}
 		});
 		btnEliminar.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
-		btnEliminar.setBounds(360, 43, 99, 30);
+		btnEliminar.setBounds(366, 91, 99, 30);
 		add(btnEliminar);
 
 		// ------------------Creo la tabla ---------------
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(24, 83, 742, 540);
+		scrollPane.setBounds(30, 131, 742, 540);
 		add(scrollPane);
 
 		// Vamos actualizar la IsCellEditerTable para impedir que las celdas de la tabla
@@ -327,7 +405,7 @@ public class LibroPanel extends JPanel {
 			}
 		});
 		btnBuscarSuperior.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
-		btnBuscarSuperior.setBounds(469, 43, 120, 32);
+		btnBuscarSuperior.setBounds(475, 91, 120, 32);
 		add(btnBuscarSuperior);
 
 		// Obtener el modelo de selección de la tabla
@@ -408,6 +486,24 @@ public class LibroPanel extends JPanel {
 		tableLibros.getColumnModel().getColumn(1).setPreferredWidth(200);
 		tableLibros.getColumnModel().getColumn(6).setPreferredWidth(230);
 
+		BufferedImage img1 = null;
+		try {
+			img1 = ImageIO.read(new File("res\\imagenes\\posibleFondo.png"));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		int labelWidth1 = 1424;
+	    int labelHeight1 = 825;
+	    
+	    Image scaledImg1 = img1.getScaledInstance(labelWidth1, labelHeight1, Image.SCALE_SMOOTH);
+		
+	    ImageIcon icon1 = new ImageIcon(scaledImg1);
+	    
+		JLabel lblNewLabel = new JLabel(icon1);
+		lblNewLabel.setBounds(0, 0, 1434, 825);
+		add(lblNewLabel);
 	}
 
 	private void recargarTablaAutor() {
@@ -453,7 +549,6 @@ public class LibroPanel extends JPanel {
 			frame.setSize(nuevoAncho, nuevoAlto);
 			// frame.invalidate();
 			// frame.repaint();
-			System.out.println("Disminuido");
 		}
 	}
 
@@ -462,7 +557,6 @@ public class LibroPanel extends JPanel {
 			int nuevoAncho = 1350;
 			int nuevoAlto = frame.getHeight();
 			frame.setSize(nuevoAncho, nuevoAlto);
-			System.out.println("Aumentado");
 		}
 	}
 
