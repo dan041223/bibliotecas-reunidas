@@ -67,6 +67,11 @@ public class PrestamoPanel extends JPanel {
 		this.frame = frame;
 		setLayout(null);
 			
+		String[] tipoPago = { "efectivo", "tarjeta" };
+		JComboBox comboBoxTipoPago = new JComboBox(tipoPago);
+		comboBoxTipoPago.setBounds(939, 145, 164, 22);
+		add(comboBoxTipoPago);
+		
 		BufferedImage img = null;
 		try {
 			img = ImageIO.read(new File("res\\imagenes\\flechita_atras.png"));
@@ -199,11 +204,12 @@ public class PrestamoPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				aumentarTamanyo();
 				
+				 String tipoPago = (String) comboBoxTipoPago.getSelectedItem();
 				 int codigoSocio = (int) comboBoxSocio.getSelectedItem();
 				 int codigoLibro = (int) comboBoxLibro.getSelectedItem();
 				 int codigoUsuario = (int) comboBoxUsuario.getSelectedItem();
 
-		        DataMetodos.insertarPrestamo(codigoSocio, codigoLibro, codigoUsuario);
+		        DataMetodos.insertarPrestamo(codigoSocio, codigoLibro, codigoUsuario, tipoPago);
 
 				recargarTablaPrestamo();
 				disminuirTamanyo();
@@ -229,6 +235,7 @@ public class PrestamoPanel extends JPanel {
                 recargarTablaPrestamo();
                 disminuirTamanyo();
                 btnAnyadir.setEnabled(true);
+                comboBoxTipoPago.setEnabled(true);
                 btnEliminar.setEnabled(false);
 				btnModificar.setEnabled(false);
 				CheckBoxEntregar.setEnabled(false);	
@@ -249,6 +256,7 @@ public class PrestamoPanel extends JPanel {
                 recargarTablaPrestamo();
                 disminuirTamanyo();
                 btnAnyadir.setEnabled(true);
+                comboBoxTipoPago.setEnabled(true);
                 btnEliminar.setEnabled(false);
 				btnModificar.setEnabled(false);
 				CheckBoxEntregar.setEnabled(false);	
@@ -270,6 +278,7 @@ public class PrestamoPanel extends JPanel {
                 recargarTablaPrestamo();
                 disminuirTamanyo();
                 btnAnyadir.setEnabled(true);
+                comboBoxTipoPago.setEnabled(true);
                 btnEliminar.setEnabled(false);
 				btnModificar.setEnabled(false);
 				CheckBoxEntregar.setSelected(false);
@@ -357,6 +366,7 @@ public class PrestamoPanel extends JPanel {
  		                btnModificar.setEnabled(true); 
  		                CheckBoxEntregar.setEnabled(true); 
  		                btnAnyadir.setEnabled(false);
+ 		                comboBoxTipoPago.setEnabled(false);
  		            }
  		        }
  		    }
@@ -389,6 +399,13 @@ public class PrestamoPanel extends JPanel {
 		lblNewLabel.setBounds(0, 0, 1434, 825);
 		add(lblNewLabel);
 		CheckBoxEntregar.setEnabled(false);	
+		
+		JLabel lblCodigo_1_1_1 = new JLabel("Tipo de pago");
+		lblCodigo_1_1_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblCodigo_1_1_1.setBounds(798, 142, 131, 25);
+		add(lblCodigo_1_1_1);
+		
+		
 	}
 	
 	// ====================== metodos para esta tablas==============
